@@ -76,7 +76,7 @@ class mailto {
      * @param Array $attach  archivos adjuntos
      * @return string  
      */
-    public function enviar_email($asunto,$mensaje, $textoAlternativo, $emailDestinatario, $nombreDestinatario ="",$attach=null) {
+    public function enviar_email($asunto,$mensaje, $textoAlternativo, $emailDestinatario, $nombreDestinatario = '',$attach=null) {
         
         $this->mail->From = $this->user;
         $this->mail->FromName = NOMBRE_APLICACION;

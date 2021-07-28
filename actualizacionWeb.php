@@ -450,10 +450,15 @@ foreach ($lineas as $linea) {
 $fecha = JFILE::read(ACTUALIZ."ACTUALIZACION.txt");
 echo "****FIN DEL PROCESO DE ACTUALIZACION****<br />";
 echo "Fecha: ".$fecha."<br/>";
-$mail = new mailto(2);
-$r = $mail->enviar_email("Actualización ".NOMBRE_APLICACION." ".$fecha,$mensaje, "", 'respuestalegal6@gmail.com',"");
-        
-if ($r=="") {
+$mail = new mailto();
+$r = $mail->enviar_email(
+    "Actualización ".NOMBRE_APLICACION." ".$fecha,
+    $mensaje, 
+    '', 
+    'respuestalegal6@gmail.com'
+);
+echo "resultado: $r<br />>";
+if ($r == '') {
     echo "Email de confirmación enviado con éxito<br />";
 } else {
     echo "Falló el envio del emailo de ejecución del proceso<br />";
