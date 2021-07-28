@@ -1,0 +1,162 @@
+{% extends 'layout/intra.html.twig'%}
+{% block contenido %}
+<section class="section bg-white">
+<div class=container>
+<div class=row>
+<div class="col-lg-12 text-center">
+<h2>{{titulo}}</h2>
+</div>
+<div data-effect=fadeIn class="col-md-12 mg-sm animated fadeIn">
+<table  class="table table-bordered table-dark">
+<!--caption style="text-align: left;"><h4>{#{ cuenta.inmueble.nombre_inmueble }#}</h4></caption-->
+<thead>
+<tr>
+{% if tipo == 'condominio' %}
+<th style="text-align: center">Condominio</th>
+{% endif %}
+<th style="text-align: center">Titulo</th>
+<th style="text-align: center" >Contenido</th>
+<th style="text-align: center">Fecha<small>de Publicación</small></th>
+<th style="text-align: center">Acción</th>
+</tr>
+</thead>
+<tbody>
+{% if publicaciones %}
+{% for publicacion in publicaciones %}
+<tr>
+{% if tipo == 'condominio' %}
+<td>{{publicacion.nombre_inmueble}}</td>
+{% endif %}
+<td>{{publicacion.titulo}}</td>
+<td>{{publicacion.contenido|raw}}</td>
+<td>{{publicacion.fecha|date("d/m/Y \\a \\l\\a\\s h:ia")}}</td>
+<td><a href="{{constant('URL_INTRANET')}}/eliminar-cartelera/{{tipo}}/{{publicacion.id}}">Eliminar</a></td>
+</tr>
+{% endfor %}
+{% else %}
+<tr>
+    <td colspan="4"><div class="col-lg-12 text-center padding40"><h3><span class="green">No existen</span> publicaciones registradas</h3></div></td>
+</tr>
+{% endif %}
+</tbody>
+</table>
+<div id=respuesta></div>
+</div>
+</div>
+</div>
+</div>
+</section>
+{% endblock %}
+{% block js %}
+{{parent()}}
+<script src="{{constant('ROOT')}}js/datepicker.min.js"></script>
+<script src="{{constant('ROOT')}}js/summernote.js"></script>
+<script src="{{constant('ROOT')}}js/summernote-es-ES.js"></script>
+<script>
+    var formData = new FormData();
+    $('div.alert').hide();
+    $('.input-group.date').datepicker({
+        autoclose: true,
+        todayHighlight: true,
+        format: 'dd/mm/yyyy',
+        showOn: 'both',
+        autoSize: true,
+        orientation: "bottom"
+    });
+    $('#contenido').summernote({
+       lang: 'es-ES',
+       height: 240,
+       placeholder: 'Escriba aquí el contenido la publicación',
+       toolbar: [
+        // [groupName, [list of button]]
+        ['fontname', ['fontname']],
+        ['style', ['bold', 'italic', 'underline', 'clear']],
+        ['font', ['strikethrough', 'superscript', 'subscript']],
+        ['fontsize', ['fontsize']],
+        ['color', ['color']],
+        ['para', ['ul', 'ol', 'paragraph']],
+        ['height', ['height']],
+        ['insert', ['link','hr']]
+      ]
+   });
+    $("#publicacion").validate({
+        submitHandler: function(form) {
+            $.ajax({
+                url: "{{constant('URL_INTRANET')}}/guardar-cartelera",
+                type: "POST",
+                data: $("#publicacion").serialize(),
+                dataType: "json",
+                beforeSend: function() {
+                    $("button").attr("disabled","disabled");
+                    $("#fallo, #exito").hide();
+                },
+                success: function (data) {
+                    if (typeof data.error !== 'undefined' && data.error!=='') {
+                        $("button").removeAttr("disabled");
+                    }
+                    if (data.suceed === true) {
+                        $("#fallo").hide();
+                        $("#exito").html(data.mensaje).fadeIn();
+                        $("button").removeAttr("disabled");
+                        $("#publicacion")[0].reset();
+                        $('#contenido').summernote('code','');
+                    } else {
+                        $("#exito").hide();
+                        $("#fallo").html(data.mensaje).fadeIn();
+                        $("button").removeAttr("disabled");
+                    }
+                },
+                error: function(xhr, ajaxOptions, thrownError) {
+                    $("#fallo").html('Ocurrió el siguiente error durante el proceso: <strong>Error '+ xhr.status + ' ' + thrownError+'</strong>. Por favor intente más tarde.').fadeIn();
+                    console.log(ajaxOptions);
+                    $("button").removeAttr("disabled");
+                }
+            });
+        },				
+        // debug: true,
+        errorPlacement: function(error, element) {
+            if(element.is('textarea')) {
+                error.insertAfter($(".note-editing-area"));
+            } else {
+                if (element.hasClass("date-picker")) {
+                    error.insertAfter(element.parent());
+                } else {
+                    error.insertAfter(element);
+                }
+            }
+        },
+        onkeyup: false,
+        onclick: false,
+        ignore: [],
+        rules: {
+            titulo: {required: true },
+            contenido: {
+                required : true,
+                minlength : 20
+            },
+            fecha : {required:true},
+            inmueble : {required:true}
+        },
+        messages: {
+            titulo: "Coloque un título a esta publicación",
+            contenido: {
+                required: "Ingrese contenido a esta publicación",
+                minlength: 'Se requieren mínimo 20 caracteres'
+            },
+            fecha: 'Falta fecha de publicación',
+            inmueble : 'Debe seleccionar un condominio de la lista'
+        },
+        errorClass: "error",
+        errorElement: "span",
+        highlight: function (element) {
+                $(element).prev().removeClass("has-success").addClass("has-error");
+            $(element).parent().removeClass("has-success").addClass("has-error");
+        },
+        success: function (element) {
+            $(element).parent().removeClass("has-error").addClass("has-success");
+            $(element).prev().removeClass("has-error").addClass("has-success");
+        }
+    });
+    
+</script>
+{% endblock %}

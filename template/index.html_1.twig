@@ -1,0 +1,616 @@
+<!DOCTYPE html>
+<!--[if lt IE 7 ]><html class="ie ie6" lang="en"> <![endif]-->
+<!--[if IE 7 ]><html class="ie ie7" lang="en"> <![endif]-->
+<!--[if IE 8 ]><html class="ie ie8" lang="en"> <![endif]-->
+<!--[if (gte IE 9)|!(IE)]><!-->
+<html lang="es"> <!--<![endif]-->
+
+    <head>
+        <meta charset="utf-8">
+        <title>Administradora Octagon 2010 - Administradora de Condomios, El Paraiso - Caracas</title>
+        <meta name="author" content="pronet21.com">
+        <meta name="keywords" content="administradora de condomio, administradora de condominios en el paraiso, caracas ">
+        <meta name="description" content="Somos más que una administradora de condominio en el paraiso, caracas. Servicio premium, especialistas en gestiones de cobranzas, olvídese de la morosidad!">		
+
+        <!-- Mobile Specific Metas -->
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">		
+
+        <!-- Libs CSS -->
+        <link href="css/bootstrap.css" rel="stylesheet">
+        <link href="css/simple-line-icons.css" rel="stylesheet">
+        <link href="css/font-awesome.min.css" rel="stylesheet">
+        <link href="css/prettyPhoto.css" rel="stylesheet" type="text/css" media="all" />
+
+        <!-- Template CSS -->
+        <link href="css/style.css" rel="stylesheet"> 
+
+        <!-- Google Fonts -->
+        <link href='http://fonts.googleapis.com/css?family=Raleway:400,700,800&amp;subsetting=all' rel='stylesheet' type='text/css'>
+        <link href='http://fonts.googleapis.com/css?family=Open+Sans:400italic,400,800,700,300' rel='stylesheet' type='text/css'>
+
+        <!--[if lt IE 9]>
+                <script src="./js/html5shiv.js"></script>
+                <script src="./js/respond.js"></script>
+                <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <![endif]-->
+        <link rel="shortcut icon" href="images/favicon/favicon.png">
+        <link rel="icon" href="images/favicon/favicon.png">
+    </head>
+
+    <body data-spy="scroll" data-target=".navigation">
+
+        <!-- Banner -->	
+        <div id="banner" class="bg-blur">
+            <!-- Start Header -->
+            <div id="header">
+                <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+                    <div class="container">
+                        <div class="navbar-header">
+                            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                                <span class="sr-only">Barra Navegación</span>
+                                <span class="icon-bar"></span>
+                                <span class="icon-bar"></span>
+                                <span class="icon-bar"></span>
+                            </button>
+                            <!-- Start Logo / Text -->
+                            <a class="navbar-brand text-logo" href="#"><i class="fa fa-cubes green"></i><span class="green">Administradora Octagon 2010</span></a>
+                            <!-- End Logo / Text -->
+                        </div>
+                        <!-- Start Navigation -->
+                        <div class="navigation navbar-collapse collapse">
+                            <ul class="nav navbar-nav menu-right">
+                                <li class="active"><a href="#banner">Inicio</a></li>
+                                <li><a href="#intro">Nuestra Empresa</a></li>
+                                <li><a href="#portfolio">Servicios</a></li>
+                                <li><a href="#features">Inmobiliaria</a></li>
+                                <li><a href="#cobranzas">Cobranzas Morosas</a></li>
+                                <li><a href="#contacto">Contáctenos</a></li>
+                            </ul>
+                        </div>
+                        <!-- End Navigation  -->
+                    </div>
+                </nav>
+            </div>
+            <!-- End Header -->
+            <div class="banner-content">
+                <div class="container">
+                    <div class="row">
+                        <!-- Start Header Text -->
+                        <div class="col-md-7 col-sm-7">
+                            <h1><strong>Administradora </strong> de Condominios</h1>
+                            <p>Su condominio es nuestro es nuestro mayor interés. Le ofrecemos servicios integrales en el área inmobiliaria.</p>
+                            <ul class="banner-list">
+                                <li><i class="fa fa-check"></i>Administración y Gestión de su inmueble.</li>
+                                <li><i class="fa fa-check"></i>Cobranzas y recuperación, desalojos.</li>
+                                <li><i class="fa fa-check"></i>Venta y Alquiler de su propiedad.</li>
+                                <li><i class="fa fa-check"></i>Outsourcing y Asesoría (Emisión de recibos de condominio).</li>
+                                <li><i class="fa fa-check"></i>Atención personalizada y respuestas oportunas.</li>
+                            </ul>
+                        </div>
+                        <!-- End Header Text --> 
+                        <!-- Start Banner Optin Form-->
+                        <div class="col-lg-4 col-md-4 col-md-offset-1 col-sm-5">
+                            <div class="banner-form">
+                                <div class="form-title">
+                                    <h2>Octagon en Línea</h2>
+                                </div>
+                                <div class="form-body">
+                                    <p>Ingrese el número de apartamento y su contraseña.</p>
+                                    {% if mensaje.error is defined %}
+                                    <div class="alert alert-warning">
+                                        <a href="#" class="close">&times;</a>
+                                        <p style="color:#8a6d3b">{{ mensaje.error }}</p>
+                                    </div>
+                                    {%endif %}
+                                    <form id="login-form" class="form" novalidate="novalidate" method="post" action="login.php">
+                                        <section>
+                                            <input name="apto" id="cedula" type="text" class="form-control" placeholder="Número de Apartamento">
+                                        </section>
+                                        <section>
+                                            <input name="password" id="password" type="text" class="form-control" placeholder="Su Contraseña">
+                                        </section>
+                                        <button type="submit" class="btn btn-default btn-submit">Entrar</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- End Banner Optin Form -->
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- End Banner -->
+
+        <!-- Clients Logo -->
+        <div id="clients" class="padding40 bg-grey hidden-xs">
+            <div class="container">
+                <ul class="list-inline clients-logo text-center">
+                    <li><a href="http://www.bufetegioia.com/" target="_blank"><img src="img/logo2.png" alt="" title="" /></a></li>
+                    <li><img src="img/logo1.png" alt="" title="" /></li>
+                    <li><a href="http://www.bufetegioia.com/" target="_blank"><img src="img/logo2.png" alt="" title="" /></a></li>
+                    <li><img src="img/logo1.png" alt="" title="" /></li>
+                    <li><a href="http://www.bufetegioia.com/" target="_blank"><img src="img/logo2.png" alt="" title="" /></a></li>
+                </ul>
+            </div>
+        </div>
+        <!-- End Clients Logo -->
+
+        <!-- Intro -->
+        <section id="intro" class="section">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12 headline">
+                        <h2>Nuestra <span class="green">Empresa </span></h2>
+                        <p>Administradora Octagon 2010, C.A. es una empresa orientada a brindarle un servicio selecto, exclusivo y personalizado en diferentes áreas del campo inmobiliario en Venezuela, nuestra cartera de clientes avalan esta orientación lo cual nos hace sentir muy orgullos y responsables por la confianza que han depositado en nuestra empresa.</p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-5 col-md-5">
+                        <img src="img/inclined.png" class="img-responsive" alt="" title="">
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-md-offset-1">
+                        <div class="features"><!-- Main Points -->
+                            <i class="line-font blue fa fa-building-o"></i><!-- Main Point Icon -->
+                            <h3>Especialistas Inmobiliarios</h3><!-- Main Title -->
+                            <p>Cuenta usted con un equipo de trabajo altamente calificado, especialistas en diversas áreas del campo inmobiliario en Venezuela. </p><!-- Main Text -->
+                        </div><!-- End Main Points -->
+                        <div class="features">
+                            <i class="line-font blue fa fa-legal"></i>
+                            <h3>Departamento Jurídico</h3>
+                            <p>a cargo de la firma profesional <a href="http://www.bufetegioia.com/">Bufete Gioia, S.C</a>: expertos en casos relacionados el condominio: cobranza judicial, redacción de documentos, recuperación, alquiler y venta. </p>
+                        </div>
+                        <div class="features">
+                            <i class="line-font blue fa fa-code"></i>
+                            <h3>Tecnología de punta</h3>
+                            <p>Contamos con un sistema de última generación, lo que nos permite brindarle información de manera oportuna. Octagon en línea le permite estar al día con las cuentas de su propiedad.</p>
+                        </div>
+                    </div>
+                </div>
+                <hr class="separator60"><!-- Separator -->
+                <div class="row">
+                    <div class="col-md-6">
+                        <h2>Octagon <span class="green">en Línea</span></h2>
+                        <p>Ponemos a su alcance un sistema web para mantenerlo informado de todo lo relacionado con su inmueble, las 24 horas del día los 365 días del año. Desde su computador, tablet o teléfono inteligente usted puede:</p>
+                        <ul class="green-arrow"><!--Green arrow list -->
+                            <li>Consultar su estado de cuenta.</li>
+                            <li>Ver, descargar y/o imprimir sus avisos de cobro y recibos de condominio.</li>
+                            <li>Actualizar sus dato.</li>
+                            <li>Consultar quienes son los miembros de su junta de condominio.</li>
+                            <li>Consultar los soportes de su facturación.</li>
+                            <li>Reportar sus pagos de condominos.</li>
+                        </ul>
+                    </div>
+                    <div class="col-md-5 col-md-offset-1">
+                        <img src="img/diseno-responsivo.png" class="img-responsive" alt="" title="">
+                    </div>
+                </div>
+                <hr class="separator60">
+                <div class="row">
+                    <div class="col-md-6">
+                        <img src="img/condominio.jpg" class="img-responsive" alt="" title="">
+                    </div>
+                    <div class="col-md-6">
+                        <div class="margintop">
+                            <h2><span class="green">Administración</span> de Condomios</h2>
+                            <p>Le ofrecemos a su condominio soluciones innovadoras para brindarle información en el momento que usted la necesite. Algunos servicios de nuestro portafolio son:</p>
+                            <ul class="green-arrow"><!--Green arrow list -->
+                                <li>Envío mensual de estado de cuenta del condominio.</li>
+                                <li>Emisión y envío vía correo electrónico de los avisos de cobro.</li>
+                                <li>Emisión de recibos de condominio.</li>
+                                <li>Cobranzas semanales y diferentes modalidades de pago para sus recibos de condominio.</li>
+                                <li>Control de la morosidad por medio de nuestro Departamento Legal.</li>
+                                <li>Selección de personal para los trabajadores del condominio.</li>
+                                <li>Servicio de nómina, aguinaldos, prestaciones y vacaciones.</li>
+                                <li>Pago a proveedores y servicios básicos.</li>
+                                <li>Gestiones de cobranzas.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- End Intro -->
+        <!-- Three Main Points -->
+        <section id="three-main" class="section bg-blue-pattern white-text">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="headline">
+                            <h2>Servicios adaptados a sus necesidades</h2>
+                            <p><strong>No busque más!</strong> Permítamos ofrecerle una oferta de servicios personalizada.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="row text-center">
+                    <div class="col-md-4">
+                        <div class="main-point"><!-- Main Point -->
+                            <i class="line-font icon-users"></i><!-- Main Point Icon -->
+                            <h3>Atención de Calidad</h3><!-- Main Point Title -->
+                            <p>Profesionales enfocados en brindarles soluciones optimas a sus requerimientos. </p><!-- Main Point Text -->
+                        </div><!-- End Main Point -->
+                    </div>
+                    <div class="col-md-4">
+                        <div class="main-point">
+                            <i class="line-font icon-globe"></i>
+                            <h3>Información oportuna</h3>
+                            <p>Accesa a su información en forma fácil y rápido en el momento que la necesite. </p>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="main-point">
+                            <i class="line-font icon-graph"></i>
+                            <h3>Revalorice su inmueble</h3>
+                            <p>Pagos a proveedores, mantenimientos y servicios en forma oportuna. </p>
+                        </div>
+                    </div>				
+                </div>
+            </div>
+        </section>
+        <!--End Three Main Points -->
+        <!-- Nuestros Servicios -->
+        <section id="portfolio" class="section bg-grey arrow-bottom">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="headline">
+                            <h2>Nuestros Servicios</h2>
+                            <p>Le ofrecemos la atención de un equipo de profesionales, con ética y honestidad, apoyados en sistemas de última tecnología para darle respuesta oportuna a sus requemientos.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4 col-sm-4 features"><!-- Start Feature -->
+                        <i class="line-font blue fa fa-gears"></i><!-- Feature Icon -->
+                        <h3>Administración Integral</h3><!-- Feature Title -->
+                        <p>Facturación, pagos a proveedores, pagos servicios básicos, mantenimiento de áreas comunes, nómina del condominio.</p><!-- Feature Text -->
+                    </div><!-- End Feature -->
+                    <div class="col-md-4 col-sm-4 features">
+                        <i class="line-font blue fa fa-sitemap"></i>
+                        <h3>Outsourcing Condominios</h3>
+                        <p>Emisión, impresión y/o envío por correo electrónico recibos de condominio. <strong>(No administramos el condominio)</strong></p>
+                    </div>
+                    <div class="col-md-4 col-sm-4 features">
+                        <i class="line-font blue fa fa-building-o"></i>
+                        <h3>Avaluos y Peritajes Inmobiliarios</h3>
+                        <p>La Administradora Octagon 2010 cuenta con expertos peritos colegiados para elaborar avaluos y peritajes sobre inmuebles.</p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4 col-sm-4 features">
+                        <i class="line-font blue fa fa-file-text-o"></i>
+                        <h3>Redacción de Documentos</h3>
+                        <p>Redacción de todo tipo de documentos inmobiliarios y de condonominio: compra venta, opción de compra, hipotecas, liberaciones, contrato de arrendamiento, poderes, registros mercantiles en Venezuela, Miami y Panamá, etc.</p>
+                    </div>
+                    <div class="col-md-4 col-sm-4 features">
+                        <i class="line-font blue fa fa-shield"></i>
+                        <h3>Asesoría Inmobiliaria</h3>
+                        <p>Antes de comprar, vender o arrendar, consulte con nuestros profesionales, le guiamos y asesoramos, asegurando rentabilidad, seguridad y confianza en su negociación.</p>
+                    </div>
+                    <div class="col-md-4 col-sm-4 features">
+                        <i class="line-font blue fa fa-legal"></i>
+                        <h3>Acciones Judiciales Condominio</h3>
+                        <p>Nos encargamos de las acciones judiciales vía ejecutiva y convenimientos de pagos, a través nuestro Departamento Legal a cargo de la firma profesional <a href="http://www.bufetegioia.com/">Bufete Giogia S.C.</a></p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4 col-sm-4 features">
+                        <i class="line-font blue fa fa-html5"></i>
+                        <h3>Servicio Octagon en Línea</h3>
+                        <p>Consulte su estado de cuenta, vea, imprime y descargue sus recibos de condominio, reporte sus pagos de conomino y mucho más!.</p>
+                    </div>
+                    <div class="col-md-4 col-sm-4 features">
+                        <i class="line-font blue icon-layers"></i>
+                        <h3>Remates Judiciales</h3>
+                        <p>Cuando un deudor no cumple con un convenio judicial de pago, se procede al remate de su inmueble, y con el producto del remate de paga la oblicaicón condominial.</p>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+        <!-- Nuestros Servicios -->
+
+        <!-- How It Works -->
+        <section id="features" class="section bg-blue-pattern white-text">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="headline">
+                            <h2>Inmobiliaria</h2>
+                            <p>Contamos con un equipo profesional de corredores inmobiliarios dedicados exclusivamente a la promoción bien sea para alquiler o venta de su inmueble mediante técnicas específicas.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <!-- How It Works List -->
+                        <ul class="steps-list">
+                            <li>
+                                <span>1</span><!-- Step Number -->
+                                <h4>Avalúo de su inmueble</h4><!-- Step Title -->
+                                <p>le presentamos un informe técnico que permita ubicar el precio, ajustado al mercado actual.</p><!-- Step Description -->
+                            </li>
+                            <li>
+                                <span>2</span>
+                                <h4>Trámites de solvencias y recaudos</h4>
+                                <p>requeridos para la protocolización del documento de compra venta, arrendamiento, etc.</p>
+                            </li>
+                            <li>
+                                <span>3</span>
+                                <h4>Perfíl del inquilino </h4>
+                                <p>Seleccionamos y verificamos el perfíl del inquilino de acuerdo a parámetros establecidos.</p>
+                            </li>
+                        </ul>					
+                        <!-- End How It Works List -->
+                    </div>
+                    <div class="col-md-6">
+                        <!--div class="video-container">
+                            <iframe src="http://player.vimeo.com/video/75188030"></iframe>
+                        </div-->
+                        <ul class="steps-list">
+                            <li>
+                                <span>4</span>
+                                <h4>Asesoría Legal </h4>
+                                <p>en la elaboración de los documentos implicados en operaciones de: opción de compra venta, protocolización, arrendamiento, etc.</p>
+                            </li>
+                            <li>
+                                <span>5</span>
+                                <h4>Expediente de la gestión compra venta</h4>
+                                <p>con los registros de las personas que solicitan información o visitan su inmueble.</p>
+                            </li>
+                            <li>
+                                <span>6</span>
+                                <h4>Contáctenos! </h4>
+                                <p>Es el momento de decidirse, y cierre un negocio de mucho provecho.</p>
+                            </li>
+                        </ul>
+                    </div>	
+                </div>
+            </div>
+        </section>
+        <!-- End How it Works -->	
+
+        <!-- cobranzas -->
+        <section id="cobranzas" class="section">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="headline">
+                            <h2>Cobranzas Morosas</h2>
+                            <p>Somos especialistas en recuperaciones de deudas de condominio, desalojos de inquilinos morosos o conflictivos.</p>
+                        </div>
+                    </div>
+                </div>	
+                <div class="row">
+                    <div class="col-md-5">
+                        <p>Administradora Octagon 2010, C.A. es una Empresa filial de la firma profesional de abogados <a href="http://www.bufetegioia.com/" target="_blank">Bufete Gioia, S.C.</a> con el propósito de que todas sus actividades administrativas sean supervisadas directamente por dicho bufete de abogados.</p>
+                        <p>Por su parte la cobranza morosa le corresponde de lleno al </strong>Bufete Gioia, S.C.</strong>, quien con su organización legal, procura mantener saneados los condominios de los morosos, ejerciendo la acción de recuperación de forma extrajudicial, mediante convenios de pago notariados, o en su defecto, mediante acciones judiciales (de vía ejecutiva) contundentes con petición de medidas cautelares que aseguren el inmueble.</p>
+                    </div>
+                    <div class="col-md-7">
+                        <img src="img/cobranzas-morosas.jpg" class="img-responsive" alt="" title="">
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- End cobranzas -->
+
+        <!-- Call To Action -->
+        <section id="contacto" class="section bg-blue-pattern">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-12 text-center white-text">
+                        <div class="headline">
+                            <h2><strong>¿Busca</strong> una administradora de condominio ?</h2>
+                            <p class="subline">Complete el siguiente formulario y nos estaremos comunicando a la brevedad</p>
+                        </div>
+                        <div data-effect="fadeIn" class="col-md-6 mg-sm animated fadeIn">
+                            <form id="contactoform" class="text-left" novalidate="novalidate" method="post" action="#">
+                                <div class="form-group">
+                                    <label for="email">Dirección de Correo Electrónico*</label>
+                                    <input type="text" placeholder="" id="email" name="email" class="form-control">
+                                </div>
+                                <div class="form-group">
+                                    <label for="nombre">Nombre(s) y Apellido(s)*</label>
+                                    <input type="text" placeholder="" id="nombre" name="nombre" class="form-control">
+                                </div>
+                                <div class="form-group">
+                                    <label for="mensaje">Mensaje/Consulta/Comentario*</label>
+                                    <textarea rows="6" class="form-control" id="mensaje" name="mensaje"></textarea>
+                                </div>
+                                <div class="spacer small"></div>
+                                <button type="submit" class="btn btn-transparent btn-big">Enviar</button>
+                            </form>
+                            <div id="respuesta"></div>
+                        </div>
+                        <div data-effect="fadeIn" class="col-md-6 mg-sm text-left animated fadeIn">
+                            <div id="map" class="map map-box map-box-space margin-bottom-40"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- End Call To Action -->
+
+        <!-- Footer Top -->
+        <section class="footer footer-top">
+            <div class="container">
+                <div class="row">
+                    <!-- Contact Details  -->
+                    <div class="col-md-5">
+                        <div class="contact-info">
+                            <h3>Dónde estamos</h3>
+                            <ul class="contact-list">
+                                <li><i class="icon-directions"></i> Av. José Antonio Paez con Av. Washington, Qta. San José, P.B. Local 3. El Paraiso - Caracas</li>
+                                <li><i class="icon-call-in"></i>(0212) 451 8795 | (0212) 310 6628</li>
+                                <li><i class="icon-envelope-open"></i><a href="mailto:condominiosoctagon1@gmail.com">condominiosoctagon1@gmail.com</a></li>
+                            </ul>
+                        </div>
+                    </div>	
+                    <!-- End Contact Details  -->
+                    <!-- Footer Intro  -->
+                    <div class="col-md-4">
+                        <h3>Horario atención al cliente</h3>
+                        <p>Lunes a viernes</p>
+                        <p>8:30am - 12:30pm</p>
+                        <p>1:30pm - 3:30pm</p>
+                        <p>Sábados y Domingos: Cerrados</p>
+                    </div>
+                    <!-- End Footer Intro  -->
+                    <!-- Social Links -->
+                    <div class="col-sm-3">
+                        <h3>Manténgase en contacto!</h3>
+                        <p>Síguenos en nuestras redes sociales!</p>
+                        <ul class="social">
+                            <li class="facebook"> <a href="https://www.facebook.com/emigioia"> <i class="fa fa-facebook"></i> </a> </li>
+                            <li class="twitter"> <a href="https://twitter.com/egioia"> <i class="fa fa-twitter"></i> </a> </li>
+                            <li class="linkedin"> <a href="https://www.linkedin.com/pub/abog-emilio-gioia/33/70b/25b"> <i class="fa fa-linkedin"></i> </a> </li>
+                        </ul>
+                    </div>
+                    <!--End Social Links  -->
+                </div>
+            </div>
+        </section>
+        <!-- End Footer Top -->
+
+        <!-- Footer Bottom -->	
+        <footer class="footer footer-sub">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-4">
+                        <p>Sitio web por <a href="http://www.pronet21.com.ve"><span class="green">Pronet21</span></a></p>
+                    </div>
+                    <div class="col-md-4">
+                        <p class="empresa">&copy; 2014 - Administraora Octagon 2010 <br> Rif. J-29928573-0 </p>
+                    </div>
+                    <div class="col-md-4">
+                        <p class="copyright">Gestionado con <a href="http://www.administracion-condominio.com.ve"><span class="blue">Valoriza</span><sup class="green" style="font-weight: bold">2</sup></a></p>
+                    </div>
+                </div>
+            </div>
+        </footer>
+        <!-- End Footer Bottom -->
+
+        <!-- Start Js Files -->
+        <script type="text/javascript" src="http://code.jquery.com/jquery-2.1.0.min.js"></script><!--jQuery is a Javascript library that greatly reduces the amount of code that you must write.-->
+        <script type="text/javascript">window.jQuery || document.write('<script src="js/jquery-2.1.0.min.js"><\/script>')</script>
+        <script src="js/bootstrap.min.js" type="text/javascript"></script><!--Packed with many functionalies such as carousel slider, responsivity, tabs, drop downs, buttons, and many other features-->
+        <script src="js/modernizr.min.js" type="text/javascript"></script><!--Modernizr is an open-source JavaScript library that helps you build the next generation of HTML5 and CSS3-powered websites.-->
+        <script src="{{ constant('ROOT') }}js/jquery-validate/jquery.validate.min.js"></script><!-- JQUERY VALIDATE -->
+        <script type="text/javascript" src="js/jquery-validate/jquery.form.js"></script>
+        <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=true"></script>
+        <script type="text/javascript" src="js/gmap.js"></script>
+        <script src="js/custom.js" type="text/javascript"></script><!-- Script File containing all customizations  -->
+        <script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-4533943-13', 'auto');
+  ga('send', 'pageview');
+
+</script>
+        <!-- End Js Files  -->
+        <script type="text/javascript">
+            jQuery(document).ready(function() {
+                Contact.initMap();
+            });
+            $(function() {
+                $(document).on("click", "div.alert", function() {
+                    $(".alert").hide();
+                    $("#contactoform").resetForm();
+                    $("#contactoform").fadeIn();
+                });
+                // Validation
+                $("#login-form").validate({
+                    debug: true,
+                    // Rules for form validation
+                    rules: {
+                        apto: {
+                            required: true,
+                            minlength:2
+                        },
+                        password: {
+                            required: true,
+                            minlength: 4,
+                            maxlength: 20
+                        }
+                    },
+                    // Messages for form validation
+                    messages: {
+                        apto: {
+                            required: 'Número de apartamento es requerido',
+                            minlength: 'Ingrese mímino 4 caracteres'
+                        },
+                        password: {
+                            required: 'Ingrese su clave de acceso',
+                            minlength: 'Deben ser mínimo 4 caracteres',
+                            maxlength: 'No pueden ser más de 20 caracteres'
+                        }
+                    },
+                    // Do not change code below
+                    submitHandler: function(form) {
+                        
+                        form.submit();
+                        $("btn-submit").attr("disabled","disabled");
+                    },
+                    errorPlacement: function(error, element) {
+                        error.insertBefore(element.parent());
+                    }
+                });
+
+                $("#contactoform").validate({
+                    errorClass: "invalid2",
+                    // Rules for form validation
+                    rules: {
+                        email: {
+                            required: true,
+                            email: true
+                        },
+                        nombre: {
+                            required: true
+                        },
+                        mensaje: {
+                            required: true
+                        }
+                    },
+                    // Messages for form validation
+                    messages: {
+                        email: {
+                            required: 'Ingrese su correo electrónico',
+                            email: 'Ingrese un correo electrónico válido'
+                        },
+                        nombre: {
+                            required: 'Ingrese su nombre y apellido'
+                        },
+                        mensaje: {
+                            required: 'Escriba su mensaje'
+                        }
+                    },
+                    // Do not change code below
+                    submitHandler: function(form) {
+                        $("#contactoform").ajaxSubmit({
+                            target: "#respuesta",
+                            method: "post",
+                            url: "includes/enviar_email.php",
+                            resetForm: true,
+                            beforeSubmit: function() {
+                                $("#contactoform").hide();
+                            },
+                            success: function() {
+                                $("#respuesta").fadeIn();
+                            },
+                            error: function() {
+                                $("#respuesta").fadeIn();
+                            }
+
+                        });
+                    },
+                    errorPlacement: function(error, element) {
+                        error.insertBefore(element.parent());
+                    }
+                });
+
+            });
+            </script>
+        </body>
+    </html>

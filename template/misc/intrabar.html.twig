@@ -1,0 +1,38 @@
+<div id="header">
+<nav class="navbar navbar-inverse navbar-fixed-top scroll-fixed-navbar" role="navigation">
+<div class="container">
+<div class="navbar-header">
+<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+<span class="sr-only">Barra Navegación</span>
+<span class="icon-bar"></span>
+<span class="icon-bar"></span>
+<span class="icon-bar"></span>
+</button>
+    <a class="navbar-brand text-logo" href="#"><img src="{{constant('ROOT')}}images/logo-nuevo.png" height="40"/></a>
+</div>
+<div class="navigation navbar-collapse collapse">
+<ul class="nav navbar-nav menu-right">
+    <li class="dropdown">
+        <a ref="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+            Publicar Cartelera <span class="caret"></span></a>
+            <ul class="dropdown-menu">
+                <li><a href="{{constant('ROOT')}}intranet/cartelera-publica">Publica</a></li>
+                <li><a href="{{constant('ROOT')}}intranet/cartelera-general">General</a></li>
+                <li><a href="{{constant('ROOT')}}intranet/cartelera-condominio">Condominio</a></li>
+            </ul>
+    </li>
+    <li class="dropdown">
+        <a ref="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+            Listar Cartelera <span class="caret"></span></a>
+            <ul class="dropdown-menu">
+                <li><a href="{{constant('ROOT')}}intranet/listar-cartelera/publica">Publica</a></li>
+                <li><a href="{{constant('ROOT')}}intranet/listar-cartelera/general">General</a></li>
+                <li><a href="{{constant('ROOT')}}intranet/listar-cartelera/inmueble">Condominio</a></li>
+            </ul>
+    </li>
+    <li><a href="{{constant('ROOT')}}/intranet/salir">Cerrar Sesión</a></li>
+</ul>
+</div>
+</div>
+</nav>
+</div>

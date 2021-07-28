@@ -1,0 +1,7 @@
+User-agent: *
+Disallow: /cancelacion.gastos/
+Disallow: /enlinea/avisos/
+Disallow: /includes/
+Disallow: /phpmyadmin/
+
+sitemap: http://www.administradora-octagon.com.ve/sitemap.xml
