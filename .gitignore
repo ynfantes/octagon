@@ -4,4 +4,4 @@ enlinea/avisos/*.pdf
 solvencias/*.pdf
 data
 includes/constants.php
-includes/configuracion.php
+#includes/configuracion.php
