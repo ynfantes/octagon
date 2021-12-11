@@ -350,7 +350,6 @@ class pago extends db implements crud {
                 Array("id_inmueble"=>$inmueble,"id_apto"=>$apartamento),
                 null,
                 Array("fecha_movimiento"=>"DESC","STR_TO_DATE(CONCAT('01-', periodo), '%d-%m-%Y')"=>"DESC"));
-        //var_dump($r);
         return $r;
     }
     
@@ -373,5 +372,17 @@ class pago extends db implements crud {
     
     public function listarPagosEmailRegisroNoEnviado() {
         return $this->select("*", self::tabla, Array("estatus"=>'p',"enviado"=>0));
+    }
+
+    public static function listarPagosProcesadosWeb() {
+        $consulta = "select d.id_factura,d.id_inmueble,d.id_apto from pagos p join pago_detalle d on p.id = d.id_pago "
+                . "where p.estatus='a' and (left(d.id_factura,1)='0' or left(d.id_factura,1)='1') and d.id_inmueble in "
+                . "(select id from inmueble) order by d.id_factura";
+        return db::query($consulta);
+    }
+    
+    public static function listaRecibosCancelados() {
+        $consulta = "select numero_factura id_factura, id_inmueble, id_apto from cancelacion_gastos";
+        return db::query($consulta);
     }
 }

@@ -90,16 +90,16 @@
 <!-- Link to Google CDN's jQuery + jQueryUI; fall back to local -->
 <script src="{{constant('ROOT')}}js/jquery.min.js"></script>
 <script>
-        if (!window.jQuery) {
-            document.write('<script src="{{ constant('ROOT') }}js/libs/jquery-2.0.2.min.js"><\/script>');
-        }
+if (!window.jQuery) {
+    document.write('<script src="{{ constant('ROOT') }}js/libs/jquery-2.0.2.min.js"><\/script>');
+}
 </script>
 
 <script src="{{constant('ROOT')}}js/lib/jqueryui/1.10.3/jquery-ui.min.js"></script>
 <script>
-        if (!window.jQuery.ui) {
-            document.write('<script src="{{ constant('ROOT') }}js/libs/jquery-ui-1.10.3.min.js"><\/script>');
-        }
+if (!window.jQuery.ui) {
+    document.write('<script src="{{ constant('ROOT') }}js/libs/jquery-ui-1.10.3.min.js"><\/script>');
+}
 </script>
 
 <!-- IMPORTANT: APP CONFIG -->

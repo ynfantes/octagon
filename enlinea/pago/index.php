@@ -12,7 +12,6 @@ $accion = isset($_GET['accion']) ? $_GET['accion'] : "listar";
 
 switch ($accion) {
     
-    // <editor-fold defaultstate="collapsed" desc="cancelacion">
     case "cancelacion":
         $titulo = $_GET['id'] . ".pdf";
         $content = 'Content-type: application/pdf';
@@ -21,9 +20,7 @@ switch ($accion) {
         header($content);
         readfile($url,false);
         break;
-    // </editor-fold>
     
-    // <editor-fold defaultstate="collapsed" desc="listarRecibosCancelados">
     case "listarRecibosCancelados":
         $propiedad = new propiedades();
         $inmuebles = new inmueble();
@@ -40,11 +37,15 @@ switch ($accion) {
                 $pago = $pagos->listarCancelacionDeGastos($propiedad['id_inmueble'], $propiedad['apto']);
                 
                 if ($pago['suceed'] == true) {
+                    
                     $bitacora->insertar(Array(
-                        "id_sesion"=>$session['id_sesion'],
-                        "id_accion"=> 12,
-                        "descripcion"=>count($pago['data'])." recibos(s) registrado(s).",
+
+                        'id_sesion'   => $session['id_sesion'],
+                        'id_accion'   => 12,
+                        'descripcion' => count($pago['data'])." recibos(s) registrado(s).",
+
                     ));
+
                     for ($index = 0; $index < count($pago['data']); $index++) {
                         
                         $filename = "../../cancelacion.gastos/" . $pago['data'][$index]['numero_factura'] . ".pdf";
@@ -52,9 +53,13 @@ switch ($accion) {
                         
                     }
                     
-                    $cuenta[] = Array("inmueble" => $inmueble['data'][0],
-                        "propiedades" => $propiedad,
-                        "cuentas" => $pago['data']);
+                    $cuenta[] = Array(
+
+                        'inmueble'     => $inmueble['data'][0],
+                        'propiedades'  => $propiedad,
+                        'cuentas'      => $pago['data']
+
+                    );
                 }
             }
         }
@@ -64,9 +69,7 @@ switch ($accion) {
 
 
         break; 
-    // </editor-fold>
     
-    // <editor-fold defaultstate="collapsed" desc="ver">
     case "ver":
         $propiedad = new propiedades();
         $inmuebles = new inmueble();
@@ -110,7 +113,6 @@ switch ($accion) {
 
         break; // </editor-fold>
     
-    // <editor-fold defaultstate="collapsed" desc="guardar">
     case "guardar":
         $pago = new pago();
         $data = $_POST;
@@ -139,12 +141,10 @@ switch ($accion) {
         echo json_encode($exito);
         
         break;
-    // </editor-fold>
     
-    // <editor-fold defaultstate="collapsed" desc="registrar">
-        case "registrar":
-        case "listar":
-        default :
+    case "registrar":
+    case "listar":
+    default :
         $propiedad = new propiedades();
         $facturas = new factura();
         $inmuebles = new inmueble();
@@ -206,9 +206,7 @@ switch ($accion) {
         "propiedades"=>$propiedades['data']
         ));
         break; 
-// </editor-fold>
 
-    // <editor-fold defaultstate="collapsed" desc="listaPagoDetalle">
     case "listaPagosDetalle":
         $pagos = new pago();
         $pago_detalle = $pagos->detalleTodosPagosPendientes();
@@ -224,9 +222,7 @@ switch ($accion) {
             }
         }
         break; 
-// </editor-fold>
 
-    // <editor-fold defaultstate="collapsed" desc="listaPagosMaestros">
     case "listaPagosMaestros":
         $pagos = new pago();
         $pagos_maestro = $pagos->listarPagosPendientes();
@@ -252,9 +248,7 @@ switch ($accion) {
             }
         }
         break; 
-// </editor-fold>
 
-    // <editor-fold defaultstate="collapsed" desc="listaPagosPendientes">
     case "listarPagosPendientes":
         $pagos = new pago();
         $pagos_maestro = $pagos->listarPagosPendientes();
@@ -265,7 +259,7 @@ switch ($accion) {
 
                 $pago_detalle = $pagos->detallePagoPendiente($pago['id']);
                 
-                if ($pago_detalle['suceed'] && count($pago_detalle['data'] > 0)) {
+                if ($pago_detalle['suceed'] && count($pago_detalle['data']) > 0) {
                     $enviado = $pago["enviado"] == 0 ? "False" : "True";
                     echo "|" . $pago['id'] . "|";
                     echo Misc::date_format($pago['fecha']) . "|";
@@ -302,7 +296,6 @@ switch ($accion) {
 
         break; // </editor-fold>
 
-    // <editor-fold defaultstate="collapsed" desc="confirmación de pago">
     case "confirmar":
 
         $pago = new pago();
@@ -331,7 +324,6 @@ switch ($accion) {
         }
         break;
         
-    // <editor-fold defaultstate="collapsed" desc="mantenimiento-soportes">
     case "mantenimiento-soportes":
         $path = getcwd();
         $path .= '/soportes';
@@ -369,6 +361,21 @@ switch ($accion) {
         echo "$n archivos en este directorio.<br>";
         echo "$e archivos eliminados";
         break; 
-    // </editor-fold>
 
-}
+    case "listaRecibosCanceladosNoPublicados":
+        $pagos = new pago();
+        $pago = $pagos->listaRecibosCancelados();
+        if ($pago['suceed']) {
+            $n = 0;
+            foreach ($pago['data'] as $r) {
+                $filename = "../../cancelacion.gastos/" . $r['id_factura'] . ".pdf";
+                if (!file_exists($filename)) {
+                    echo $r['id_factura'] . "|" . $r['id_inmueble'] . "|" . $r['id_apto'] . "<br>";
+                    $n++;
+                }
+            }
+            echo "Total Recibos: " . $n;
+        }
+        break; 
+
+    }

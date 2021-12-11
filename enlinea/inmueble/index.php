@@ -15,8 +15,7 @@ $facturas = new factura();
 $accion = isset($_GET['accion']) ? $_GET['accion'] : "listar";
 $session = $_SESSION;
 
-// <editor-fold defaultstate="collapsed" desc="promedio facturacion y cobranza">
- $cuenta = Array();
+$cuenta = Array();
 $factura = null;
 $cobro = null;
 $monto = 0;
@@ -31,7 +30,6 @@ $n = 0;
 $direccion_facturacion = "right";
 $direccion_cobranza = "right";
 
-//$propiedades = $propiedad->inmueblePorPropietario($_SESSION['usuario']['cedula']);
 $propiedades = $propiedad->propiedadesPropietario($_SESSION['usuario']['cedula']);
 
 if ($propiedades['suceed']) {
@@ -66,11 +64,10 @@ if ($propiedades['suceed']) {
         
     }
     
-}// </editor-fold>
+}
 
 switch ($accion) {
     
-    // <editor-fold defaultstate="collapsed" desc="junta-condominio">
     case "junta-condominio": default :
         $junta_condominio = new junta_condominio();
         $propiedades = $propiedad->propiedadesPropietario($_SESSION['usuario']['cedula']);
@@ -100,19 +97,19 @@ switch ($accion) {
             }
         }
         
-        echo $twig->render('enlinea/inmueble/formulario.html.twig', array("session" => $session,
-            "junta" => $miembros,
-            "movimiento_facturacion" => $factura,
-            "promedio_facturacion" => $promedio_facturacion,
-            "direccion_facturacion" => $direccion_facturacion,
-            "movimiento_cobranza" => $cobro,
-            "promedio_cobranza" => $promedio_cobranza,
-            "direccion_cobranza" => $direccion_cobranza
+        echo $twig->render('enlinea/inmueble/formulario.html.twig', array(
+            'session'                => $session,
+            'junta'                  => $miembros,
+            'movimiento_facturacion' => $factura,
+            'promedio_facturacion'   => $promedio_facturacion,
+            'direccion_facturacion'  => $direccion_facturacion,
+            'movimiento_cobranza'    => $cobro,
+            'promedio_cobranza'      => $promedio_cobranza,
+            'direccion_cobranza'     => $direccion_cobranza
         ));
         
-        break; // </editor-fold>
+        break; 
 
-    // <editor-fold defaultstate="collapsed" desc="estado cuenta inmueble">
     case "cuenta":
         $propiedades = $propiedad->propiedadesPropietario($_SESSION['usuario']['cedula']);
         $id_inmueble = "";
@@ -142,23 +139,22 @@ switch ($accion) {
 
 
         echo $twig->render('enlinea/inmueble/estado-de-cuenta.html.twig', array("session" => $session,
-            "cuentas" => $cuentas,
-            "movimiento_facturacion" => $factura,
-            "promedio_facturacion" => $promedio_facturacion,
-            "direccion_facturacion" => $direccion_facturacion,
-            "movimiento_cobranza" => $cobro,
-            "promedio_cobranza" => $promedio_cobranza,
-            "direccion_cobranza" => $direccion_cobranza
+            'cuentas'                => $cuentas,
+            'movimiento_facturacion' => $factura,
+            'promedio_facturacion'   => $promedio_facturacion,
+            'direccion_facturacion'  => $direccion_facturacion,
+            'movimiento_cobranza'    => $cobro,
+            'promedio_cobranza'      => $promedio_cobranza,
+            'direccion_cobranza'     => $direccion_cobranza
         ));
-        break; // </editor-fold>
+        break; 
 
-    // <editor-fold defaultstate="collapsed" desc="facturacion_flot">
     case "facturacionflot":
         
         $propiedades = $propiedad->inmueblePorPropietario($_SESSION['usuario']['cedula']);
         
         if ($propiedades['suceed']) {
-            //foreach ($propiedades['data'] as $p) {
+            
                 $facturacion = $inmuebles->movimientoFacturacionMensual($_GET['id']);
                 $rows = array();
                 $table = array();
@@ -174,17 +170,15 @@ switch ($accion) {
                 $jsonTable = json_encode($table);
 
                 echo $jsonTable;
-            //}
+            
         }
         break; 
-    // </editor-fold>
     
-    // <editor-fold defaultstate="collapsed" desc="cobranza_flot">
     case "cobranzaflot":
         $propiedades = $propiedad->inmueblePorPropietario($_SESSION['usuario']['cedula']);
         if ($propiedades['suceed']) {
-            //foreach ($propiedades['data'] as $p) {
-                $cobranza = $inmuebles->movimientoCobranzaMensual($_GET['id']);
+
+            $cobranza = $inmuebles->movimientoCobranzaMensual($_GET['id']);
                 $rows = array();
                 $table = array();
                 $i = 1;
@@ -198,12 +192,10 @@ switch ($accion) {
                 }
                 $jsonTable = json_encode($table);
                 echo $jsonTable;
-            //}
+
         }
         break; 
-    // </editor-fold>   
 
-    // <editor-fold defaultstate="collapsed" desc="cartelera">
     case "cartelera":
         $cartelera = new cartelera();
         $propiedad = new propiedades();
@@ -211,13 +203,16 @@ switch ($accion) {
         $fecha_actualizacion = JFile::read($archivo);
         
         $bitacora->insertar(Array(
-            "id_sesion"=>$session['id_sesion'],
-            "id_accion"=> 11,
-            "descripcion"=>$fecha_actualizacion,
+
+            'id_sesion'     => $session['id_sesion'],
+            'id_accion'     => 11,
+            'descripcion'   => $fecha_actualizacion
+
         ));
         $cartelera->tabla="cartelera_general";
         $cartelera_general = $cartelera->listar();
         $propiedades = $propiedad->propiedadesPropietario($_SESSION['usuario']['cedula']);
+        
         if ($propiedades['suceed'] == true) {
             $cartelera_inmueble = Array();
             $cartelera->tabla="cartelera_inmueble";
@@ -228,24 +223,22 @@ switch ($accion) {
             }
         }
         echo $twig->render('enlinea/inmueble/cartelera.html.twig', array(
-            "session" => $session,
-            "propiedades" => $propiedades['data'],
-            "fecha_actualizacion" => $fecha_actualizacion,
-            "movimiento_facturacion" => $factura,
-            "promedio_facturacion" => $promedio_facturacion,
-            "direccion_facturacion" => $direccion_facturacion,
-            "movimiento_cobranza" => $cobro,
-            "promedio_cobranza" => $promedio_cobranza,
-            "direccion_cobranza" => $direccion_cobranza,
-            "inmuebles" => $propiedades['data'],
-            "cartelera_general" => $cartelera_general['data'],
-            "cartelera_inmueble"=> $cartelera_inmueble,
-            "inm" => $inm
+            'session'                 => $session,
+            'propiedades'             => $propiedades['data'],
+            'fecha_actualizacion'     => $fecha_actualizacion,
+            'movimiento_facturacion'  => $factura,
+            'promedio_facturacion'    => $promedio_facturacion,
+            'direccion_facturacion'   => $direccion_facturacion,
+            'movimiento_cobranza'     => $cobro,
+            'promedio_cobranza'       => $promedio_cobranza,
+            'direccion_cobranza'      => $direccion_cobranza,
+            'inmuebles'               => $propiedades['data'],
+            'cartelera_general'       => $cartelera_general['data'],
+            'cartelera_inmueble'      => $cartelera_inmueble,
+            'inm'                     => $inm
         ));
         break; 
-// </editor-fold>
     
-    // <editor-fold defaultstate="collapsed" desc="Listar cuentas de fondos">
     case "listarCuentasDeFondo":
         $fondo = new fondo();
         $fondos = array();
@@ -274,14 +267,14 @@ switch ($accion) {
         }
         
         echo $twig->render('enlinea/inmueble/fondos.html.twig', array(
-            "session" => $session,
-            "propiedades" => $propiedades['data'],
-            "id_inmueble" => $id_inmueble,
-            "fondos" => $fondos,
-            "movimientos"=>$m,
-            "cuenta"=>$cuenta
+            'session'     => $session,
+            'propiedades' => $propiedades['data'],
+            'id_inmueble' => $id_inmueble,
+            'fondos'      => $fondos,
+            'movimientos' => $m,
+            'cuenta'      => $cuenta
         ));
-        break; // </editor-fold>
+        break; 
     
     case "imprimircuenta":
         break;
