@@ -43,6 +43,9 @@ class junta_condominio extends db implements crud{
         
         return db::query($consulta);
     }
-}
 
-?>
+    public function borrarJuntaPorCondominio($condicion) {
+        return db::delete(self::tabla,$condicion);
+    }
+    
+}

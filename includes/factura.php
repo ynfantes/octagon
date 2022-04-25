@@ -31,7 +31,11 @@ class factura extends db implements crud {
     public function insertar($data){
         return db::insert(self::tabla, $data);
     }
-
+    public function insertarActualizar($data){
+        $update = $data;
+        unset($update['id_inmueble'],$update['apto'],$update['periodo']);
+        return db::insertUpdate(self::tabla, $data,$update);
+    }
     public function insertar_detalle_factura($data) {
         return db::insert("factura_detalle",$data);
     }
@@ -88,6 +92,5 @@ class factura extends db implements crud {
         $result = db::query($sql);
         return $result;
     }
-}
 
-?>
+}

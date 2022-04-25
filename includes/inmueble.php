@@ -64,25 +64,34 @@ class inmueble extends db implements crud {
         return db::query($query);
     }
     
-    public function insertarFacturacionMensual($data) {
-        $query = "insert into facturacion_mensual(id_inmueble,periodo,facturado) "
-                . "VALUES('".$data['id_inmueble']."','".$data['periodo']."','".$data['facturado']."') ON DUPLICATE KEY "
-                . "UPDATE facturado='".$data['facturado']."'";
-        
-        return db::exec_query($query);
-    }
-    
-    public function insertarCobranzaMensual($data) {
-        $query = "insert into cobranza_mensual(id_inmueble,periodo,monto) "
-                . "VALUES('".$data['id_inmueble']."','".$data['periodo']."','".$data['monto']."') ON DUPLICATE KEY "
-                . "UPDATE monto='".$data['monto']."'";
-        
-        return db::exec_query($query);
-    }
-    
     public function listarInmueblesPorPropietario($cedula) {
         $consulta = "select * from inmueble i join propiedades p on i.id = p.id_inmueble where p.cedula=".$cedula;
         return db::query($consulta);
-        
     }
+
+    public function borrarGrupo($condicion) {
+        db::delete('grupo_propietario',$condicion);
+        return db::delete('grupo',$condicion);
+    }
+    
+    public function insertarFacturacionMensual($data) {
+        return db::insertUpdate('facturacion_mensual',$data, ['facturado' => $data['facturado']]);
+    }
+    
+    public function insertarCobranzaMensual($data) {
+        return db::insertUpdate('cobranza_mensual',$data, ['monto' => $data['monto']]);
+    }
+    
+    public function insertarGrupo($data) {
+        return db::insertUpdate("grupo", $data,['descripcion'=>$data['descripcion']]);
+    }
+    
+    public function insertarGrupoPropietario($data) {
+        return db::insert("grupo_propietario", $data,"IGNORE");
+    }
+    
+    public function agregarCuentaInmueble($data) {
+        return db::insertUpdate("inmueble_cuenta", $data, $data);
+    }
+    
 }

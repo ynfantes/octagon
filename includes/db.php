@@ -714,6 +714,32 @@ Class Misc {
         }
     }
 
+    public function truncate($table = null) {
+        try {
+            if ($tabla != null) {
+                $query = 'truncate table ';
+                $query.= $this->db . "." . $tabla;
+            }
+            $r = array();
+            if ($this->debug) {
+                $r['query'] = $query;
+            }
+            $r['suceed'] = $this->mysqli->query($query);
+            if ($this->mysqli->errno == 0) {
+                $r['stats']['affected_rows'] = $this->mysqli->affected_rows;
+            } else {
+                throw new Exception;
+            }
+        } catch (Exception $exc) {
+            if ($this->debug) { $r['query'] = $query;}
+            $r['suceed'] = false;
+            $r['stats']['errno'] = $this->mysqli->errno;
+            $r['stats']['error'] = $this->mysqli->error;
+            $r['data'] = $exc->getTraceAsString();
+        }
+        $this->log("delete", $r['suceed'], $r['query'], isset($r['stats']['error']) ? $r['stats']['error'] : "");
+        return $r;
+    }
     /**
      * var_dump reeplacement. better for sending emails
      * @param mixed $args

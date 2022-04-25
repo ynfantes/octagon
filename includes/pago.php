@@ -385,4 +385,8 @@ class pago extends db implements crud {
         $consulta = "select numero_factura id_factura, id_inmueble, id_apto from cancelacion_gastos";
         return db::query($consulta);
     }
+
+    public function listarCancelacionDeGastosConNumeroFatura() {
+        return db::query('select * from cancelacion_gastos where numero_factura <> ""');
+    }
 }
