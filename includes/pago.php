@@ -129,7 +129,7 @@ class pago extends db implements crud {
                             $resultado['mensaje'] = "Pago proceso con éxito! En un plazo máximo de 48 horas será aplicado a su cuenta de condominio.";
                             // se envia el email de confirmación
                             $ini = parse_ini_file('emails.ini');
-                            $mail = new mailto(SMTP);
+                            $mail = new mailto();
                             if (isset($_SESSION['usuario']['directorio'])) {
                                 $propietario = 'Propietario(a)';
                             } else {
@@ -217,7 +217,7 @@ class pago extends db implements crud {
         $data = $this->ver($id);
         if ($data['suceed'] == TRUE && count($data['data'])>0) {
             $ini = parse_ini_file('emails.ini');
-            $mail = new mailto(SMTP);
+            $mail = new mailto();
             $propietario = 'Propietario(a)';
             $forma_pago = strtoupper($data['data'][0]['tipo_pago'])=='D'? 'DEPOSITO':'TRANSFERENCIA';
             $mensaje = sprintf($ini['CUERPO_MENSAJE_PAGO_RECEPCION_CONFIRMACION'], 
@@ -270,11 +270,12 @@ class pago extends db implements crud {
         $can = array();
         
         // <editor-fold defaultstate="collapsed" desc="si el pago es aplicado">
-        if ($estatus == 'A') {
+        if ($estatus === 'A') {
 
             $r = $this->detallePagoPendiente($id);
             
-            if ($r['suceed'] == true) {
+            if ($r['suceed'] === true) {
+
                 if (count($r['data']) > 0) {
                     $n = 0;
                     foreach ($r['data'] as $factura) {
@@ -289,9 +290,9 @@ class pago extends db implements crud {
                         //$adjunto.= $con . $factura;
                     }
                     $mensaje.= "Hemos adjuntado " . $n . " factura(s).";
-                    if ($n < count($r['data'])) {
-                        $mensaje . -"<br>Falta(ron) factura(s) por adjuntar.";
-                    }
+                    // if ($n < count($r['data'])) {
+                    //     $mensaje . -"<br>Falta(ron) factura(s) por adjuntar.";
+                    // }
                 }
             }
         }// </editor-fold>
@@ -388,5 +389,24 @@ class pago extends db implements crud {
 
     public function listarCancelacionDeGastosConNumeroFatura() {
         return db::query('select * from cancelacion_gastos where numero_factura <> ""');
+    }
+
+    public function insertarActualizarCancelacionDeGastos($data) {
+        return db::insertUpdate("cancelacion_gastos",$data,$data);
+    }
+
+    public function listarPropietariosCuotaExcedida($cuota) {
+
+        $sql = "select id_inmueble,id_apto,count(*) as regs 
+            from cancelacion_gastos 
+            group by id_inmueble,id_apto 
+            having count(*) > $cuota
+            order by count(*) DESC";
+        
+        return db::query($sql);
+
+    }
+    public function eliminarCancelacionDeGastos($id) {
+        return db::delete('cancelacion_gastos',['id'=>$id]);
     }
 }

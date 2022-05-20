@@ -51,7 +51,9 @@ class factura extends db implements crud {
     public function borrarTodo() {
         return db::delete(self::tabla);
     }
-    
+    public function borrarFactura($data) {
+        return db::delete(self::tabla,$data);
+    }
     public static function estadoDeCuenta($inmueble, $apto) {
         $consulta = "select * from ".self::tabla.
                 " where id_inmueble='".$inmueble."' and apto='".$apto.

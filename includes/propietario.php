@@ -116,7 +116,7 @@ class propietario extends db implements crud  {
                 if ($result['data'][0]['email']!='') {
                     // se envia el email de confirmación
                     $ini = parse_ini_file('emails.ini');
-                    $mail = new mailto(SMTP);
+                    $mail = new mailto();
                     
                     $mensaje = sprintf($ini['CUERPO_RECUPERAR_CONTRASENA'],
                             $result['data'][0]['clave']);
@@ -253,5 +253,10 @@ class propietario extends db implements crud  {
             }
         }
     }
+
+    public function insertarActualizar($data) {
+        $update = $data;
+        unset($update['id_inmueble'],$update['apto']);
+        return db::insertUpdate(self::tabla,$data,$update);
     }
-?>
+}

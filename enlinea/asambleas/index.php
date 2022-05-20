@@ -6,7 +6,6 @@ $asamblea = new asamblea();
 
 switch ($accion) {
     
-    // <editor-fold defaultstate="collapsed" desc="guardar">
     case "guardar":
         $data = $_GET;
         unset($data['accion']);
@@ -25,9 +24,7 @@ switch ($accion) {
             echo $resultado['stats']['error'];
         }
         break; 
-    // </editor-fold>
     
-    // <editor-fold defaultstate="collapsed" desc="actualizar">
     case "actualizar":
         $data = $_GET;
         unset($data['accion']);
@@ -38,9 +35,8 @@ switch ($accion) {
         } else {
             echo $resultado['stats']['error'];
         }
-        break; // </editor-fold>
+        break; 
     
-    // <editor-fold defaultstate="collapsed" desc="listar">
     case "listar":
         $propietario = new propietario();
 
@@ -49,7 +45,7 @@ switch ($accion) {
         $lista = $asamblea->listarAsambleasPorPropietarios($session['usuario']['cedula']);
         $asambleas = null;
         
-        if ($lista['suceed'] && count($lista['data']>0)) {
+        if ($lista['suceed'] && count($lista['data'])>0) {
             $asambleas=$lista['data'];
             for ($index = 0; $index < count($asambleas); $index++) {
                 $filename = "../../img/asambleas/convocatoria/" . $asambleas[$index]['archivo_soporte'];
@@ -64,9 +60,7 @@ switch ($accion) {
             "lista" => $asambleas
         ));
         break; 
-    // </editor-fold>
 
-    // <editor-fold defaultstate="collapsed" desc="lsitar json">
     case "listaJSon":
         $propietario = new propietario();
         $propietario->esPropietarioLogueado();
@@ -75,16 +69,14 @@ switch ($accion) {
         $asambleas = null;
 
 
-        if ($lista['suceed'] && count($lista['data'] > 0)) {
+        if ($lista['suceed'] && count($lista['data']) > 0) {
             $asambleas = $lista['data'];
         }
         echo json_encode($asambleas);
         break; 
-    // </editor-fold>
     
     case "verActa":
         $url = URL_SISTEMA."/asambleas/".$_GET['id'];
         header("location:$url");
         break;
 }
-

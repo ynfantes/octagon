@@ -37,7 +37,7 @@ $app->delete('/facturas/delete', function(Request $req, Response $res) {
             $result = $factura->borrarFactura($fact);
             $data[$index]['suceed'] = $result['suceed'];
         }
-        $newRes = $res->whithJson($data);
+        $newRes = $res->withJson($data);
         return $newRes;
 
     } catch (\Throwable $th) {
@@ -59,7 +59,7 @@ $app->post('/avisos/strToPDF', function(Request $req, Response $res) {
         unset($data['base64']);
         //close output file
         fclose($pdf);
-        $newRes = $res->whitJson($data);
+        $newRes = $res->withJson($data);
         return $newRes;
 
     } catch (\Throwable $th) {

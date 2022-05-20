@@ -93,5 +93,16 @@ class inmueble extends db implements crud {
     public function agregarCuentaInmueble($data) {
         return db::insertUpdate("inmueble_cuenta", $data, $data);
     }
+
+    public function insertarActualizar($data) {
+        $act = $data;
+        unset($act['id']);
+        return db::insertUpdate(self::tabla,$data,$act);
+    }
     
+    public function insertarActualizarEstadoDeCuentaInmueble($data) {
+        $act = $data;
+        unset($act['id_inmueble'],$act['apto']);
+        return db::insertUpdate("inmueble_deuda_confidencial", $data,$act);
+    }
 }

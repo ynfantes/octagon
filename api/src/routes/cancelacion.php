@@ -22,34 +22,56 @@ $app->post('/cancelacion/registro', function(Request $req, Response $res) {
     }
 });
 
+$app->get('/cancelacion/test', function(Request $req, Response $res) {
+    $pago = new pago();
+    $regs   = [];
+    $result = $pago->listarCancelacionDeGastos('0014','202');
+    if ($result['suceed'] && $result['stats']['affected_rows']>0) {
+        foreach ($result['data'] as $data) {
+            $regs[] = Array('inmueble'=>$data['id_inmueble'],'apto'=>$data['id_apto'],'numero_factura'=>$data['numero_factura']);
+        }
+    }
+    
+    $newRes = $res->withJson($regs);
+    return $newRes;
+});
+
 $app->get('/cancelacion/exceedQuota/{quota}', function(Request $req, Response $res) {
     try {
         
         $pago   = new pago();
         $regs   = [];
         $quota  = $req->getAttribute("quota");
-        $result = $pago->listarPropietariosCuotaExcedida($quota);
         $count  = 0;
+        $result = $pago->listarPropietariosCuotaExcedida($quota);
         
         if ($result['suceed'] && $result['stats']['affected_rows']>0) {
+
             foreach ($result['data'] as $data) {
+                
                 $list = $pago->listarCancelacionDeGastos($data['id_inmueble'],$data['id_apto']);
+                
                 if ($list['suceed'] && $list['stats']['affected_rows'] > 0) {   
+                    
                     $item    = [];
-                    $reg_exe = $list['stats']['affected_rows'] - $quota;
-                    for( $i = 0; $i < $reg_exe; $i++ ) {
+                    //$reg_exe = $list['stats']['affected_rows'] - $quota;
+                    for( $i = $quota; $i < $list['stats']['affected_rows']; $i++ ) {
                         $item[] = $list['data'][$i]['id'];
                         $delete = $pago->eliminarCancelacionDeGastos($list['data'][$i]['id']);
                         if ($delete['suceed']) {
-                            $count.= $delete['stats']['affected_rows'];
+                           $count = $count + $delete['stats']['affected_rows'];
                         }
+                        $count = $count + 1;
                     }
-                    $regs[] = Array('inmueble'=>$data['id_inmueble'],'apto'=>$data['id_apto'],'items'=>$item);
+                    $regs['items'][] = Array('inmueble'=>$data['id_inmueble'],'apto'=>$data['id_apto'],'items'=>$item);
                 }
             }
+
         }
-        $regs['affected_rows'] = $count;
-        $newRes = $res->withJson($regs);
+        $regs['suceed']         = true;
+        $regs['affected_rows']  = $count;
+        $regs['quota']          = $quota;
+        $newRes                 = $res->withJson($regs);
         return $newRes;
 
     } catch (\Throwable $th) {

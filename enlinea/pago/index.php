@@ -190,10 +190,10 @@ switch ($accion) {
                     }
                     
                     $cuenta[] = Array(
-                            "inmueble"      => $inmueble['data'][0],
-                            "propiedades"   => $propiedad,
-                            "cuentas"       => $factura['data'],
-                            "resultado"     => $resultado
+                            "inmueble"    => $inmueble['data'][0],
+                            "propiedades" => $propiedad,
+                            "cuentas"     => $factura['data'],
+                            "resultado"   => $resultado
                             );
                 }
             }
