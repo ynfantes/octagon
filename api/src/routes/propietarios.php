@@ -89,7 +89,7 @@ $app->post('/propietarios/insert', function(Request $req, Response $res) {
             $data[$index]['property']['suceed'] = $result['suceed'];
     
             // actualizamos la tabla propietarios
-            unset($item['id'],$item['codinm'],$item['apto'],$item['alicuota'],$item['deuda'],$item['deuda_usd']);
+            unset($item['id'],$item['alicuota'],$item['deuda'],$item['deuda_usd']);
             
             $result = $propietario->insertarActualizar($item);
             $data[$index]['data']['suceed']  = $result['suceed'];

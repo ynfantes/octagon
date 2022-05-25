@@ -256,7 +256,7 @@ class propietario extends db implements crud  {
 
     public function insertarActualizar($data) {
         $update = $data;
-        unset($update['id_inmueble'],$update['apto']);
+        unset($update['codinm'],$update['apto']);
         return db::insertUpdate(self::tabla,$data,$update);
     }
 }
