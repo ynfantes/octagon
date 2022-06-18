@@ -88,6 +88,7 @@ switch ($accion) {
                 ));
                 
                 $inmueble = $inmuebles->ver($propiedad['id_inmueble']);
+                
                 $f = $facturas->estadoDeCuenta($propiedad['id_inmueble'], $propiedad['apto']);
                 
                 if ($f['suceed'] == true) {
@@ -101,9 +102,11 @@ switch ($accion) {
 
                     //}
                     
-                    $cuenta[] = Array("inmueble" => $inmueble['data'][0],
+                    $cuenta[] = [
+                        "inmueble"    => $inmueble['data'][0],
                         "propiedades" => $propiedad,
-                        "cuentas" => $f['data']);
+                        "cuentas"     => $f['data']
+                    ];
                 }
             }
         }

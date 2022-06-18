@@ -9,7 +9,9 @@ $app->post('/inmuebles/insert', function(Request $req, Response $res) {
         
         $inmueble = new inmueble();    
         $data = json_decode($req->getBody(),true);
+        
         foreach ($data as $index => $inm) {
+            unset($inm['fecha_actualizacion']);
             $result = $inmueble->insertarActualizar($inm);
             $data[$index]['suceed'] = $result['suceed'];
             $data[$index]['stats']  = $result['stats'];
