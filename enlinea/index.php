@@ -1,10 +1,9 @@
 <?php
 include_once '../includes/constants.php';
-include_once '../includes/file.php';
 
 propietario::esPropietarioLogueado();
-$archivo = '../'.ACTUALIZ . ARCHIVO_ACTUALIZACION;
-$fecha_actualizacion = JFile::read($archivo);
+
+$fecha_actualizacion = null;
 
 $session = $_SESSION;
 // <editor-fold defaultstate="collapsed" desc="cantidad recibos pendientes">

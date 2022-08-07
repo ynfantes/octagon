@@ -199,8 +199,9 @@ switch ($accion) {
     case "cartelera":
         $cartelera = new cartelera();
         $propiedad = new propiedades();
-        $archivo = '../../'.ACTUALIZ.ARCHIVO_ACTUALIZACION;
-        $fecha_actualizacion = JFile::read($archivo);
+        $inmuebles = new inmueble();
+
+        $fecha_actualizacion = null;
         
         $bitacora->insertar(Array(
 
@@ -212,14 +213,23 @@ switch ($accion) {
         $cartelera->tabla="cartelera_general";
         $cartelera_general = $cartelera->listar();
         $propiedades = $propiedad->propiedadesPropietario($_SESSION['usuario']['cedula']);
-        
-        if ($propiedades['suceed'] == true) {
+        $inmueble = $inmuebles->ver($propiedades['data'][0]['id_inmueble']);
+
+        if($inmueble['suceed'] && count($inmueble['data'])>0) {
+            $fecha_actualizacion = $inmueble['data'][0]['fecha_actualizacion'];
+        }
+
+        if ($propiedades['suceed'] == true && count($propiedades['data'])>0) {
             $cartelera_inmueble = Array();
             $cartelera->tabla="cartelera_inmueble";
+            
+
             foreach ($propiedades['data'] as $propiedad) {
+                
                 $resultado = $cartelera->listarCarteleraInmueble($propiedad['id_inmueble']);
                 array_push($cartelera_inmueble, $resultado['data']);
                 $inm = $propiedad['id_inmueble'];
+                
             }
         }
         echo $twig->render('enlinea/inmueble/cartelera.html.twig', array(
