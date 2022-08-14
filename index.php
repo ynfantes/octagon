@@ -1,6 +1,6 @@
 <?php
 include_once 'includes/constants.php';
-$mantenimiento=true;
+$mantenimiento=false;
 $avance=0;
 $propietarios = new propietario();
 $propiedades = new propiedades();
