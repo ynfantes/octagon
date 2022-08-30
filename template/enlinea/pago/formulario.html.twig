@@ -464,33 +464,29 @@ no tiene recibos pendiente por cancelar.
 
             rules : {
                 email : {
-                        required : true,
-                        email : "Ingrese una email válido."
+                    required : true,
+                    email : "Ingrese una email válido."
                 },
                 'id[]' : {
-                        required : true
+                    required : true
                 },
                 numero_documento : {
-                        required : true,
-                        digits : true
+                    required : true,
+                    digits : true
                 },
                 numero_cuenta : {
-                        required : true
+                    required : true
                 },
                 fecha_documento : {
-                        required : true
+                    required : true
                 },
                 banco_destino : {
-                        required : true,
-                        minlength : 4
+                    required : true
                 },
                 monto : {
-                        required:true,
-                        number:true,
-                        min: 0.01
-                },
-                telefono : {
-                        required:true
+                    required:true,
+                    number:true,
+                    required:true
                 },
                 banco_origen : {
                     required: function() {
