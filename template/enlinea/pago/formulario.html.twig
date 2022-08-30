@@ -231,6 +231,8 @@ no tiene recibos pendiente por cancelar.
 <div class="col-sm-4">
 <div class="form-group">
 <label>Número de cuenta destino: </label>
+<div class="input-group">
+<span class="input-group-addon"><i class="fa fa-check fa-lg fa-fw"></i></i></span>
 {% if cuentas[0].inmueble.cuentas_bancarias|length > 1 %}
     <select class="form-control input-lg" id="numero_cuenta" name="numero_cuenta" required>
         {% set dato = '' %}
@@ -242,11 +244,9 @@ no tiene recibos pendiente por cancelar.
         {% endfor %}
     </select>
 {% else %}
-<div class="input-group">
-<span class="input-group-addon"><i class="fa fa-pencil-square-o fa-lg fa-fw"></i></i></span>
 <input type="text" id="numero_cuenta" name="numero_cuenta" placeholder="Número de cuenta" class="form-control input-lg" value="{{ cuentas[0].inmueble.numero_cuenta }}">
-</div>
 {% endif %}
+</div>
 </div>
 </div>
 </div>
@@ -264,7 +264,7 @@ no tiene recibos pendiente por cancelar.
 <div class="form-group">
 <label>Banco origen de la transferencia: </label>
 <div class="input-group">
-<span class="input-group-addon"><i class="fa fa-pencil-square-o fa-lg fa-fw"></i></i></span>
+<span class="input-group-addon"><i class="fa fa-bank fa-lg fa-fw"></i></i></span>
 <!--input type="text" id="banco_origen" name="banco_origen" placeholder="Banco origen"  class="form-control input-lg" disabled="disabled"-->
 <select class="form-control input-lg" id="banco_origen" name="banco_origen" required>
 <option value="">SELECCIONE UN BANCO DE LA LISTA</option>
@@ -279,7 +279,7 @@ no tiene recibos pendiente por cancelar.
 <div class="form-group">
 <label>Banco destino: </label>
 <div class="input-group">
-<span class="input-group-addon"><i class="fa fa-pencil-square-o fa-lg fa-fw"></i></span>
+<span class="input-group-addon"><i class="fa fa-bank fa-lg fa-fw"></i></span>
 {% if cuentas[0].inmueble.cuentas_bancarias|length > 1 %}
     <select class="form-control input-lg" id="banco_destino" name="banco_destino" required>
     {% set dato = '' %}
@@ -434,6 +434,14 @@ no tiene recibos pendiente por cancelar.
             $('#numero').html("Número Depósito:");
         }
     });
+
+    $("select[name='banco_destino']").change(function() {
+        $("select[name='numero_cuenta']").val($("select[name='banco_destino'] option:selected").attr('data-bind'));
+    });
+    $("select[name='numero_cuenta']").change(function() {
+        $("select[name='banco_destino']").val($("select[name='numero_cuenta'] option:selected").attr('data-bind'));
+    });
+
     $.SmartMessageBox({
         content : "<div class='alert alert-warning'><h4 class=\"alert-heading\"> <i class=\"fa-fw fa fa-gavel\"></i> Ley Especial Contra Delitos Informáticos</h4><strong>Artículo 14º</strong> Fraude. <span class='hidden-xs'>El que, a través del\n\
         uso indebido de tecnologías de información, valiéndose de \n\
