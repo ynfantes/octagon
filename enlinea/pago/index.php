@@ -145,23 +145,30 @@ switch ($accion) {
     case "registrar":
     case "listar":
     default :
-        $propiedad = new propiedades();
-        $facturas = new factura();
-        $inmuebles = new inmueble();
-        $resultado = Array();
+        $propiedad  = new propiedades();
+        $facturas   = new factura();
+        $inmuebles  = new inmueble();
+        $resultado  = [];
+        $banco      = [];
+        $cuenta     = [];
+        
         if ($accion == 'guardar') {
             $resultado = $exito;
         }
         
+        $result = $inmuebles->listarBancosActivos();
+        
+        if ($result['suceed']) {
+            $bancos = $result['data'];
+        }
+
         $propiedades = $propiedad->propiedadesPropietario($_SESSION['usuario']['cedula']);
 
-        $cuenta = Array();
-        
-        $bitacora->insertar(Array(
-            "id_sesion"=>$session['id_sesion'],
-            "id_accion"=> 8,
-            "descripcion"=>'Inicio del proceso',
-        ));
+        $bitacora->insertar([
+            "id_sesion"     => $session['id_sesion'],
+            "id_accion"     => 8,
+            "descripcion"   => 'Inicio del proceso',
+        ]);
         
         if ($propiedades['suceed'] == true) {
 
@@ -189,6 +196,10 @@ switch ($accion) {
                         }
                     }
                     
+                    $banco = $inmuebles->obtenerCuentasBancariasPorInmueble($propiedad['id_inmueble']);
+                    
+                    $inmueble['data'][0]['cuentas_bancarias'] = $banco['data'];
+
                     $cuenta[] = Array(
                             "inmueble"    => $inmueble['data'][0],
                             "propiedades" => $propiedad,
@@ -198,13 +209,16 @@ switch ($accion) {
                 }
             }
         }
-        //var_dump($propiedades['data']);
-        echo $twig->render('enlinea/pago/formulario.html.twig', array("session" => $session,
-        "cuentas" => $cuenta,
-        "accion" => $accion,
-        "usuario"=>$session['usuario'],
-        "propiedades"=>$propiedades['data']
-        ));
+        
+        $params = [
+            'session'       => $session,
+            'cuentas'       => $cuenta,
+            'accion'        => $accion,
+            'usuario'       => $session['usuario'],
+            'propiedades'   => $propiedades['data']
+        ];
+        
+        echo $twig->render('enlinea/pago/formulario.html.twig', $params);
         break; 
 
     case "listaPagosDetalle":

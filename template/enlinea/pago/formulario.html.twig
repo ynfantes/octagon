@@ -231,10 +231,22 @@ no tiene recibos pendiente por cancelar.
 <div class="col-sm-4">
 <div class="form-group">
 <label>Número de cuenta destino: </label>
+{% if cuentas[0].inmueble.cuentas_bancarias|length > 1 %}
+    <select class="form-control" id="numero_cuenta" name="numero_cuenta" required>
+        {% set dato = '' %}
+        {% for cuenta in cuentas[0].inmueble.cuentas_bancarias %}
+        {% if dato != cuenta.numero_cuenta %}
+        <option value="{{cuenta.numero_cuenta}}" data-bind="{{cuenta.banco}}">{{cuenta.numero_cuenta}}</option>
+        {% endif %}
+        {% set dato = cuenta.numero_cuenta %}
+        {% endfor %}
+    </select>
+{% else %}
 <div class="input-group">
 <span class="input-group-addon"><i class="fa fa-pencil-square-o fa-lg fa-fw"></i></i></span>
 <input type="text" id="numero_cuenta" name="numero_cuenta" placeholder="Número de cuenta" class="form-control input-lg" value="{{ cuentas[0].inmueble.numero_cuenta }}">
 </div>
+{% endif %}
 </div>
 </div>
 </div>
@@ -253,7 +265,13 @@ no tiene recibos pendiente por cancelar.
 <label>Banco origen de la transferencia: </label>
 <div class="input-group">
 <span class="input-group-addon"><i class="fa fa-pencil-square-o fa-lg fa-fw"></i></i></span>
-<input type="text" id="banco_origen" name="banco_origen" placeholder="Banco origen"  class="form-control input-lg" disabled="disabled">
+<!--input type="text" id="banco_origen" name="banco_origen" placeholder="Banco origen"  class="form-control input-lg" disabled="disabled"-->
+<select class="form-control" id="banco_origen" name="banco_origen" required>
+<option value="">SELECCIONE UN BANCO DE LA LISTA</option>
+{% for banco in bancos %}
+<option value="{{banco.nombre}}" data-bind="{{banco.nombre}}">{{banco.nombre|upper}}</option>
+{% endfor %}
+</select>
 </div>
 </div>
 </div>
@@ -262,7 +280,19 @@ no tiene recibos pendiente por cancelar.
 <label>Banco destino: </label>
 <div class="input-group">
 <span class="input-group-addon"><i class="fa fa-pencil-square-o fa-lg fa-fw"></i></span>
+{% if cuentas[0].inmueble.cuentas_bancarias|length > 1 %}
+    <select class="form-control" id="banco_destino" name="banco_destino" required>
+    {% set dato = '' %}
+    {% for cuenta in cuentas[0].inmueble.cuentas_bancarias %}
+        {% if dato != cuenta.banco %}
+        <option value="{{cuenta.banco}}" data-bind="{{cuenta.numero_cuenta}}">{{cuenta.banco}}</option>
+        {% endif %}
+        {% set dato = cuenta.banco %}
+    {% endfor %}
+    </select>
+{% else %}
 <input type="text" id="banco_destino" name="banco_destino" placeholder="" class="form-control input-lg" value="{{ cuentas[0].inmueble.banco }}">
+{% endif %}
 </div>
 </div>
 </div>

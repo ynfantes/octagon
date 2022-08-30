@@ -105,4 +105,13 @@ class inmueble extends db implements crud {
         unset($act['id_inmueble'],$act['apto']);
         return db::insertUpdate("inmueble_deuda_confidencial", $data,$act);
     }
+
+    public function listarBancosActivos(){
+        return db::select("*","bancos",["inactivo"=>0],[],['nombre' => 'ASC']);
+    }
+
+    public function obtenerCuentasBancariasPorInmueble($inmueble) {
+        return db::select("*","inmueble_cuenta",["id_inmueble" => "'$inmueble'"]);
+    }
+    
 }
