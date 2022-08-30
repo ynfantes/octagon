@@ -232,7 +232,7 @@ no tiene recibos pendiente por cancelar.
 <div class="form-group">
 <label>Número de cuenta destino: </label>
 {% if cuentas[0].inmueble.cuentas_bancarias|length > 1 %}
-    <select class="form-control" id="numero_cuenta" name="numero_cuenta" required>
+    <select class="form-control input-lg" id="numero_cuenta" name="numero_cuenta" required>
         {% set dato = '' %}
         {% for cuenta in cuentas[0].inmueble.cuentas_bancarias %}
         {% if dato != cuenta.numero_cuenta %}
@@ -266,7 +266,7 @@ no tiene recibos pendiente por cancelar.
 <div class="input-group">
 <span class="input-group-addon"><i class="fa fa-pencil-square-o fa-lg fa-fw"></i></i></span>
 <!--input type="text" id="banco_origen" name="banco_origen" placeholder="Banco origen"  class="form-control input-lg" disabled="disabled"-->
-<select class="form-control" id="banco_origen" name="banco_origen" required>
+<select class="form-control input-lg" id="banco_origen" name="banco_origen" required>
 <option value="">SELECCIONE UN BANCO DE LA LISTA</option>
 {% for banco in bancos %}
 <option value="{{banco.nombre}}" data-bind="{{banco.nombre}}">{{banco.nombre|upper}}</option>
@@ -281,7 +281,7 @@ no tiene recibos pendiente por cancelar.
 <div class="input-group">
 <span class="input-group-addon"><i class="fa fa-pencil-square-o fa-lg fa-fw"></i></span>
 {% if cuentas[0].inmueble.cuentas_bancarias|length > 1 %}
-    <select class="form-control" id="banco_destino" name="banco_destino" required>
+    <select class="form-control input-lg" id="banco_destino" name="banco_destino" required>
     {% set dato = '' %}
     {% for cuenta in cuentas[0].inmueble.cuentas_bancarias %}
         {% if dato != cuenta.banco %}

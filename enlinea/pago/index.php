@@ -211,13 +211,14 @@ switch ($accion) {
         }
         
         $params = [
-            'session'       => $session,
-            'cuentas'       => $cuenta,
-            'accion'        => $accion,
-            'usuario'       => $session['usuario'],
-            'propiedades'   => $propiedades['data']
+            'accion'      => $accion,
+            'bancos'      => $bancos,
+            'cuentas'     => $cuenta,
+            'propiedades' => $propiedades['data'],
+            'session'     => $session,
+            'usuario'     => $session['usuario'],
         ];
-        
+
         echo $twig->render('enlinea/pago/formulario.html.twig', $params);
         break; 
 
