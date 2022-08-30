@@ -262,7 +262,7 @@ no tiene recibos pendiente por cancelar.
 </div>
 <div class="col-sm-4">
 <div class="form-group">
-<label>Banco origen de la transferencia: </label>
+<label>Banco origen de los fondos: </label>
 <div class="input-group">
 <span class="input-group-addon"><i class="fa fa-bank fa-lg fa-fw"></i></i></span>
 <!--input type="text" id="banco_origen" name="banco_origen" placeholder="Banco origen"  class="form-control input-lg" disabled="disabled"-->
@@ -488,10 +488,10 @@ no tiene recibos pendiente por cancelar.
                     number:true,
                     required:true
                 },
-                banco_origen : {
-                    required: function() {
-                        return $("select[name|='tipo_pago']").val() == 'T';
-                    }
+                banco_origen : { required: true
+                    //required: function() {
+                    //    return $("select[name|='tipo_pago']").val() == 'T';
+                    //}
                 }
                 /*, soporte : { required:true }*/
             },
@@ -510,7 +510,7 @@ no tiene recibos pendiente por cancelar.
                 required: 'Ingrese un número de teléfono de contacto'
                 },
                 banco_origen : {
-                required: 'Ingrese el nombre del banco desde donde hizo la transferencia'
+                required: 'Ingrese el nombre del banco desde donde hizo ' + $('#tipo_pago').val() + '.'
                 },
                 numero_documento : {
                     required: 'Ingrese un número de referencia',
