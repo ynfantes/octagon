@@ -79,7 +79,7 @@ $app->get('/cancelacion/exceedQuota/{quota}', function(Request $req, Response $r
     }
 });
 
-
+// chequea las cancelaciones de gastos que faltan por publicar
 $app->get('/cancelacion/post', function(Request $req, Response $res) {
     try {
         $pago = new pago();

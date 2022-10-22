@@ -4,7 +4,36 @@ use \Psr\Http\Message\ResponseInterface as Response;
 
 include_once '../../includes/constants.php';
 
+$app->get('/facturas/notAvailable' , function(Request $req, Response $res){
+    try {
+        $factura = new factura();
+        $recibos = [];
+        $result = $factura->listarFacturasConNumFact();
+        $n = 0;
+        if ($result['suceed'] && count($result['data'])>0) {
+            
+            foreach ($result['data'] as $aviso) {
+                $filename = '../../enlinea/avisos/'.$aviso['numero_factura'].'.pdf';
+                if (!file_exists($filename)) {
+                    $recibo = [
+                        'codinm'    => $aviso['id_inmueble'],
+                        'apto'      => $aviso['apto'],
+                        'numfact'   => $aviso['numero_factura']
+                    ];
+                    $recibos['recibos'][] = $recibo;
+                    $n++;
+                }
+            }
+            
+        }
+        $recibos['total'] = $n;
+        $newRes = $res->withJson($recibos);
+        return $newRes;
 
+    } catch (\Throwable $th) {
+        return anError($th, $res);
+    }
+});
 
 $app->post('/facturas/insert', function(Request $req, Response $res) {
     try {
