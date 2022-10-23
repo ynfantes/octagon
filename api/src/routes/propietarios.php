@@ -36,7 +36,7 @@ $app->put('/propietarios/update', function(Request $req, Response $res) {
         $result = json_decode($req->getBody(),true);
         
         foreach ($result as $item => $value) {
-            $r = $prop->actualizar($value['id'], ['modificado'=>0]);
+            $r = $prop->actualizar($value['id'], ['modificado'=>0,'cambio_clave'=>0]);
             $result[$item]['updated'] = $r['suceed'];
             $result[$item]['stats']   = $r['stats'];
         }
