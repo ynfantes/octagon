@@ -96,3 +96,28 @@ $app->post('/avisos/strToPDF', function(Request $req, Response $res) {
     }
 
 });
+
+$app->delete('/facturas/reversoFacturacion/periodo/{periodo}/inmueble/{inmueble}', function(Request $req, Response $res, array $args) {
+    
+    try {
+        
+        $factura = new factura();
+        if (DateTime::createFromFormat('Y-m-d',$args['periodo']) !== false && $args['inmueble']<>'') {
+            
+            $data['periodo'] = $args['periodo'];
+            $data['id_inmueble'] = $args['inmueble'];            
+            $result = $factura->borrarFactura($data);
+            unset($result['query']);
+            $data['result'] = $result;
+
+        } else {
+            $data['error'] = 'Período inválido';
+        }
+        
+        $newRes = $res->withJson($data);
+        return $newRes;
+
+    } catch (\Throwable $th) {
+        return anError($th, $res);
+    }
+});
