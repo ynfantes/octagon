@@ -30,8 +30,11 @@ class usuario extends db implements crud  {
     public function login($usuario,$password) {
         if ($usuario!="" && $password!="") {
             $result = db::select("*",self::tabla,Array("nombre"=>"'".$usuario."'"));
-            if ($result['suceed'] == 'true' && count($result['data']) > 0) {
-                if ($result['data'][0]['clave']==$password) {
+            
+            if ($result['suceed'] && count($result['data']) > 0) {
+                
+                if ($result['data'][0]['clave'] === $password) {
+                    
                     session_start();
                     $_SESSION['usuario'] = $result['data'][0];
                     $_SESSION['status'] = 'logueado';

@@ -58,15 +58,26 @@
 </div>
 <section id="widget-grid" class="">
 <div class="row">
-<div class="col-sm-12">
-<div class="alert alert-danger alert-block">
-<a class="close" data-dismiss="alert" href="#">×</a>
-<h4 class="alert-heading">Atención!</h4>
-Yo declaro que estoy ingresando datos reales, fidedignos y legales de transferencia o depósito,
-de ser rechazados los mismos por el banco emisor o el banco receptor, 
-será cargado dicho valor en mi cuenta de gastos de condominio, sin aviso ni protesta. {{ session.usuario.nombre }}
-</div>
-</div>
+    <div class="col-sm-9 col-xl-9">
+        <div class="alert alert-danger alert-block">
+            <a class="close" data-dismiss="alert" href="#">×</a>
+                <h4 class="alert-heading">Atención!</h4>
+                Yo declaro que estoy ingresando datos reales, fidedignos y legales de transferencia o depósito,
+                de ser rechazados los mismos por el banco emisor o el banco receptor, 
+                será cargado dicho valor en mi cuenta de gastos de condominio, sin aviso ni protesta. {{ session.usuario.nombre }}
+        </div>
+    </div>
+
+    <div class="col-sm-3 col-xl-3">
+        <div class="alert alert-warning alert-block">
+            <h4 class="alert-heading">
+            Bs.<span class="font-weight-bold" style="font-size:2em" id="tasa_del_dia">--,--</span> 
+            <small class="text-warning"><strong>Tasa de Cambio de hoy</strong><small>
+            </h4>
+            <div><small><i class="fa-fw fa fa-bank"></i> Banco Central de Venezuela</small></div>
+        </div>
+    </div>
+
 <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
 <div id="wid-id-0" class="jarviswidget transparent jarviswidget-sortable" data-widget-deletebutton="false" data-widget-editbutton="false" style="" role="widget">
 <header>
@@ -377,7 +388,8 @@ no tiene recibos pendiente por cancelar.
 
 </section>
 <!-- end widget grid -->
-<script src="{{ constant('ROOT') }}js/fileinput.min.js"></script>
+<script src="{{constant('ROOT')}}js/fileinput.min.js"></script>
+<script src="{{constant('ROOT')}}js/tasa-bcv.js"></script>
 <script type="text/javascript">
     pageSetUp();
 

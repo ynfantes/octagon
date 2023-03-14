@@ -170,7 +170,7 @@ Headline
 .navbar-toggle:active { outline: 0;}
 
 .navbar-inverse .navbar-toggle { background: #08b4da; border: none;}
-.navbar-nav {margin: 0;}
+.navbar-nav {margin: 12px 0px}
 .scroll-fixed-navbar {padding-bottom:0;}
 
 .navbar-inverse .navbar-nav > .active > a, .navbar-inverse .navbar-nav > .active > a:hover, .navbar-inverse .navbar-nav > .active > a:focus {background-color: transparent;}
