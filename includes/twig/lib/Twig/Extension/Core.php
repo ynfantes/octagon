@@ -1203,7 +1203,20 @@ if (function_exists('mb_get_info')) {
      */
     function twig_length_filter(Twig_Environment $env, $thing)
     {
-        return is_scalar($thing) ? mb_strlen($thing, $env->getCharset()) : count($thing);
+        if($thing == null) {
+            return 0;
+        }
+        if(is_scalar($thing)) {
+            return mb_strlen($thing, $env->getChartset());
+        }
+        if (is_object($thing) && method_exists($thing, '__toString') && !$thing instanceof \Countable) {
+            return mb_strlen((string) $thing, $env->getCharset());
+        }
+        if ($thing instanceof \Countable || is_array($thing)) {
+            return count($thing);
+        }
+        return 1;
+        //return is_scalar($thing) ? mb_strlen($thing, $env->getCharset()) : count($thing);
     }
 
     /**
