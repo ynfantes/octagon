@@ -37,7 +37,7 @@
 
 {% endfor %}
 {% endfor %}
-{{ format_number(total) }}
+{{format_number(total)}}
 </span></h5>
 </li>
 <li class="sparks-info">
@@ -118,9 +118,9 @@ no tiene recibos pendiente por cancelar.
 </div>
 {% else %}
 <!-- verificamos si el propietarios debe pasar al Dpto. de Cobranza -->
-{%set counter = 0%}
-{%set moneda=''%}
-{%for cuenta in cuentas%}
+{% set counter = 0 %}
+{% set moneda = '' %}
+{% for cuenta in cuentas %}
 {%set moneda = cuenta.inmueble.moneda%}
 <div class="row">
 <div class="col-xs-12 col-sm-12 col-lg-9">
@@ -220,8 +220,9 @@ no tiene recibos pendiente por cancelar.
 <div class="input-group">
 <span class="input-group-addon"><i class="fa fa-credit-card fa-lg fa-fw"></i></span>
 <select class="form-control input-lg" name="tipo_pago">
-<option selected value="D">Depósito</option>
+<option value="D">Depósito</option>
 <option value="T" selected>Transferencia</option>
+<option value="Z">Zelle</option>
 </select>
 </div>
 </div>
@@ -234,7 +235,14 @@ no tiene recibos pendiente por cancelar.
 <div class="input-group">
 <div class="input-group">
 <span class="input-group-addon"><i class="fa fa-asterisk fa-lg fa-fw"></i></span>
-<input type="text" id="numero_documento" name="numero_documento" placeholder="Referencia" class="form-control input-lg" maxlength="14">
+<input 
+    type="text" 
+    id="numero_documento" 
+    name="numero_documento" 
+    placeholder="Referencia" 
+    class="form-control input-lg" 
+    maxlength="11"
+>
 </div>
 </div>
 </div>
@@ -280,7 +288,9 @@ no tiene recibos pendiente por cancelar.
 <select class="form-control input-lg" id="banco_origen" name="banco_origen" required>
 <option value="">SELECCIONE UN BANCO DE LA LISTA</option>
 {% for banco in bancos %}
-<option value="{{banco.nombre}}" data-bind="{{banco.nombre}}">{{banco.nombre|upper}}</option>
+    {% if banco.codigo != "ZELLE" %}
+        <option value="{{banco.nombre}}" data-bind="{{banco.nombre}}">{{banco.nombre|upper}}</option>
+    {% endif %}
 {% endfor %}
 </select>
 </div>
@@ -397,7 +407,7 @@ no tiene recibos pendiente por cancelar.
 
     // pagefunction
 
-    var pagefunction = function() {
+    const pagefunction = function() {
 
     // load bootstrap wizard
 
@@ -414,6 +424,10 @@ no tiene recibos pendiente por cancelar.
         showUpload: false,
     });
     */
+
+    let payMethod = 'T';
+    const bancos = {{ bancos|json_encode|raw }};
+    console.log(bancos);
     $(":checkbox").click(function() {
 
 
@@ -428,24 +442,50 @@ no tiene recibos pendiente por cancelar.
                 $(this).prop('checked',false);
             });
         }
-        var monto = 0;
+        let monto = 0;
         $("input:checked").each(function() {
-            var  monto_factura = $("input[name|='montos[]']").eq($(this).val()).val();
-            monto = parseFloat(monto) + parseFloat(monto_factura);
+            const monto_factura = $("input[name|='montos[]']").eq($(this).val()).val();
+            monto += Number(monto_factura);
         });
-        $("#monto").val(monto.formatCurrency());
+        const roundedSum = Number(monto.toFixed(2));
+        $("#monto").val(roundedSum.formatCurrency());
     });
     $("select[name|='tipo_pago']").change(function() {
-
-        if ($(this).val() == "T") {
-            $("#banco_origen").attr('disabled', false);
-            $('#numero').html("Número de referencia:");
-        } else {
-            $("#banco_origen").attr('disabled', true);
-            $("#banco_origen").val('');
-            $('#numero').html("Número Depósito:");
+        
+        payMethod = $(this).val();
+        
+        switch(payMethod) {
+            
+            case 'D':
+                $("#banco_origen").attr('disabled', true);
+                $("#banco_origen").val('');
+                $('#numero').html("Número Depósito:");
+                break;
+            
+            default:
+                $("#banco_origen").attr('disabled', false);
+                $('#numero').html("Número de referencia:");
+                break;
         }
+        const isZelle = (payMethod === 'Z');
+        if(isZelle) {
+            $('#numero_documento').rules('remove','digits');
+        } else {
+            $('#numero_documento').rules('add', { digits: true });
+        }
+        filterBank(isZelle);
     });
+
+    const filterBank = (isZelle) => {
+        $("#banco_origen option").remove();
+        const list = bancos.filter(b => isZelle ? b.codigo === 'ZELLE' : b.codigo !== 'ZELLE');
+        $("#banco_origen").prepend('<option value="">SELECCIONE UN BANCO DE LA LISTA</option>');
+        list.map(ele => {
+            const option = `<option value="${ele.nombre}">${ele.nombre.toUpperCase()}</option>`;
+            $("#banco_origen").append(option);
+        });
+        if(isZelle) $("#banco_origen").append('<option value="Cualquier Otro Banco">CUALQUIER OTRO BANCO</option>');
+    }
 
     $("select[name='banco_destino']").change(function() {
         $("select[name='numero_cuenta']").val($("select[name='banco_destino'] option:selected").attr('data-bind'));
@@ -471,9 +511,9 @@ no tiene recibos pendiente por cancelar.
     //Bootstrap Wizard Validations
 
     function runBootstrapWizard() {
-
-        var $validator = $("#wizard-1").validate({
-
+        
+        const $validator = $("#wizard-1").validate({
+            
             rules : {
                 email : {
                     required : true,
@@ -483,8 +523,8 @@ no tiene recibos pendiente por cancelar.
                     required : true
                 },
                 numero_documento : {
-                    required : true,
-                    digits : true
+                    required: true,
+                    digits: true,
                 },
                 numero_cuenta : {
                     required : true
@@ -544,9 +584,8 @@ no tiene recibos pendiente por cancelar.
             errorElement : 'span',
             errorClass : 'help-block',
             errorPlacement : function(error, element) {
+                console.log(payMethod,payMethod != 'Z');
                 if(element.is('input[type=checkbox]') || element.is('input[type=radio]')) {
-                    //var controls = element.closest('div[class*="col-"]');
-                    //controls.append(error);
                     errorSeleccionFactura();
                 } else {
                     if (element.is('input[type=file]')) {
@@ -560,6 +599,7 @@ no tiene recibos pendiente por cancelar.
                         }
                     }
                 }
+                
             }
         });
 
@@ -583,16 +623,16 @@ no tiene recibos pendiente por cancelar.
             if (!$(":checkbox").is(":enabled")) {
                 return false;
             }
-            var $valid = $("#wizard-1").valid();
+            const $valid = $("#wizard-1").valid();
             if (!$valid) {
-                if(index==2) errorPasoN2();
+                if( index === 2) errorPasoN2();
                 $validator.focusInvalid();
                 return false;
             } else {
                 $('#bootstrap-wizard-1').find('.form-wizard').children('li').eq(index - 1).addClass('complete');
                 $('#bootstrap-wizard-1').find('.form-wizard').children('li').eq(index - 1).find('.step').html('<i class="fa fa-check"></i>');
-                if(index==2 ){
-                    var data = new FormData($("#wizard-1")[0]);
+                if(index === 2 ){
+                    const data = new FormData($("#wizard-1")[0]);
                      $.ajax({
                      url: "{{ constant('URL_SISTEMA')}}/pago/guardar",
                      type: 'POST',
@@ -600,7 +640,7 @@ no tiene recibos pendiente por cancelar.
                      contentType:false,
                      processData:false,
                      success: function(data) {
-                        var obj = jQuery.parseJSON(data);
+                        const obj = jQuery.parseJSON(data);
                         if(obj.suceed) {
                            $("#tab3").find("h1").addClass("text-success").removeClass("text-info");    
                            $("#tab3").find("h1").html('<strong><i class="fa fa-lg fa-check-circle-o"></i> Muy Bien!</strong>');
@@ -619,7 +659,7 @@ no tiene recibos pendiente por cancelar.
 
                     });
                 }
-                if(index==3) {
+                if(index === 3) {
                     $("li.next, li.previous").addClass("disabled");
                 }
             }
