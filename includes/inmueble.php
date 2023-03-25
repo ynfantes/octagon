@@ -113,5 +113,9 @@ class inmueble extends db implements crud {
     public function obtenerCuentasBancariasPorInmueble($inmueble) {
         return db::select("*","inmueble_cuenta",["id_inmueble" => "'$inmueble'"]);
     }
+
+    public function borrarCuentaBancaria($inmueble,$num_cuenta) {
+        return db::delete('inmueble_cuenta',['id_inmueble'=>$inmueble, 'numero_cuenta'=>$num_cuenta]);
+    }
     
 }
