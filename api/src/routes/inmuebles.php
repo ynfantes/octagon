@@ -24,7 +24,139 @@ $app->post('/inmuebles/insert', function(Request $req, Response $res) {
     }
 });
 
+$app->delete('/inmuebles', function(Request $req, Response $res) {
+    $result = [];
+    $data = json_decode($req->getBody(),true);
+    
+    $db = new db();
+    $tables = [
+        [
+            'name'  => 'propietarios',
+            'field' => 'codinm'
+        ],
+        [
+            'name'  => 'propiedades',
+            'field' => 'id_inmueble'
+        ],
+        [
+            'name'  => 'facturas',
+            'field' => 'id_inmueble'
+        ],
+        [
+            'name'  => 'facturacion_mensual',
+            'field' => 'id_inmueble'
+        ],
+        [
+            'name'  => 'cobranza_mensual',
+            'field' => 'id_inmueble'
+        ],
+        [
+            'name'  => 'cartelera_inmueble',
+            'field' => 'inmueble'
+        ],
+        [
+            'name'  => 'fondos',
+            'field' => 'id_inmueble'
+        ],
+        [
+            'name'  => 'grupo',
+            'field' => 'id_inmueble'
+        ],
+        [
+            'name'  => 'inmueble_cuenta',
+            'field' => 'id_inmueble'
+        ],
+        [
+            'name'  => 'inmueble_deuda_confidencial',
+            'field' => 'id_inmueble'
+        ],
+        [
+            'name'  => 'junta_condominio',
+            'field' => 'id_inmueble'
+        ],
+        [
+            'name'  => 'movimiento_caja',
+            'field' => 'id_inmueble'
+        ],
+        [
+            'name'  => 'notificacion',
+            'field' => 'id_inmueble'
+        ],
+        [
+            'name'  => 'pago_detalle',
+            'field' => 'id_inmueble'
+        ],
+        [
+            'name'  => 'prerecibo',
+            'field' => 'id_inmueble'
+        ],
+        [
+            'name'  => 'inmueble',
+            'field' => 'id'
+        ],
 
+        
+    ];
+    foreach ($data as $index => $inm) {
+
+        $codinm = $inm['id'];
+        $count = 0;
+        $db->exec_query("START TRANSACTION");
+        try {
+            foreach ($tables as $index => $obj) {
+                
+                if ($obj['name']!='' and $obj['field'] !='') {
+    
+                    $table = $obj['name'];
+                    $field = $obj['field'];
+                    if ($table == 'propietarios') {
+                        // borramos la bitacora del condominio
+                        $r = $db->exec_query("delete from bitacora where id_sesion in (".
+                            "select id from sesion where cedula in (".
+                                "select cedula from propietarios where $field = '$codinm'))");
+
+                        if($r['suceed'] && $r['data']) $count += 1;
+                        $r['table'] = 'bitacora';
+                        $result[] = $r;
+                        // borramos los inicio de sesion
+                        $r = $db->exec_query("delete from sesion where cedula in (".
+                                "select cedula from propietarios where $field = '$codinm')");
+                        if($r['suceed'] && $r['data']) $count += 1;
+                        $r['table'] = 'sesion';
+                        $result[] = $r;
+                    }
+                    if ($table == 'fondos') {
+                        // borramos el movimiento de las cuentas de fondo
+                        $r = $db->exec_query("delete from fondos_movimiento where id_fondo in (".
+                                "select id from $table where $field = '$codinm')");
+                        if($r['suceed'] && $r['data']) $count += 1;
+                        $r['table'] = 'fondos_movimiento';
+                        $result[] = $r;
+                    }
+                    $r = $db->exec_query("delete from $table where $field = '$codinm'");
+                    $r['table'] = $table;
+                    if($r['suceed'] && $r['data']) $count += 1;
+                    $result[] = $r;
+                }
+            }
+            $response[] = [
+                'id'              => $codinm,
+                'affected_tables' => $count,
+                'response'        => $result
+            ];
+            $db->exec_query("COMMIT");
+
+        } catch (Exception $exc) {
+            $db->exec_query("ROLLBACK");
+            $response[] = $exc->getTraceAsString();
+        }
+    }
+    $newRes = $res->withJson($response);
+    return $newRes;
+    
+
+
+});
 $app->put('/cuentas', function(Request $req, Response $res) {
     try {
         
