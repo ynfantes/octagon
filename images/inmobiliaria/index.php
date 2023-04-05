@@ -43,4 +43,3 @@ if (!empty($_FILES)) {
         echo json_encode($result);
     }
 }
-?>
