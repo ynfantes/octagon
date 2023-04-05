@@ -2,9 +2,6 @@
 
 include_once 'includes/constants.php';
 
-//echo $twig->render('mantenimiento.html.twig');
-//die();
-
 $result = array();
 $password = '';
 $apto = '';

@@ -1,0 +1,459 @@
+{% extends 'layout/base.html.twig'%}
+{% block titulo %}Inmobiliaria{% endblock %}
+{% block head %}
+{{ parent() }}
+<link href="{{constant('ROOT')}}assets/css/layout-inmobiliaria.css" rel="stylesheet" type="text/css" />
+<link rel="stylesheet" href="{{constant('ROOT')}}assets/plugins/dropzone/css/dropzone.css?v=1423494334">
+{% endblock %}
+{% block contenido %}
+<section class="page-header parallax parallax-3" style="background-image:url('{{constant('ROOT')}}img/condominio.jpg')">
+<div class="overlay dark-5"></div>
+<div class="container">
+<h1>Inmobiliaria</h1>
+<!-- breadcrumbs -->
+<ol class="breadcrumb">
+    <li><a href="{{constant('ROOT')}}">Inicio</a></li>
+    <li><a href="#" class="active">Publicar</a></li>
+</ol>
+<!-- /breadcrumbs -->
+</div>
+</section>
+
+<section class="padding-xxs">
+<div class="container">
+<!--div class="heading-title heading-dotted text-center">
+<h4>Transparent Section <span>[extra small]</span></h4>
+</div-->
+
+<div class="panel panel-default">
+<div class="panel-body">
+<strong>¡Bienvenido!</strong>
+Por favor, haga click en <a href="#">Ver lista de propiedades</a> para administrar las publicaciones.
+</div>
+</div>
+
+
+<form 
+    action="?accion=guardar" 
+    class="row clearfix validate-plugin validate"
+    enctype="multipart/form-data"
+    id="frmSave" 
+    method="post" 
+>
+<div class="col-lg-7 col-sm-7">
+<div class="heading-title">
+<h4>Datos Generales</h4>
+</div>
+
+<fieldset>
+<div class="row">
+    <div class="col-lg-12">
+    <label for="title">Titulo *</label>
+    <input id="titulo" name="titulo" type="text" class="form-control required">
+    </div>
+</div>
+<div class="row">
+    <div class="col-lg-12">
+    <label for="descripcion">Descripción *</label>
+    <textarea 
+        class="form-control required"
+        cols="40" 
+        id="descripcion" 
+        name="descripcion" 
+        placeholder="Escriba una descripción de la propiedad" 
+        rows="10" 
+    ></textarea>
+    </div>
+</div>
+<!-- start tipo propiedad, tipo de operación -->
+<div class="row">
+    <div class="col-md-6 col-sm-6">
+        <label for="id_inmobiliaria_tipo">Tipo de propiedad *</label>
+        <select id="id_inmobiliaria_tipo" name="id_inmobiliaria_tipo" class="form-control pointer required">
+            <option value="">Seleccione...</option>
+            {% for ele in tipo %}
+            <option value="{{ele.id}}">{{ele.descripcion}}</option>
+            {% endfor %}
+        </select>
+    </div>
+
+    <div class="col-md-6 col-sm-6">
+        <label for="id_operacion">Tipo de operación *</label>
+        <select id="id_operacion" name="id_operacion" class="form-control pointer required">
+            <option value="">Seleccione...</option>
+            {% for ele in operacion %}
+            <option value="{{ele.id}}">{{ele.descripcion}}</option>
+            {% endfor %}
+        </select>
+    </div>
+</div>
+<!-- end tipo propiedad, tipo de operación -->
+
+<!-- start estado, municipio -->
+<div class="row">
+    <div class="col-md-6 col-sm-6">
+        <label for="id_estado">Estado *</label>
+        <select id="id_estado" name="id_estado" class="form-control pointer required">
+            <option value="">Seleccione...</option>
+            {% for ele in estados %}
+            <option value="{{ele.id_estado}}">{{ele.estado}}</option>
+            {% endfor %}
+        </select>
+    </div>
+
+    <div class="col-md-6 col-sm-6">
+        <label for="id_ciudad">Ciudad *</label>
+        <select id="id_ciudad" name="id_ciudad" class="form-control pointer required">
+            <option value="">Seleccione...</option>
+            {% for ele in ciudades %}
+            <option value="{{ele.id_ciudad}}">{{ele.ciudad}}</option>
+            {% endfor %}
+        </select>
+    </div>
+</div>
+<!-- end estado, municipio -->
+
+<div class="row">
+    <div class="col-md-4 col-sm-4">
+    <label for="zona">Localidad *</label>
+    <input 
+        class="form-control required"
+        id="zona" 
+        name="zona" 
+        type="text" 
+    />
+    </div>
+
+    <div class="col-md-4 col-sm-4">
+    <label for="mts2">Metros 2 *</label>
+    <input 
+        class="form-control required"
+        id="mts2" 
+        name="mts2" 
+        type="number" 
+    />
+    </div>
+
+    <div class="col-md-4 col-sm-4">
+    <label for="habitaciones">Núm. Habitaciones *</label>
+    <input 
+        class="form-control required"
+        id="habitaciones" 
+        name="habitaciones" 
+        type="number" 
+    />
+    </div>
+
+</div>
+
+<div class="row">
+    <div class="col-md-4 col-sm-4">
+    <label for="baños">Núm. Baños *</label>
+    <input 
+        class="form-control required"
+        id="baños" 
+        name="baños" 
+        type="number" 
+    />
+    </div>
+
+    <div class="col-md-4 col-sm-4">
+    <label for="puestos_estacionamiento">Núm. Puestos Estac. *</label>
+    <input 
+        class="form-control required"
+        id="puestos_estacionamiento" 
+        name="puestos_estacionamiento" 
+        type="number" 
+    />
+    </div>
+
+    <div class="col-md-4 col-sm-4">
+    <label for="maleteros">Núm. Maleteros *</label>
+    <input 
+        class="form-control required"
+        id="maleteros" 
+        name="maleteros" 
+        type="number" 
+    />
+    </div>
+</div>
+<hr>
+</fieldset>
+</div>
+<div class="col-lg-5 col-sm-5">
+    <div class="heading-title">
+    <h4>Datos Adicionales</h4>
+    </div>
+    <div class="row">
+        <div class="col-md-4 col-sm-4">
+        <label for="codigo_id">Codigo Id. *</label>
+        <input 
+            class="form-control required"
+            id="codigo_id" 
+            name="codigo_id" 
+            type="text"
+            maxlength="10"
+        />
+        </div>
+
+        <div class="col-md-4 col-sm-4">
+        <label for="id_moneda">Moneda *</label>
+        <select id="id_moneda" name="id_moneda" class="form-control pointer required">
+            {% for ele in monedas %}
+            <option value="{{ele.id}}">{{ele.descripcion}}</option>
+            {% endfor %}
+        </select>
+        </div>
+
+        <div class="col-md-4 col-sm-4">
+        <label for="importe">Importe *</label>
+        <input 
+            class="form-control required"
+            id="importe" 
+            name="importe" 
+            type="number" 
+        />
+        </div>
+    </div>
+    <div class="heading-title">
+    <h4>Imágenes propiedad</h4>
+    </div>
+    <!-- start drop zone -->
+    <div style="float: left; width: 100%">
+        <div class="row dropzone dz-clickable centered" id="previews">
+            <div id="carga_imagenes">
+                <div class="dz-message">
+                    Arrastre las imágenes hasta aquí o haga click.<br>
+                    <span class="note">&nbsp;</span>
+                </div>
+            </div>
+        <div style="display: none;" id="template">
+    
+        <div class="dz-preview dz-file-preview">
+        <div class="dz-image"><img data-dz-thumbnail=""></div>
+
+        <div class="dz-details">
+            <div class="dz-size"><span data-dz-size=""></span></div>
+            <div class="dz-filename"><span data-dz-name=""></span></div>
+        </div>
+        <div class="dz-progress"><span data-dz-uploadprogress="" class="dz-upload"></span></div>
+        <div class="dz-error-message"><span data-dz-errormessage=""></span></div>
+
+
+
+        <div class="dz-success-mark">
+
+            <svg xmlns:sketch="http://www.bohemiancoding.com/sketch/ns" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 54 54" height="54px" width="54px">
+            <!-- Generator: Sketch 3.2.1 (9971) - http://www.bohemiancoding.com/sketch -->
+            <title>Check</title>
+            <desc>Created with Sketch.</desc>
+            <defs/>
+            <g sketch:type="MSPage" fill-rule="evenodd" fill="none" stroke-width="1" stroke="none" id="Page-1">
+                <path sketch:type="MSShapeGroup" fill="#FFFFFF" fill-opacity="0.816519475" stroke="#747474" stroke-opacity="0.198794158" id="Oval-2" d="M23.5,31.8431458 L17.5852419,25.9283877 C16.0248253,24.3679711 13.4910294,24.366835 11.9289322,25.9289322 C10.3700136,27.4878508 10.3665912,30.0234455 11.9283877,31.5852419 L20.4147581,40.0716123 C20.5133999,40.1702541 20.6159315,40.2626649 20.7218615,40.3488435 C22.2835669,41.8725651 24.794234,41.8626202 26.3461564,40.3106978 L43.3106978,23.3461564 C44.8771021,21.7797521 44.8758057,19.2483887 43.3137085,17.6862915 C41.7547899,16.1273729 39.2176035,16.1255422 37.6538436,17.6893022 L23.5,31.8431458 Z M27,53 C41.3594035,53 53,41.3594035 53,27 C53,12.6405965 41.3594035,1 27,1 C12.6405965,1 1,12.6405965 1,27 C1,41.3594035 12.6405965,53 27,53 Z"/>
+            </g>
+            </svg>
+        
+        </div>
+        <div class="dz-error-mark">
+
+            <svg xmlns:sketch="http://www.bohemiancoding.com/sketch/ns" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 54 54" height="54px" width="54px">
+                <!-- Generator: Sketch 3.2.1 (9971) - http://www.bohemiancoding.com/sketch -->
+                <title>error</title>
+                <desc>Created with Sketch.</desc>
+                <defs/>
+                <g sketch:type="MSPage" fill-rule="evenodd" fill="none" stroke-width="1" stroke="none" id="Page-1">
+                    <g fill-opacity="0.816519475" fill="#FFFFFF" stroke-opacity="0.198794158" stroke="#747474" sketch:type="MSLayerGroup" id="Check-+-Oval-2">
+                        <path sketch:type="MSShapeGroup" id="Oval-2" d="M32.6568542,29 L38.3106978,23.3461564 C39.8771021,21.7797521 39.8758057,19.2483887 38.3137085,17.6862915 C36.7547899,16.1273729 34.2176035,16.1255422 32.6538436,17.6893022 L27,23.3431458 L21.3461564,17.6893022 C19.7823965,16.1255422 17.2452101,16.1273729 15.6862915,17.6862915 C14.1241943,19.2483887 14.1228979,21.7797521 15.6893022,23.3461564 L21.3431458,29 L15.6893022,34.6538436 C14.1228979,36.2202479 14.1241943,38.7516113 15.6862915,40.3137085 C17.2452101,41.8726271 19.7823965,41.8744578 21.3461564,40.3106978 L27,34.6568542 L32.6538436,40.3106978 C34.2176035,41.8744578 36.7547899,41.8726271 38.3137085,40.3137085 C39.8758057,38.7516113 39.8771021,36.2202479 38.3106978,34.6538436 L32.6568542,29 Z M27,53 C41.3594035,53 53,41.3594035 53,27 C53,12.6405965 41.3594035,1 27,1 C12.6405965,1 1,12.6405965 1,27 C1,41.3594035 12.6405965,53 27,53 Z"/>
+                    </g>
+                </g>
+            </svg>
+
+        </div>
+        </div>
+    </div>
+    <!-- end drop zone -->
+</div>
+<hr>
+    <button 
+        class="btn btn-primary btn-lg btn-block size-15" 
+        type="submit"
+    ><i class="fa fa-mail-forward"></i> Publicar
+    </button>
+
+</div>
+</form>
+</div>
+</section>            
+{% endblock %}
+{% block javascript %}
+{{parent()}}
+<script src="{{constant('ROOT')}}assets/plugins/dropzone/js/dropzone.js"></script>
+<script type="text/javascript">
+Dropzone.autoDiscover = false;
+
+var previewNode = document.querySelector("#template");
+previewNode.id = "";
+var previewTemplate = previewNode.parentNode.innerHTML;
+previewNode.parentNode.removeChild(previewNode);
+
+var myDropzone = new Dropzone(document.body, {
+    url: "{{constant('ROOT')}}images/inmobiliaria/index.php",
+    previewsContainer: "#previews",
+    maxFilesize: 1,
+    maxFiles:5,
+    acceptedFiles:"image/*",
+    paramName:"file",
+    addRemoveLinks: true ,
+    dictRemoveFile: "Eliminar",
+    init:function() {
+        jQuery.getJSON('{{constant('ROOT')}}images/inmobiliaria/index.php?id={{propiedad[0].id}}', function(data) {
+            jQuery.each(data, function(index, val) {
+              var mockFile = { name: val.name, size: val.size };
+              myDropzone.options.addedfile.call(myDropzone, mockFile);
+              myDropzone.options.thumbnail.call(myDropzone, mockFile, "{{constant('ROOT')}}images/inmobiliaria/" + val.name);
+              myDropzone.emit("complete", mockFile);
+              var inputDesc = Dropzone.createElement("<input name='imagen[]' type='hidden' value='" + val.name + "'>");
+              mockFile.previewElement.appendChild(inputDesc);
+              mockFile.previewElement.addEventListener("click", function() {
+                myDropzone.removeFile(mockFile);
+               });
+            });
+          });
+
+    }
+});
+
+myDropzone.on("addedfile", function(file) {
+  var inputDesc = Dropzone.createElement("<input name='imagen[]' type='hidden' value='" + file.name + "'>");
+  file.previewElement.appendChild(inputDesc);
+  file.previewElement.addEventListener("click", function() {
+        myDropzone.removeFile(file);
+  });
+});
+myDropzone.on('removedfile', function(image) {
+    jQuery.getJSON("{{constant('ROOT')}}images/inmobiliaria/deleteimage.php?name=" + image.name, function(resp) {
+        console.log(resp.message, resp.image);
+    });
+});
+$("select[name|='id_estado']").change(function() {
+    
+    $("select[name|='id_ciudad']").attr("disabled",true);
+    const datos = { id : $(this).val() };
+    $.post("{{constant('ROOT')}}inmobiliaria/?accion=lista-ciudades-por-estado", datos, (ciudades) => {
+         
+         $("select[name|='id_ciudad']").empty();
+         $("select[name|='id_ciudad']").append("<option value=\"\">Seleccione...</option>");
+         $.each(ciudades, (index, ciudad) => {
+            //if (municipio.quantity > 0) {
+                $("select[name|='id_ciudad']").append("<option value=\"" + ciudad.id_ciudad + "\">" + ciudad.ciudad + "</option>");
+            //}
+         });
+         
+     }, 'json');
+     $("select[name|='id_ciudad']").attr("disabled",false);
+     
+     //$("select[name|='id_property_type']").attr("disabled",true);
+     //$("select[name|='id_property_type']").empty();
+     //$("select[name|='id_property_type']").append("<option value=\"0\">Todos</option>");
+     /*var datos = { id_region: $(this).val() };
+     
+     $.post("{{constant('ROOT')}}inmobiliaria/listar-tipos-inmuebles", datos, function(tipos) {
+         
+          $.each(tipos, function(index, tipo) {
+            if (tipo.quantity > 0) {
+                $("select[name|='id_property_type']").append("<option value=\"" + tipo.id_property_type + "\">" + tipo.nombre + " (" + tipo.quantity + ")</option>");
+            }
+         });
+     }, 'json');
+     $("select[name|='id_property_type']").attr("disabled",false);*/
+    
+});
+$("select[name|='id_city']").change(function() {
+     $("select[name|='id_property_type']").attr("disabled",true);
+     $("select[name|='id_property_type']").empty();
+     $("select[name|='id_property_type']").append("<option value=\"0\">Todos</option>");
+     var datos = { id_city: $(this).val() };
+     
+     $.post("{{constant('ROOT')}}inmobiliaria/listar-tipos-inmuebles", datos, function(tipos) {
+         
+          $.each(tipos, function(index, tipo) {
+            if (tipo.quantity > 0) {
+                $("select[name|='id_property_type']").append("<option value=\"" + tipo.id_property_type + "\">" + tipo.nombre + " (" + tipo.quantity + ")</option>");
+            }
+         });
+     }, 'json');
+     $("select[name|='id_property_type']").attr("disabled",false);
+});
+
+/** Form Validate
+************************ **/
+if(jQuery('form.validate').length > 0) {
+
+    loadScript(plugin_path + 'form.validate/jquery.form.min.js', function() {
+        loadScript(plugin_path + 'form.validate/jquery.validation.min.js', function() {
+
+            if(jQuery().validate) {
+
+                jQuery('form.validate').each(function() {
+
+                    const _t 		 = jQuery(this);
+                    const _Cmessage  = _t.attr('data-captcha') 			|| "Invalid Captcha!";
+                    const _Tposition = _t.attr('data-toastr-position') 	|| "top-right";
+                    
+                    
+                    // Append 'is_ajax' hidden input field!
+                    //_t.append('<input type="hidden" name="is_ajax" value="true" />');
+
+                    _t.validate({
+                        submitHandler: function(form) {
+
+                            // Show spin icon
+                            jQuery(form).find('.input-group-addon').find('.fa-envelope').removeClass('fa-envelope').addClass('fa-refresh fa-spin');
+
+                            jQuery(form).ajaxSubmit({
+
+                                target: jQuery(form).find('.validate-result').length > 0 ? jQuery(form).find('.validate-result') : '',
+
+                                error: function(data) {
+                                    console.error(data); 
+                                    _toastr( 
+                                        "Ha ocurrido un error interno al tratar de guardar esta propiedad. Intente nuevamente más tarde",
+                                        _Tposition,
+                                        "error",
+                                        false
+                                    );
+                                },
+
+                                success: 	function(response) {
+                                    const data = JSON.parse(response);
+                                    const _Ttype = data.resultado.suceed ? "success" : "error";
+                                    
+                                    if(data.resultado.suceed) {
+                                        jQuery(form).find('.input-group-addon').find('.fa-refresh').removeClass('fa-refresh fa-spin').addClass('fa-envelope');
+                                        // Clear the form
+                                        jQuery(form).find('input.form-control, select, textarea').not('select[name="id_moneda"]').val('');
+                                        
+                                    }
+                                    // Toastr Message
+                                    _toastr(
+                                        data.resultado.mensaje,
+                                        _Tposition,
+                                        _Ttype,
+                                        false
+                                    );
+                                }
+                            });
+
+                        }
+                    });
+
+                });
+
+            }
+
+        });
+    });
+
+}
+</script>
+{% endblock %}

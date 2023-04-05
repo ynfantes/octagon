@@ -1,5 +1,5 @@
 <?php
-include_once 'includes/constants.php';
+include_once 'includes/constants.php';  
 $avance=0;
 $propietarios = new propietario();
 $propiedades = new propiedades();
@@ -33,11 +33,9 @@ $cartelera = new cartelera();
 $cartelera->tabla="cartelera_publica";
 $cartelera_publica = $cartelera->listar();
 
-echo $twig->render(
-        'index.html.twig',
-        Array(
-            "mantenimiento" => $mantenimiento,
-            "avance"        => $avance,
-            "cartelera_publica" => $cartelera_publica['data']
-            )
-        );
+$context = [
+    'mantenimiento'     => $mantenimiento,
+    'avance'            => $avance,
+    'cartelera_publica' => $cartelera_publica['data']
+];
+echo $twig->render('index.html.twig',$context);

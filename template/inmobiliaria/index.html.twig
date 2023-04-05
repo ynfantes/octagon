@@ -1,0 +1,336 @@
+{% extends 'layout/base.html.twig'%}
+{% block titulo %}Inmobiliaria{% endblock %}
+{% block head %}
+{{ parent() }}
+<link href="{{constant('ROOT')}}assets/css/layout-inmobiliaria.css" rel="stylesheet" type="text/css" />
+{% endblock %}
+{% block contenido %}
+<section class="page-header parallax parallax-3" style="background-image:url('{{constant('ROOT')}}img/condominio.jpg')">
+<div class="overlay dark-5"></div>
+<div class="container">
+<h1>Inmobiliaria</h1>
+<!-- breadcrumbs -->
+<ol class="breadcrumb">
+    <li><a href="{{constant('ROOT')}}">Inicio</a></li>
+    <li><a href="#" class="active">Inmobiliaria</a></li>
+</ol>
+<!-- /breadcrumbs -->
+</div>
+</section>
+<section style="padding-top:40px; padding-bottom: 0px; border: 0;">
+<div class="container">
+    <div class="row">
+        <div class="col-md-8 col-sm-8 col-md-push-4 col-sm-push-4">
+            <div class="flexslider">
+
+            <div class="flex-viewport" style="overflow: hidden; position: relative;">
+            <ul class="slides" style="width: 1200%; transition-duration: 0s; transform: translate3d(-1140px, 0px, 0px);">
+            {% set i = 0 %}
+            {% for i in 0..4 %}
+                {%if propiedades_destacadas[i] is iterable %}
+                <li>
+                    <a href="{{constant("ROOT")}}inmobiliaria/ver-propiedad/{{propiedades_destacadas[i].id_property}}">
+                    <img src="{{propiedades_destacadas[i].galleries[0][0].url_big}}" alt="{{propiedades_destacadas[i].galleries[0][0].description}}">
+                    <div class="flex-caption">
+                        <strong>{{propiedades_destacadas[i].title}}</strong>
+                        <h5 class="text-warning">En {{propiedades_destacadas[i].city_label}}, {{propiedades_destacadas[i].region_label}}, 
+                            {% if propiedades_destacadas[i].area > 0 %}con área de {{propiedades_destacadas[i].area}} {{propiedades_destacadas[i].unit_area_label}},{% endif %} {{propiedades_destacadas[i].bathrooms}} Baño(s), 
+                            {{propiedades_destacadas[i].bedrooms}} Habitacion(es).</h5></div>
+                    </a>
+		</li>
+                {% endif %}
+            <!-- Slide 1 -->
+            {% set i = i + 1 %}
+            {% endfor %}
+            </ul>
+                    
+            </div>
+                
+                <ul class="flex-direction-nav"><li class="flex-nav-prev"><a class="flex-prev" href="#"><i class="fa fa-angle-left"></i></a></li><li class="flex-nav-next"><a class="flex-next" href="#"><i class="fa fa-angle-right"></i></a></li></ul>
+            </div>
+        </div>
+        <div class="col-md-4 col-sm-4 col-md-pull-8 col-sm-pull-8">
+            <div class="panel panel-default">
+            <div class="panel-heading panel-heading-transparent">
+            <h2 class="panel-title bold">Búsqueda avanzada</h2>
+            </div>
+            <div class="panel-body">
+            <form action="{{constant('ROOT')}}inmobiliaria/" method="GET">
+                <fieldset>
+                <!-- required [php action request] -->
+                <input type="hidden" name="accion" value="buscar">
+                <div class="row">
+                <div class="form-group">
+                <div class="col-md-6 col-sm-6">
+                <label>ESTADO</label>
+                <select name="id_region" class="form-control pointer required">
+                    <option value="0">Todas</option>
+                    {% for ciudad in ciudades %}
+                        {% if ciudad.quantity > 0 %}
+                        <option value="{{ciudad.id_region}}">{{ciudad.name}} ({{ciudad.quantity}})</option>
+                        {% endif %}
+                    {% endfor %}
+                </select>
+                </div>
+                <div class="col-md-6 col-sm-6">
+                <label>CIUDAD</label>
+                <select name="id_city" class="form-control pointer required">
+                    <option value="0">Todas</option>
+                </select>
+                </div>
+                </div>
+                </div>
+
+                <div class="row">
+                <div class="form-group">
+                <div class="col-md-12 col-sm-12">
+                <label>TIPO INMUEBLE</label>
+                <select name="id_property_type" class="form-control pointer required">
+                    <option value="0">Todos</option>
+                    {% for tipo in tipos_inmuebles %}
+                        {% if tipo.quantity > 0 %}
+                        <option value="{{tipo.id_property_type}}">{{tipo.nombre}} ({{tipo.quantity}})</option>
+                        {% endif %}
+                    {% endfor %}
+                </select>
+                </div>
+                </div>
+                </div>
+
+                <div class="row">
+                <div class="form-group">
+                <div class="col-md-12 col-sm-12">
+                <label>TIPO NEGOCIO</label>
+                <select name="tipo_negocio" class="form-control pointer required">
+                    <option value="0">Todos</option>
+                    <option value="1">Vender</option>
+                    <option value="2">Arrendar</option>
+                    <option value="5">Vender - Arrendar</option>
+                    
+                </select>
+                </div>
+                </div>
+                </div>
+
+                <div class="row">
+                <div class="form-group">
+                <div class="col-md-12 col-sm-12">
+                <label>ESTADO PROPIEDAD</label>
+                <select name="estado" class="form-control pointer required">
+                     <option value="0">Todos</option>
+                    <option value="Nuevo">Nuevo</option>
+                    <option value="Usado">Usado</option>
+                    <option value="Proyecto">Proyecto</option>
+                    <option value="En Construccion">En Construcción</option>
+                </select>
+                </div>
+                </div>
+                </div>
+
+                <div class="row">
+                <div class="form-group">
+                <div class="col-md-6 col-sm-6">
+                <label>HABITACIONES</label>
+                <input name="bedrooms" value="" class="form-control required" type="text">
+                </div>
+                <div class="col-md-6 col-sm-6">
+                <label>BAÑOS</label>
+                <input name="bathrooms" value="" class="form-control required" type="text">
+                </div>
+                </div>
+                </div>
+                
+                <div class="row">
+		<div class="col-md-12">
+			<button type="submit" class="btn btn-3d btn-teal btn-block margin-top-10">
+				BUSCAR
+			</button>
+		</div>
+                </div>
+                </fieldset>
+
+            </form>
+            </div>
+            </div>
+        </div>
+    </div>
+</div>
+</section>
+<section style="padding: 20px 0">
+    <div class="container">
+    <div class="heading-title heading-dotted text-center">
+            <h4>Propiedades <span>destacadas</span></h4>
+    </div>
+    <div class="row">
+        <ul class="shop-item-list row list-inline nomargin">
+        {% set i = 0 %}
+        {#{dump(propiedades_destacadas)}#}
+        {% for propiedad in propiedades_destacadas %}
+            {% if propiedad is iterable %}
+        <!-- ITEM -->
+        <li class="col-lg-3 col-sm-3">
+
+        <div class="shop-item">
+
+        <div class="thumbnail">
+                <!-- product image(s) -->
+                <a class="shop-item-image" href="{{constant("ROOT")}}inmobiliaria/ver-propiedad/{{propiedad.id_property}}">
+                        <img class="img-responsive" src="{{propiedad.galleries[0][0].url}}" alt="shop first image">
+                        <img class="img-responsive" src="{{propiedad.galleries[0][1].url}}" alt="shop hover image">
+                </a>
+                <!-- /product image(s) -->
+
+                <div class="shop-item-counter">
+                        <div class="countdown is-countdown">
+                        <span class="countdown-row countdown-show4">
+                            <span class="countdown-section">
+                                <span class="countdown-amount">
+                                    {% if propiedad.area == "" %}
+                                        {{propiedad.built_area}}
+                                    {% else %}
+                                        {{propiedad.area}}
+                                    {% endif %}
+                                </span>
+                                <span class="countdown-period">
+                                    {% if propiedad.area == "" %}
+                                        {{propiedad.unit_built_area_label}}
+                                    {% else %}
+                                        {{propiedad.unit_area_label}}
+                                    {% endif %}
+                                </span>
+                            </span>
+                            <span class="countdown-section">
+                                <span class="countdown-amount">{{propiedad.bedrooms}}</span>
+                                <span class="countdown-period">Habitaciones</span>
+                            </span>
+                            <span class="countdown-section">
+                                <span class="countdown-amount">{{propiedad.bathrooms}}</span>
+                                <span class="countdown-period">Baños</span>
+                            </span>
+                            <span class="countdown-section">
+                                <span class="countdown-amount">{{propiedad.garages}}</span>
+                                <span class="countdown-period">Garages</span>
+                            </span>
+                        </span>
+                        </div>
+                </div>
+
+                <!-- product more info -->
+                <div class="shop-item-info">
+                        
+                        {% if propiedad.for_sale == "true" and propiedad.id_availability != 2%}
+                        <span class="label label-success">VENTA
+                        {% elseif propiedad.for_rent == "true" and propiedad.id_availability != 3%}
+                        <span class="label label-info">ALQUILER
+                        {% endif %}
+                        </span>
+                        
+                        {% if propiedad.id_availability == 2 %}
+                        <span class="label label-danger">VENDIDA</span>
+                        {% endif %}
+                        {% if propiedad.id_availability == 3 %}
+                        <span class="label label-danger">ALQUILADA</span>
+                        {% endif %}
+                </div>
+                <!-- /product more info -->
+        </div>
+
+        <div class="shop-item-summary text-center">
+                <h2>{{propiedad.title}}</h2>
+
+                <!-- rating -->
+                <!--div class="shop-item-rating-line">
+                <div class="rating rating-4 size-13"><!-- rating-0 ... rating-5 --><!--/div>
+                </div-->
+                <!-- /rating -->
+
+                <!-- price -->
+                <div class="shop-item-price">
+                        <!--span class="line-through">$98.00</span-->
+                        <!-- moneda -->
+                        {% if propiedad.id_currency == 6 %}
+                            Bs
+                        {% else %}
+                            propiedad.iso_currency
+                        {% endif %}
+                        {% if propiedad.for_sale == "true" %}
+                        {{propiedad.sale_price|number_format(0,",",".")}}
+                        {% elseif propiedad.for_rent == "true" %}
+                        {{propiedad.rent_price|number_format(0,",",".")}}
+                        {% endif %}
+                </div>
+                <!-- /price -->
+        </div>
+
+                <!-- buttons -->
+                <div class="shop-item-buttons text-center">
+                        <a class="btn btn-default" href="{{constant("ROOT")}}inmobiliaria/ver-propiedad/{{propiedad.id_property}}">Detalles <i class="fa fa-angle-right"></i></a>
+                </div>
+                <!-- /buttons -->
+        </div>
+
+        </li>
+        <!-- /ITEM -->
+            {% endif %}
+        {% endfor %}
+        
+
+        </ul>
+    </div>
+    </div>
+</section>                  
+{% endblock %}
+{% block javascript %}
+{{parent()}}
+<script type="text/javascript">
+
+$("select[name|='id_region']").change(function() {
+    $("select[name|='id_city']").attr("disabled",true);
+    var datos = { id : $(this).val() };
+    $.post("{{constant('ROOT')}}inmobiliaria/listar-ciudades", datos, function(ciudades) {
+         
+         $("select[name|='id_city']").empty();
+         $("select[name|='id_city']").append("<option value=\"0\">Todas</option>");
+         $.each(ciudades, function(index, ciudad) {
+            if (ciudad.quantity > 0) {
+                $("select[name|='id_city']").append("<option value=\"" + ciudad.id_city + "\">" + ciudad.name + " (" + ciudad.quantity + ")</option>");
+            }
+         });
+         
+     }, 'json');
+     $("select[name|='id_city']").attr("disabled",false);
+     
+     $("select[name|='id_property_type']").attr("disabled",true);
+     $("select[name|='id_property_type']").empty();
+     $("select[name|='id_property_type']").append("<option value=\"0\">Todos</option>");
+     var datos = { id_region: $(this).val() };
+     
+     $.post("{{constant('ROOT')}}inmobiliaria/listar-tipos-inmuebles", datos, function(tipos) {
+         
+          $.each(tipos, function(index, tipo) {
+            if (tipo.quantity > 0) {
+                $("select[name|='id_property_type']").append("<option value=\"" + tipo.id_property_type + "\">" + tipo.nombre + " (" + tipo.quantity + ")</option>");
+            }
+         });
+     }, 'json');
+     $("select[name|='id_property_type']").attr("disabled",false);
+    
+});
+$("select[name|='id_city']").change(function() {
+     $("select[name|='id_property_type']").attr("disabled",true);
+     $("select[name|='id_property_type']").empty();
+     $("select[name|='id_property_type']").append("<option value=\"0\">Todos</option>");
+     var datos = { id_city: $(this).val() };
+     
+     $.post("{{constant('ROOT')}}inmobiliaria/listar-tipos-inmuebles", datos, function(tipos) {
+         
+          $.each(tipos, function(index, tipo) {
+            if (tipo.quantity > 0) {
+                $("select[name|='id_property_type']").append("<option value=\"" + tipo.id_property_type + "\">" + tipo.nombre + " (" + tipo.quantity + ")</option>");
+            }
+         });
+     }, 'json');
+     $("select[name|='id_property_type']").attr("disabled",false);
+});
+</script>
+{% endblock %}
