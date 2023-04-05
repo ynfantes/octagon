@@ -16,6 +16,7 @@ Rewriterule ^intranet/([A-Za-z\-]+)/([A-Za-z\-]+)$ intranet/index.php?accion=$1&
 Rewriterule ^intranet/([A-Za-z\-]+)/([A-Za-z\-]+)/([0-9A-Za-z\-\_\.]+)$ intranet/index.php?accion=$1&id=$2&registro=$3 [L]
 Rewriterule ^intranet/([A-Za-z\-]+)/([A-Za-z\-]+)/([0-9A-Za-z\-\_\.]+)$ intranet/$1/index.php?accion=$2&id=$3 [L]
 Rewriterule ^imprimirCancelacionDeGastos/([A-Za-z-_0-9]+)$ includes/html2pdf/examples/cancelacion.php?id=$1 [L]
+Rewriterule inmobiliaria.html$ inmobiliaria/index.php?accion=inmobiliaria
 
 <ifmodule mod_expires.c> 
 ExpiresActive On

@@ -1,69 +1,206 @@
 <!DOCTYPE html>
-<html lang="es">
+<!--[if IE 8]>			<html class="ie ie8"> <![endif]-->
+<!--[if IE 9]>			<html class="ie ie9"> <![endif]-->
+<!--[if gt IE 9]><!-->	<html> <!--<![endif]-->
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="Administradora de Condominio Halcon, Administradora de condominio">
-<meta name="author" content="Edgar Messia (pronet21.com)">
+<meta charset="utf-8" />
+<title>{% block titulo %}{% endblock %} | {{constant('TITULO')}}</title>
+{% block seo %}
+<meta name="keywords" content="Administradora Octagon,  compra inmuebles, alquiler de inmuebles, administración de condominio, compra y venta inmuebles, Inmobiliaria Octagon" />
+<meta name="description" content="Administradora Octagon, dedicados al ramo inmobiliario. Talento y Experiencia como garantía de su inversión. " />
+{% endblock %}
+<meta name="Author" content="Edgar Messia (pronet21.com.ve)" />
+<!-- mobile settings -->
+<meta name="viewport" content="width=device-width, maximum-scale=1, initial-scale=1, user-scalable=0" />
+<meta name="google-site-verification" content="hO2yTy6JUlk-S5gVt7LwFdX0PNhdmDiSVDmQg6UE4hU" />
+<!--[if IE]><meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'><![endif]-->
 {% block head %}
-<link href="{{ constant("ROOT")}}css/bootstrap.css" rel="stylesheet">
-<link href="{{ constant("ROOT")}}css/bootstrap-responsive.css" rel="stylesheet">
-<link href="{{ constant("ROOT")}}css/docs.css" rel="stylesheet">
-<link href="{{ constant("ROOT")}}css/prettify.css" rel="stylesheet">
-<link rel="shortcut icon" href="{{ constant("ROOT")}}img/favicon.png">
-<title>{% block titulo %}{% endblock %} - {{ constant('TITULO')}}</title>
+<!-- WEB FONTS : use %7C instead of | (pipe) -->
+<link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400%7CRaleway:300,400,500,600,700%7CLato:300,400,400italic,600,700" rel="stylesheet" type="text/css" />
+
+<!-- CORE CSS -->
+<link href="{{constant('ROOT')}}assets/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+
+<!-- REVOLUTION SLIDER -->
+<link href="{{constant('ROOT')}}assets/plugins/slider.revolution/css/extralayers.css" rel="stylesheet" type="text/css" />
+<link href="{{constant('ROOT')}}assets/plugins/slider.revolution/css/settings.min.css" rel="stylesheet" type="text/css" />
+
+<!-- THEME CSS -->
+<link href="{{constant('ROOT')}}assets/css/essentials.min.css" rel="stylesheet" type="text/css" />
+<link href="{{constant('ROOT')}}assets/css/layout.min.css" rel="stylesheet" type="text/css" />
+<link href="{{constant('ROOT')}}assets/css/thematics-education.css" rel="stylesheet" type="text/css" />
+
+<!-- PAGE LEVEL SCRIPTS -->
+<link href="{{constant('ROOT')}}assets/css/header-1.css" rel="stylesheet" type="text/css" />
+<link href="{{constant('ROOT')}}assets/css/color_scheme/blue.min.css" rel="stylesheet" type="text/css" id="color_scheme" />
+
+
+<link rel="shortcut icon" href="{{constant('ROOT')}}images/favicon/favicon.png">
 {% endblock %}
+<style>
+  .games-id__month {
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 1;
+    padding-bottom: 8px;
+} 
+.games-id__date, .games-id__month {
+    color: #1d1d1d;
+    display: block;
+    line-height: 1;
+}
+.games-id__date {
+    font-size: 30px;
+    font-weight: 400;
+}
+.cp-games-id__right {
+    text-transform: uppercase;
+    text-align: right;
+}
+.games-id__to {
+    font-size: 14px;
+    font-weight: bold;
+}
+.games-id__title {
+    color: #737373;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 1;
+}
+</style>
 </head>
-<body>
-{% include 'misc/navbar.html.twig' %}
-{% block header %}
-<header class="jumbotron subhead" id="overview">
+
+<!--
+AVAILABLE BODY CLASSES:
+
+smoothscroll 			= create a browser smooth scroll
+enable-animation		= enable WOW animations
+
+bg-grey					= grey background
+grain-grey				= grey grain background
+grain-blue				= blue grain background
+grain-green				= green grain background
+grain-blue				= blue grain background
+grain-orange			= orange grain background
+grain-yellow			= yellow grain background
+
+boxed 					= boxed layout
+pattern1 ... patern11	= pattern background
+menu-vertical-hide		= hidden, open on click
+
+BACKGROUND IMAGE [together with .boxed class]
+data-background="assets/images/boxed_background/1.jpg"
+-->
+<body class="smoothscroll enable-animation">
+{% block slidetop %}
+<!-- SLIDE TOP -->
+<div id="slidetop">
+
 <div class="container">
-<h1>Halcón en Línea</h1>
-<p class="lead">Administración de Condominio por Internet.</p>
+
+<div class="row">
+
+<div class="col-md-4">
+<h6><i class="icon-heart"></i> ¿PORQUÉ INMOBILIARIA OCTAGON?</h6>
+<p>Porque poseemos la experiencia, el talento y el conocimiento en él área inmobiliaria. Trabajamos con mística y disciplina para ofrecer nuestros servicios en la compra, venta y alquiler de inmuebles, administración de condominios, asesoría y negocios en el área inmobiliaria. </p>
 </div>
-</header>
-{% endblock %}
-<div id="content">{% block contenido %}{% endblock %}</div>
-<div id="footer" class="footer">
-{% block footer %}
-<div class="container">
-<p>Calle Nueva, Qta Rimar, Planta Baja, Palmar Este. Caraballeda, Estado Vargas.</p>
-<p>Teléfonos: (0212)355 8583 - 8477 Fax: (0212)355 8605</p>
-<p>Atención al Cliente: Lunes a Viernes de 9:00am - 12:00m / 2:00pm - 4:30pm</p>
-<p>E-mail: info@administradorahalcon.com.ve</p>
-<ul class="footer-links">
-<li><a href="#">Administradora Halcón</a></li>
-<li class="muted">&middot;</li>
-<li><a href="index.php#nuestra-empresa">Nuestra Empresa</a></li>
-<li class="muted">&middot;</li>
-<li><a href="index.php#mision-vision">Misión y Visión</a></li>
-<li class="muted">&middot;</li>
-<li><a href="index.php#contactenos">Contáctenos</a></li>
+
+<div class="col-md-4">
+<h6><i class="icon-briefcase"></i> NUESTOS SERVICIOS</h6>
+<p>Compra, venta y alquiler de inmuebles, administración de condominios, alquiler y administración de inmuebles y negocios, asesoría inmobiliaria, 
+gestiones de cobranzas, cobro a morosos. Inmobiliaria, administradora de condominios. Administradora Octagon</p>
+</div>
+
+<div class="col-md-4">
+<h6><i class="icon-envelope"></i> INFORMACIÓN DE CONTACTO</h6>
+<ul class="list-unstyled">
+<li><b>Dirección:</b> Av. José Antonio Páez con Av. Whashington. <br> Qta. San José. PB. Local 2 <br /> El Paraiso - Caracas</li>
+<li><b>Master:</b> (0212) 451 8795 / 4045</li>
+<li><b>Email:</b> condominiosoctagon1@gmail.com</li>
 </ul>
 </div>
+
+</div>
+
+</div>
+
+<a class="slidetop-toggle" href="#"><!-- toggle button --></a>
+
+</div>
+<!-- /SLIDE TOP -->
+{% endblock %}
+
+<!-- wrapper -->
+<div id="wrapper">
+{% block topvar %}
+{% include 'misc/topvar.html.twig' %}
+{% endblock %}
+
+<!-- 
+AVAILABLE HEADER CLASSES
+
+Default nav height: 96px
+.header-md 		= 70px nav height
+.header-sm 		= 60px nav height
+
+.noborder 		= remove bottom border (only with transparent use)
+.transparent	= transparent header
+.translucent	= translucent header
+.sticky			= sticky header
+.static			= static header
+.dark			= dark header
+.bottom			= header on bottom
+
+shadow-before-1 = shadow 1 header top
+shadow-after-1 	= shadow 1 header bottom
+shadow-before-2 = shadow 2 header top
+shadow-after-2 	= shadow 2 header bottom
+shadow-before-3 = shadow 3 header top
+shadow-after-3 	= shadow 3 header bottom
+
+.clearfix		= required for mobile menu, do not remove!
+
+Example Usage:  class="clearfix sticky header-sm transparent noborder"
+-->
+<div id="header" class="sticky clearfix">
+{% block topnav %}
+{% include 'misc/topnav.html.twig' %}
 {% endblock %}
 </div>
-<!-- Le javascript
-================================================== -->
-<!-- Placed at the end of the document so the pages load faster -->
-<script type="text/javascript" src="http://platform.twitter.com/widgets.js"></script>
-<script src="js/jquery.js"></script>
-<script src="js/bootstrap-transition.js"></script>
-<script src="js/bootstrap-alert.js"></script>
-<script src="js/bootstrap-modal.js"></script>
-<script src="js/bootstrap-dropdown.js"></script>
-<script src="js/bootstrap-scrollspy.js"></script>
-<script src="js/bootstrap-tab.js"></script>
-<script src="js/bootstrap-tooltip.js"></script>
-<script src="js/bootstrap-popover.js"></script>
-<script src="js/bootstrap-button.js"></script>
-<script src="js/bootstrap-collapse.js"></script>
-<script src="js/bootstrap-carousel.js"></script>
-<script src="js/bootstrap-typeahead.js"></script>
-<script src="js/bootstrap-affix.js"></script>
-<script src="js/holder.js"></script>
-<script src="js/prettify.js"></script>
-<script src="js/application.js"></script>
+
+
+{% block contenido %}
+
+{% endblock %}
+
+{% block footer %}
+{% include 'misc/footer.html.twig' %}
+{% endblock %}
+</div>
+<!-- /wrapper -->
+
+<!-- SCROLL TO TOP -->
+<a href="#" id="toTop"></a>
+
+<!-- PRELOADER -->
+<div id="preloader">
+<div class="inner">
+<span class="loader"></span>
+</div>
+</div>
+<!-- /PRELOADER -->
+{% block javascript %}
+<!-- JAVASCRIPT FILES -->
+<script type="text/javascript">var plugin_path = '{{constant('ROOT')}}assets/plugins/';</script>
+<script type="text/javascript" src="{{constant('ROOT')}}assets/plugins/jquery/jquery-2.1.4.min.js"></script>
+<script type="text/javascript" src="{{constant('ROOT')}}assets/js/scripts.js"></script>
+<script type="text/javascript" src="{{constant('ROOT')}}assets/plugins/countdown/jquery.countdown.pack.min.js"></script>
+
+<!-- REVOLUTION SLIDER -->
+<script type="text/javascript" src="{{constant('ROOT')}}assets/plugins/slider.revolution/js/jquery.themepunch.tools.min.js"></script>
+<script type="text/javascript" src="{{constant('ROOT')}}assets/plugins/slider.revolution/js/jquery.themepunch.revolution.min.js"></script>
+<script type="text/javascript" src="{{constant('ROOT')}}assets/js/view/demo.revolution_slider.js"></script>
+
+{% endblock %}
 </body>
 </html>

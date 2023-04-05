@@ -4,3 +4,6 @@ enlinea/avisos/*.pdf
 solvencias/*.pdf
 data
 includes/configuracion.php
+images/inmobiliaria/*.png
+images/inmobiliaria/*.jpg
+images/inmobiliaria/*.gif
