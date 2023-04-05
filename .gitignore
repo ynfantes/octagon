@@ -5,5 +5,5 @@ solvencias/*.pdf
 data
 includes/configuracion.php
 images/inmobiliaria/*.png
-images/inmobiliaria/*.jpg
 images/inmobiliaria/*.gif
+images/inmobiliaria/*.jp*g
