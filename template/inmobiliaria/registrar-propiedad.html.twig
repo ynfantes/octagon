@@ -231,7 +231,7 @@ Por favor, haga click en <a href="?accion=publicaciones">Ver lista de propiedade
         <div class="row dropzone dz-clickable centered" id="previews">
             <div id="carga_imagenes">
                 <div class="dz-message">
-                    Arrastre las imágenes hasta aquí o haga click.<br>
+                    Arrastre las imágenes hasta aquí o haga click. (Máx. 8 imágenes)<br>
                     <span class="note">&nbsp;</span>
                 </div>
             </div>
@@ -274,7 +274,7 @@ var myDropzone = new Dropzone(document.body, {
     url: "{{constant('ROOT')}}images/inmobiliaria/index.php",
     previewsContainer: "#previews",
     maxFilesize: 1,
-    maxFiles:5,
+    maxFiles:"{{constant('MAX_FILES_DROPZONE')}}",
     acceptedFiles:"image/*",
     paramName:"file",
     addRemoveLinks: true ,
