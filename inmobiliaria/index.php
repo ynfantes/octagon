@@ -65,10 +65,32 @@ switch ($accion) {
         break;
      
     case "publicaciones":
-        $list    = $publicaciones->obtenerPublicaciones();
-        $name    = 'inmobiliaria/lista-publicaciones.html.twig';
-        $context = ["listado" => $list['data']];
+        
+        $name  = 'inmobiliaria/lista-publicaciones.html.twig';
+        
+        $list     = $publicaciones->obtenerPublicaciones();
+        $num_rows = $list['stats']['affected_rows'];
+        $rows_per_page =  defined('ROWS_PER_PAGE_LIST_PUB') ? ROWS_PER_PAGE_LIST_PUB : 2;
+        $total_page = ceil($num_rows / $rows_per_page);
+        $current_page = isset($_GET['page']) ? $_GET['page'] : 1;
+        $start = $rows_per_page * ($current_page - 1);
+        $limit = $start + $rows_per_page;
+        
+        $data = [
+            'start' => $start,
+            'limit' => $limit,
+        ];
+        $list     = $publicaciones->obtenerPublicaciones($data);
+        
+        $listado['data']  = $list['suceed'] ? $list['data'] : [];
+        $listado['limit'] = $limit;
+        $listado['page']  = $current_page;
+        $listado['rows']  = $list['stats']['affected_rows'];
+        $listado['pages'] = $total_page;
+        $context = ["listado" => $listado];
+
         echo $twig->render($name, $context);
+        
         break; 
 
     case "publicar":

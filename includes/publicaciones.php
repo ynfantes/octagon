@@ -44,16 +44,26 @@ class publicaciones extends db implements crud {
         return $r['row']['total'];
         
     }
-    public function obtenerPublicaciones($data=array()) {
-        $sql = "select pu.*, c.descripcion as ciudad, m.descripcion as municipio, t.descripcion as Tipo, o.descripcion as operacion  
+    public function obtenerPublicaciones($data=[]) {
+        $sql = "select pu.* 
+            ,c.ciudad
+            ,e.estado
+            ,t.descripcion as tipo
+            ,o.descripcion as operacion
+            ,m.simbolo 
             from inmobiliaria_publicacion pu
-            join ciudades c on c.id = pu.id_ciudad
-            join municipios m on m.id = pu.id_municipio 
+            join estados e on e.id_estado = pu.id_estado
+            join ciudades c on c.id_ciudad = pu.id_ciudad
             join inmobiliaria_tipo t on t.id = pu.id_inmobiliaria_tipo
-            join operaciones o on o.id = pu.id_operacion where inactivo = 0";
+            join operaciones o on o.id = pu.id_operacion 
+            join monedas m on m.id = pu.id_moneda
+            where inactivo = 0";
         
-        if (isset($data['id_municipio']) && $data['id_municipio']>1) {
-            $sql.= " and pu.id_municipio =".$data['id_municipio'];
+        if (isset($data['id_estado'])) {
+            $sql.= " and pu.id_estado =".$data['id_estado'];
+        }
+        if (isset($data['id_ciudad'])) {
+            $sql.= " and pu.id_ciudad =".$data['id_ciudad'];
         }
         if (isset($data['id_operacion']) && $data['id_operacion']>1) {
             $sql.= " and pu.id_operacion =".$data['id_operacion'];
@@ -71,17 +81,13 @@ class publicaciones extends db implements crud {
         if (isset($data['order'])) {
             $sql .= " ".$data['order'];
         }
-        if (isset($data['start']) || isset($data['limit'])) {
-            if ($data['start'] < 0) {
-                    $data['start'] = 0;
-            }				
+        if(isset($data['start']) && isset($data['limit'])) {
 
-            if ($data['limit'] < 1) {
-                    $data['limit'] = 10;
-            }	
-
-            $sql .= " LIMIT " . (int)$data['start'] . "," . (int)$data['limit'];
+            $start = isset($data['start']) ? $data['start'] : 0;
+            $limit = isset($data['limit']) ? $data['limit'] : 5;
+            $sql .= " LIMIT $start,$limit";
         }
+
         //echo $sql;
         return db::query($sql);
         

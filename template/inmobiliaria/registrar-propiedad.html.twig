@@ -28,7 +28,7 @@
 <div class="panel panel-default">
 <div class="panel-body">
 <strong>¡Bienvenido!</strong>
-Por favor, haga click en <a href="#">Ver lista de propiedades</a> para administrar las publicaciones.
+Por favor, haga click en <a href="?accion=publicaciones">Ver lista de propiedades</a> para administrar las publicaciones.
 </div>
 </div>
 
@@ -269,7 +269,6 @@ var myDropzone = new Dropzone(document.body, {
     addRemoveLinks: true ,
     dictRemoveFile: "Eliminar",
     renameFile: function (file) {
-        console.log(file);
         const newName = new Date().getTime() + '_' + file.name.replaceAll(' ','');
         return newName;
     },
