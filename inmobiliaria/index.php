@@ -74,7 +74,7 @@ switch ($accion) {
         $total_page = ceil($num_rows / $rows_per_page);
         $current_page = isset($_GET['page']) ? $_GET['page'] : 1;
         $start = $rows_per_page * ($current_page - 1);
-        $limit = $start + $rows_per_page;
+        $limit = $rows_per_page;
         
         $data = [
             'start' => $start,
@@ -82,11 +82,14 @@ switch ($accion) {
         ];
         $list     = $publicaciones->obtenerPublicaciones($data);
         
-        $listado['data']  = $list['suceed'] ? $list['data'] : [];
-        $listado['limit'] = $limit;
-        $listado['page']  = $current_page;
-        $listado['rows']  = $list['stats']['affected_rows'];
-        $listado['pages'] = $total_page;
+        $listado['data']     = $list['suceed'] ? $list['data'] : [];
+        $listado['rows']     = $list['stats']['affected_rows'];
+        $listado['start']    = $start + 1;
+        $listado['end']      = $start + $listado['rows'];
+        $listado['page']     = $current_page;
+        $listado['num_rows'] = $num_rows;
+        $listado['pages']    = $total_page;
+
         $context = ["listado" => $listado];
 
         echo $twig->render($name, $context);
