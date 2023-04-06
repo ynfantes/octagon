@@ -95,6 +95,12 @@ switch ($accion) {
 
     case "publicar":
         $context = getContext();
+        if (isset($_GET['id'])) {
+            $propiedad = $publicaciones->ver($_GET['id']);
+            if ($propiedad['suceed'] && $propiedad['stats']['affected_rows']>0) {
+                $context['propiedad'] = $propiedad['row'];
+            }
+        }
         echo $twig->render('inmobiliaria/registrar-propiedad.html.twig', $context);
         break; 
 
@@ -117,10 +123,10 @@ switch ($accion) {
             unset($data['imagen']);
         }
         // editar
-        if (isset($data['editar']) && $data['editar'] == 'editar') {
+        if (isset($data['id']) && $data['id'] > 0) {
 
-            unset($data['editar']);
             $id = $data['id'];
+            unset($data['id']);
             $result = $publicaciones->actualizar($id, $data);
             if ($result['suceed']) {
                 $result['mensaje'] = 'Publicación actualizada con éxito!';
@@ -197,7 +203,13 @@ switch ($accion) {
         break; 
 
     default :
-        echo $twig->render('inmobiliaria/index.html.twig');
+        $name    = 'inmobiliaria/index.html.twig';
+        $context = getContext();
+        $list    = $publicaciones->obtenerPublicaciones();
+        $listado = $list['suceed'] ? $list['data'] : [];
+        $context["publicaciones"] = $listado;
+        echo $twig->render($name, $context);
+
         break;
 }
         

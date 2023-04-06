@@ -13,7 +13,7 @@
 <!-- breadcrumbs -->
 <ol class="breadcrumb">
     <li><a href="{{constant('ROOT')}}">Inicio</a></li>
-    <li><a href="#" class="active">Publicar</a></li>
+    <li><a href="#" class="active">Guardar Propiedad</a></li>
 </ol>
 <!-- /breadcrumbs -->
 </div>
@@ -49,7 +49,7 @@ Por favor, haga click en <a href="?accion=publicaciones">Ver lista de propiedade
 <div class="row">
     <div class="col-lg-12">
     <label for="title">Titulo *</label>
-    <input id="titulo" name="titulo" type="text" class="form-control required">
+    <input id="titulo" name="titulo" type="text" class="form-control required" value="{{propiedad.titulo}}">
     </div>
 </div>
 <div class="row">
@@ -62,7 +62,7 @@ Por favor, haga click en <a href="?accion=publicaciones">Ver lista de propiedade
         name="descripcion" 
         placeholder="Escriba una descripción de la propiedad" 
         rows="10" 
-    ></textarea>
+    >{{propiedad.descripcion}}</textarea>
     </div>
 </div>
 <!-- start tipo propiedad, tipo de operación -->
@@ -72,7 +72,7 @@ Por favor, haga click en <a href="?accion=publicaciones">Ver lista de propiedade
         <select id="id_inmobiliaria_tipo" name="id_inmobiliaria_tipo" class="form-control pointer required">
             <option value="">Seleccione...</option>
             {% for ele in tipo %}
-            <option value="{{ele.id}}">{{ele.descripcion}}</option>
+            <option value="{{ele.id}}" {% if ele.id == propiedad.id_inmobiliaria_tipo %} selected {% endif %}>{{ele.descripcion}}</option>
             {% endfor %}
         </select>
     </div>
@@ -82,7 +82,7 @@ Por favor, haga click en <a href="?accion=publicaciones">Ver lista de propiedade
         <select id="id_operacion" name="id_operacion" class="form-control pointer required">
             <option value="">Seleccione...</option>
             {% for ele in operacion %}
-            <option value="{{ele.id}}">{{ele.descripcion}}</option>
+            <option value="{{ele.id}}" {% if ele.id == propiedad.id_operacion %} selected {% endif %}>{{ele.descripcion}}</option>
             {% endfor %}
         </select>
     </div>
@@ -96,7 +96,7 @@ Por favor, haga click en <a href="?accion=publicaciones">Ver lista de propiedade
         <select id="id_estado" name="id_estado" class="form-control pointer required">
             <option value="">Seleccione...</option>
             {% for ele in estados %}
-            <option value="{{ele.id_estado}}">{{ele.estado}}</option>
+            <option value="{{ele.id_estado}}" {% if ele.id_estado == propiedad.id_estado %} selected {% endif %}>{{ele.estado}}</option>
             {% endfor %}
         </select>
     </div>
@@ -106,7 +106,7 @@ Por favor, haga click en <a href="?accion=publicaciones">Ver lista de propiedade
         <select id="id_ciudad" name="id_ciudad" class="form-control pointer required">
             <option value="">Seleccione...</option>
             {% for ele in ciudades %}
-            <option value="{{ele.id_ciudad}}">{{ele.ciudad}}</option>
+            <option value="{{ele.id_ciudad}}" {% if ele.id_ciudad == propiedad.id_ciudad %} selected {% endif %}>{{ele.ciudad}}</option>
             {% endfor %}
         </select>
     </div>
@@ -120,7 +120,8 @@ Por favor, haga click en <a href="?accion=publicaciones">Ver lista de propiedade
         class="form-control required"
         id="zona" 
         name="zona" 
-        type="text" 
+        type="text"
+        value="{{propiedad.zona}}" 
     />
     </div>
 
@@ -131,6 +132,7 @@ Por favor, haga click en <a href="?accion=publicaciones">Ver lista de propiedade
         id="mts2" 
         name="mts2" 
         type="number" 
+        value="{{propiedad.mts2}}"
     />
     </div>
 
@@ -141,6 +143,7 @@ Por favor, haga click en <a href="?accion=publicaciones">Ver lista de propiedade
         id="habitaciones" 
         name="habitaciones" 
         type="number" 
+        value="{{propiedad.habitaciones}}"
     />
     </div>
 
@@ -153,7 +156,8 @@ Por favor, haga click en <a href="?accion=publicaciones">Ver lista de propiedade
         class="form-control required"
         id="baños" 
         name="baños" 
-        type="number" 
+        type="number"
+        value="{{propiedad.baños}}" 
     />
     </div>
 
@@ -164,6 +168,7 @@ Por favor, haga click en <a href="?accion=publicaciones">Ver lista de propiedade
         id="puestos_estacionamiento" 
         name="puestos_estacionamiento" 
         type="number" 
+        value="{{propiedad.puestos_estacionamiento}}"
     />
     </div>
 
@@ -174,6 +179,7 @@ Por favor, haga click en <a href="?accion=publicaciones">Ver lista de propiedade
         id="maleteros" 
         name="maleteros" 
         type="number" 
+        value="{{propiedad.maleteros}}"
     />
     </div>
 </div>
@@ -193,6 +199,7 @@ Por favor, haga click en <a href="?accion=publicaciones">Ver lista de propiedade
             name="codigo_id" 
             type="text"
             maxlength="10"
+            value="{{propiedad.codigo_id}}"
         />
         </div>
 
@@ -200,7 +207,7 @@ Por favor, haga click en <a href="?accion=publicaciones">Ver lista de propiedade
         <label for="id_moneda">Moneda *</label>
         <select id="id_moneda" name="id_moneda" class="form-control pointer required">
             {% for ele in monedas %}
-            <option value="{{ele.id}}">{{ele.descripcion}}</option>
+            <option value="{{ele.id}}" {% if ele.id == propiedad.id_moneda %} selected {% endif %}>{{ele.descripcion}}</option>
             {% endfor %}
         </select>
         </div>
@@ -212,6 +219,7 @@ Por favor, haga click en <a href="?accion=publicaciones">Ver lista de propiedade
             id="importe" 
             name="importe" 
             type="number" 
+            value="{{propiedad.importe}}"
         />
         </div>
     </div>
@@ -240,10 +248,13 @@ Por favor, haga click en <a href="?accion=publicaciones">Ver lista de propiedade
     <button 
         class="btn btn-primary btn-lg btn-block size-15" 
         type="submit"
-    ><i class="fa fa-mail-forward"></i> Publicar
+    ><i class="fa fa-save"></i> Guardar
     </button>
 
 </div>
+{% if propiedad %}
+<input type="hidden" name="id" value="{{propiedad.id}}" />
+{% endif %}
 </form>
 </div>
 </section>            
@@ -282,12 +293,14 @@ var myDropzone = new Dropzone(document.body, {
             });
         });
         this.on('removedfile', function(image) {
-            const filename = image.upload.filename;
+            console.log(image);
+            const filename = image.upload && image.upload.filename || image.name;
+            console.log(filename);
             jQuery.getJSON(`{{constant('ROOT')}}images/inmobiliaria/deleteimage.php?name=${filename}`, function(resp) {
                 console.log(resp.message, resp.image);
             });
         });
-        jQuery.getJSON('{{constant('ROOT')}}images/inmobiliaria/index.php?id={{propiedad[0].id}}', function(data) {
+        jQuery.getJSON('{{constant('ROOT')}}images/inmobiliaria/index.php?id={{propiedad.id}}', function(data) {
             jQuery.each(data, function(index, val) {
               var mockFile = { name: val.name, size: val.size };
               myDropzone.options.addedfile.call(myDropzone, mockFile);
@@ -337,22 +350,6 @@ $("select[name|='id_estado']").change(function() {
      $("select[name|='id_property_type']").attr("disabled",false);*/
     
 });
-$("select[name|='id_city']").change(function() {
-     $("select[name|='id_property_type']").attr("disabled",true);
-     $("select[name|='id_property_type']").empty();
-     $("select[name|='id_property_type']").append("<option value=\"0\">Todos</option>");
-     var datos = { id_city: $(this).val() };
-     
-     $.post("{{constant('ROOT')}}inmobiliaria/listar-tipos-inmuebles", datos, function(tipos) {
-         
-          $.each(tipos, function(index, tipo) {
-            if (tipo.quantity > 0) {
-                $("select[name|='id_property_type']").append("<option value=\"" + tipo.id_property_type + "\">" + tipo.nombre + " (" + tipo.quantity + ")</option>");
-            }
-         });
-     }, 'json');
-     $("select[name|='id_property_type']").attr("disabled",false);
-});
 
 /** Form Validate
 ************************ **/
@@ -368,11 +365,10 @@ if(jQuery('form.validate').length > 0) {
                     const _t 		 = jQuery(this);
                     const _Cmessage  = _t.attr('data-captcha') 			|| "Invalid Captcha!";
                     const _Tposition = _t.attr('data-toastr-position') 	|| "top-right";
+                    const _isEdit    = jQuery('input[name="id"]').length > 0;
+                    // Append 'id' hidden input field!
+                    //_t.append('<input type="hidden" name="id" value="{{propiedad.id}}" />');
                     
-                    
-                    // Append 'is_ajax' hidden input field!
-                    //_t.append('<input type="hidden" name="is_ajax" value="true" />');
-
                     _t.validate({
                         submitHandler: function(form) {
 
@@ -400,9 +396,13 @@ if(jQuery('form.validate').length > 0) {
                                     if(data.resultado.suceed) {
                                         jQuery(form).find('.input-group-addon').find('.fa-refresh').removeClass('fa-refresh fa-spin').addClass('fa-envelope');
                                         // Clear the form
-                                        jQuery(form).find('input.form-control, select, textarea').not('select[name="id_moneda"]').val('');
-                                        jQuery('.dz-preview').remove();
-                                        myDropzone.files = [];
+                                        if(!_isEdit){
+
+                                            jQuery(form).find('input.form-control, select, textarea').not('select[name="id_moneda"]').val('');
+                                            jQuery('.dz-preview').remove();
+                                            myDropzone.files = [];
+                                        }
+                                        
                                     }
                                     // Toastr Message
                                     _toastr(

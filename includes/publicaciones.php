@@ -9,11 +9,11 @@ class publicaciones extends db implements crud {
     const tabla = "inmobiliaria_publicacion";
     
     public function actualizar($id, $data) {
-        return db::update(self::tabla, $data, array("id" => $id));
+        return db::update(self::tabla, $data, ["id" => $id]);
     }
 
     public function borrar($id) {
-        return db::delete(self::tabla, array("id" => $id));
+        return db::delete(self::tabla, ["id" => $id]);
     }
 
     public function borrarTodo() {
@@ -29,12 +29,14 @@ class publicaciones extends db implements crud {
     }
 
     public function ver($id) {
-        $sql = "select pu.*, c.ciudad, m.municipio, t.descripcion as Tipo, o.descripcion as operacion  
+        $sql = "select pu.*, c.ciudad, e.estado, t.descripcion as Tipo, o.descripcion as operacion, m.simbolo, m.descripcion as moneda  
             from inmobiliaria_publicacion pu
             join ciudades c on c.id_ciudad = pu.id_ciudad
-            join municipios m on m.id_municipio = pu.id_municipio 
+            join estados e on e.id_estado = pu.id_estado 
             join inmobiliaria_tipo t on t.id = pu.id_inmobiliaria_tipo
-            join operaciones o on o.id = pu.id_operacion where pu.id = $id";
+            join operaciones o on o.id = pu.id_operacion 
+            join monedas m on m.id = pu.id_moneda 
+            where pu.id = $id";
         
          return db::query($sql);
     }
@@ -77,6 +79,8 @@ class publicaciones extends db implements crud {
         }
         if (isset($data['sort'])) {
             $sql .= " ORDER BY LCASE(" . $data['sort'] . ")";
+        } else {
+            $sql .= " ORDER BY id";
         }
         if (isset($data['order'])) {
             $sql .= " ".$data['order'];

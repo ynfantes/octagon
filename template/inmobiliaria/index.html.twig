@@ -22,7 +22,6 @@
     <div class="row">
         <div class="col-md-8 col-sm-8 col-md-push-4 col-sm-push-4">
             <div class="flexslider">
-
             <div class="flex-viewport" style="overflow: hidden; position: relative;">
             <ul class="slides" style="width: 1200%; transition-duration: 0s; transform: translate3d(-1140px, 0px, 0px);">
             {% set i = 0 %}
@@ -64,18 +63,19 @@
                 <div class="col-md-6 col-sm-6">
                 <label>ESTADO</label>
                 <select name="id_region" class="form-control pointer required">
-                    <option value="0">Todas</option>
-                    {% for ciudad in ciudades %}
-                        {% if ciudad.quantity > 0 %}
-                        <option value="{{ciudad.id_region}}">{{ciudad.name}} ({{ciudad.quantity}})</option>
-                        {% endif %}
+                    <option value="">Todos</option>
+                    {% for ele in estados %}
+                        <option value="{{ele.id_estado}}">{{ele.estado}}</option>
                     {% endfor %}
                 </select>
                 </div>
                 <div class="col-md-6 col-sm-6">
                 <label>CIUDAD</label>
                 <select name="id_city" class="form-control pointer required">
-                    <option value="0">Todas</option>
+                    <option value="">Todas</option>
+                    {% for ele in ciudades %}
+                        <option value="{{ele.id_ciudad}}">{{ele.ciudad}}</option>
+                    {% endfor %}
                 </select>
                 </div>
                 </div>
@@ -85,12 +85,10 @@
                 <div class="form-group">
                 <div class="col-md-12 col-sm-12">
                 <label>TIPO INMUEBLE</label>
-                <select name="id_property_type" class="form-control pointer required">
-                    <option value="0">Todos</option>
-                    {% for tipo in tipos_inmuebles %}
-                        {% if tipo.quantity > 0 %}
-                        <option value="{{tipo.id_property_type}}">{{tipo.nombre}} ({{tipo.quantity}})</option>
-                        {% endif %}
+                <select name="id_inmobiliaria_tipo" class="form-control pointer required">
+                    <option value="">Todos</option>
+                    {% for ele in tipo %}
+                        <option value="{{ele.id}}">{{ele.descripcion}}</option>
                     {% endfor %}
                 </select>
                 </div>
@@ -100,19 +98,18 @@
                 <div class="row">
                 <div class="form-group">
                 <div class="col-md-12 col-sm-12">
-                <label>TIPO NEGOCIO</label>
-                <select name="tipo_negocio" class="form-control pointer required">
-                    <option value="0">Todos</option>
-                    <option value="1">Vender</option>
-                    <option value="2">Arrendar</option>
-                    <option value="5">Vender - Arrendar</option>
-                    
+                <label>OPERACION</label>
+                <select name="id_operacion" class="form-control pointer required">
+                    <option value="">Todas</option>
+                    {% for ele in operacion %}
+                        <option value="{{ele.id}}">{{ele.descripcion}}</option>
+                    {% endfor %}
                 </select>
                 </div>
                 </div>
                 </div>
 
-                <div class="row">
+                <!--div class="row">
                 <div class="form-group">
                 <div class="col-md-12 col-sm-12">
                 <label>ESTADO PROPIEDAD</label>
@@ -125,17 +122,17 @@
                 </select>
                 </div>
                 </div>
-                </div>
+                </div-->
 
                 <div class="row">
                 <div class="form-group">
                 <div class="col-md-6 col-sm-6">
                 <label>HABITACIONES</label>
-                <input name="bedrooms" value="" class="form-control required" type="text">
+                <input name="habitaciones" value="" class="form-control required" type="text">
                 </div>
                 <div class="col-md-6 col-sm-6">
                 <label>BAÑOS</label>
-                <input name="bathrooms" value="" class="form-control required" type="text">
+                <input name="baños" value="" class="form-control required" type="text">
                 </div>
                 </div>
                 </div>
@@ -165,7 +162,7 @@
         <ul class="shop-item-list row list-inline nomargin">
         {% set i = 0 %}
         {#{dump(propiedades_destacadas)}#}
-        {% for propiedad in propiedades_destacadas %}
+        {% for propiedad in publicaciones %}
             {% if propiedad is iterable %}
         <!-- ITEM -->
         <li class="col-lg-3 col-sm-3">
@@ -174,9 +171,9 @@
 
         <div class="thumbnail">
                 <!-- product image(s) -->
-                <a class="shop-item-image" href="{{constant("ROOT")}}inmobiliaria/ver-propiedad/{{propiedad.id_property}}">
-                        <img class="img-responsive" src="{{propiedad.galleries[0][0].url}}" alt="shop first image">
-                        <img class="img-responsive" src="{{propiedad.galleries[0][1].url}}" alt="shop hover image">
+                <a class="shop-item-image" href="{{constant("ROOT")}}inmobiliaria/ver-propiedad/{{propiedad.id}}">
+                        <img class="img-responsive" src="{{ constant("ROOT")}}{{propiedad.imagen}}" alt="shop first image">
+                        <!--img class="img-responsive" src="{{propiedad.galleries[0][1].url}}" alt="shop hover image"-->
                 </a>
                 <!-- /product image(s) -->
 
@@ -184,32 +181,20 @@
                         <div class="countdown is-countdown">
                         <span class="countdown-row countdown-show4">
                             <span class="countdown-section">
-                                <span class="countdown-amount">
-                                    {% if propiedad.area == "" %}
-                                        {{propiedad.built_area}}
-                                    {% else %}
-                                        {{propiedad.area}}
-                                    {% endif %}
-                                </span>
-                                <span class="countdown-period">
-                                    {% if propiedad.area == "" %}
-                                        {{propiedad.unit_built_area_label}}
-                                    {% else %}
-                                        {{propiedad.unit_area_label}}
-                                    {% endif %}
-                                </span>
+                                <span class="countdown-amount">{{propiedad.mts2}}</span>
+                                <span class="countdown-period">M<sup>2</sup></span>
                             </span>
                             <span class="countdown-section">
-                                <span class="countdown-amount">{{propiedad.bedrooms}}</span>
-                                <span class="countdown-period">Habitaciones</span>
+                                <span class="countdown-amount">{{propiedad.habitaciones}}</span>
+                                <span class="countdown-period">Habitac.</span>
                             </span>
                             <span class="countdown-section">
-                                <span class="countdown-amount">{{propiedad.bathrooms}}</span>
+                                <span class="countdown-amount">{{propiedad.baños}}</span>
                                 <span class="countdown-period">Baños</span>
                             </span>
                             <span class="countdown-section">
-                                <span class="countdown-amount">{{propiedad.garages}}</span>
-                                <span class="countdown-period">Garages</span>
+                                <span class="countdown-amount">{{propiedad.puestos_estacionamiento}}</span>
+                                <span class="countdown-period">Estac.</span>
                             </span>
                         </span>
                         </div>
@@ -217,27 +202,30 @@
 
                 <!-- product more info -->
                 <div class="shop-item-info">
-                        
-                        {% if propiedad.for_sale == "true" and propiedad.id_availability != 2%}
-                        <span class="label label-success">VENTA
-                        {% elseif propiedad.for_rent == "true" and propiedad.id_availability != 3%}
-                        <span class="label label-info">ALQUILER
-                        {% endif %}
-                        </span>
-                        
-                        {% if propiedad.id_availability == 2 %}
-                        <span class="label label-danger">VENDIDA</span>
-                        {% endif %}
-                        {% if propiedad.id_availability == 3 %}
-                        <span class="label label-danger">ALQUILADA</span>
-                        {% endif %}
+                    {% if propiedad.id_operacion == 1 %}
+                        {% set class = 'primary' %}
+                    {% elseif propiedad.id_operacion == 2 %}
+                        {% set class = 'sea' %}
+                    {% else %}
+                        {% set class = 'info' %}
+                    {% endif %}
+                    
+                    <span class="label label-{{class}}">{{propiedad.operacion}}</span>
+                    
+                    {% if propiedad.id_availability == 2 %}
+                    <span class="label label-danger">VENDIDA</span>
+                    {% endif %}
+                    {% if propiedad.id_availability == 3 %}
+                    <span class="label label-danger">ALQUILADA</span>
+                    {% endif %}
                 </div>
                 <!-- /product more info -->
         </div>
 
         <div class="shop-item-summary text-center">
-                <h2>{{propiedad.title}}</h2>
-
+                <div style="min-height:68px">
+                <h2>{{propiedad.titulo}}</h2>
+                </div>
                 <!-- rating -->
                 <!--div class="shop-item-rating-line">
                 <div class="rating rating-4 size-13"><!-- rating-0 ... rating-5 --><!--/div>
@@ -248,25 +236,17 @@
                 <div class="shop-item-price">
                         <!--span class="line-through">$98.00</span-->
                         <!-- moneda -->
-                        {% if propiedad.id_currency == 6 %}
-                            Bs
-                        {% else %}
-                            propiedad.iso_currency
-                        {% endif %}
-                        {% if propiedad.for_sale == "true" %}
-                        {{propiedad.sale_price|number_format(0,",",".")}}
-                        {% elseif propiedad.for_rent == "true" %}
-                        {{propiedad.rent_price|number_format(0,",",".")}}
-                        {% endif %}
+                        {{propiedad.simbolo}}
+                        {{propiedad.importe|number_format(0,",",".")}}
                 </div>
                 <!-- /price -->
         </div>
 
-                <!-- buttons -->
-                <div class="shop-item-buttons text-center">
-                        <a class="btn btn-default" href="{{constant("ROOT")}}inmobiliaria/ver-propiedad/{{propiedad.id_property}}">Detalles <i class="fa fa-angle-right"></i></a>
-                </div>
-                <!-- /buttons -->
+            <!-- buttons -->
+            <div class="shop-item-buttons text-center">
+                    <a class="btn btn-primary" href="{{constant("ROOT")}}inmobiliaria/ver-propiedad/{{propiedad.id}}">Detalles <i class="fa fa-angle-right"></i></a>
+            </div>
+            <!-- /buttons -->
         </div>
 
         </li>

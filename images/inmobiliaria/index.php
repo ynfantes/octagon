@@ -16,7 +16,7 @@ if (!empty($_FILES)) {
         $publicaciones = new publicaciones();
         $publicacion = $publicaciones->ver($_GET['id']);
         
-        $files[] = basename($publicacion['data'][0]['imagen']);
+        $files[] = basename($publicacion['row']['imagen']);
         
         $imagenes = $publicaciones->obtenerImagenesPorPublicacion($_GET['id']);
         
