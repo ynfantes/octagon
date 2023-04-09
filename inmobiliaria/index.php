@@ -13,7 +13,7 @@ $publicaciones = new publicaciones();
 
 function getContext() {
     $db = new db();
-    $estados_act = '24,14';
+    $estados_act = '21,24,14';
     
     $estados    = $db->dame_query("select * from estados where id_estado in ($estados_act) order by estado");
     $ciudades   = $db->dame_query("select * from ciudades where id_estado in ($estados_act) order by ciudad");
