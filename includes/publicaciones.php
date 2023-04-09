@@ -39,7 +39,7 @@ class publicaciones extends db implements crud {
         //     where pu.id = $id";
         
         //  return db::query($sql);
-        return $this->obtenerPublicaciones(['pu.id' => $id]);
+        return $this->obtenerPublicaciones(['id' => $id]);
 
     }
     public function totalPublicaciones() {
@@ -77,6 +77,9 @@ class publicaciones extends db implements crud {
         }
         if (isset($data['habitaciones']) && $data['habitaciones']>1) {
             $sql.= " and pu.habitaciones =".$data['habitaciones'];
+        }
+        if(isset($data['id']) && $data['id']>0) {
+            $sql.= " and pu.id =".$data['id'];
         }
         if (isset($data['sort'])) {
             $sql .= " ORDER BY LCASE(" . $data['sort'] . ")";
