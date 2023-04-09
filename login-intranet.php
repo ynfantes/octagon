@@ -17,7 +17,7 @@ if (isset($_POST['nombre']) && isset($_POST['password']) && isset($_POST['user']
         if ($_SESSION['status'] == 'logueado') {
             
             $url = ($user == 'intranet') ? URL_INTRANET : URL_INMOBILIARIA ."/";
-            if($user == 'inmobiliaria') $url.= '?accion=user';
+            if($user == 'inmobiliaria') $url.= '?accion=publicaciones';
             header("location:".$url);
         }
         die();

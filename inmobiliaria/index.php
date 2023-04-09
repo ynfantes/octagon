@@ -3,7 +3,7 @@ include_once '../includes/constants.php';
 include_once '../includes/usuario.php';
 
 $accion = isset($_GET['accion']) ? $_GET['accion']:"";
-if (!$accion =="" && !$accion=='ver-propiedad') usuario::esUsuarioLogueado('inmobiliaria');
+if ($accion <>"" && $accion<>'ver-propiedad') usuario::esUsuarioLogueado('inmobiliaria');
 $publicaciones = new publicaciones();
 
 function getContext() {
@@ -218,6 +218,7 @@ switch ($accion) {
                 $id  = $data['id'];
                 unset($data['id']);
                 $res = $db->update($tabla,$data,['id' => $id]);
+                $res['id'] = $id;
             } else {
                 $res = $db->insert($tabla,$data);
             }

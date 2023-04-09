@@ -191,12 +191,13 @@ if(jQuery('form.validate').length > 0) {
                                 },
 
                                 success: 	function(response) {
-                                    const { suceed, mensaje, insert_id } = JSON.parse(response);
+                                    const { suceed, mensaje, insert_id, id } = JSON.parse(response);
+                                    console.log(JSON.parse(response));
                                     const _Ttype = suceed ? "success" : "error";
                                     
                                     if(suceed) {
                                         jQuery(form).find('.input-group-addon').find('.fa-refresh').removeClass('fa-refresh fa-spin').addClass('fa-envelope');
-                                        jQuery(form).find('input[name="id"]').val(insert_id);
+                                        jQuery(form).find('input[name="id"]').val(insert_id || id);
                                     }
                                     // Toastr Message
                                     _toastr(
