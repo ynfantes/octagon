@@ -1,10 +1,24 @@
+{% if session and session.usuario %}
+{% set url_base = constant('URL_INMOBILIARIA')~"/?accion=" %}
 <div id="topBar">
-<div class="container">
-<ul class="top-links list-inline pull-right">
-<li class="text-welcome">Bienvenido a Inmobiliaria Octagon </li>
-<!--li><a href="{{constant('ROOT')}}condominio-en-linea">CONDOMINIO EN LÍNEA</a></li-->
-<!--li><a href="{{constant('ROOT')}}recuperar-password.php">¿Olvidó su password?</a></li-->
-<!--li><a href="{{constant('ROOT')}}intranet.php">Intranet</a></li-->
-</ul>
+	<div class="container">
+		<ul class="top-links list-inline pull-right">
+			<li class="text-welcome">{{"Bienvenido " ~ session.usuario.nombre_completo}}</li>
+			<li>
+				<a href="{{url_base}}publicaciones">Publicaciones</a>
+			</li>
+			<li>
+				<a href="{{url_base}}publicar">Publicar</a>
+			</li>
+			{% if session and session.usuario.admin == "1" %}
+				<li>
+					<a href="{{url_base}}configuracion">Configuración</a>
+				</li>
+			{% endif %}
+            <li>
+				<a href="{{url_base}}salir">Cerrar Sesión</a>
+			</li>
+		</ul>
+	</div>
 </div>
-</div>
+{% endif %}

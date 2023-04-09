@@ -1,0 +1,182 @@
+{% extends 'layout/base.html.twig'%}
+{% block titulo %}Inmobiliaria{% endblock %}
+{% block head %}
+{{ parent() }}
+<link href="{{constant('ROOT')}}assets/css/layout-inmobiliaria.css" rel="stylesheet" type="text/css" />
+{% endblock %}
+{% block contenido %}
+<section class="page-header parallax parallax-3" style="background-image:url('{{constant('ROOT')}}img/condominio.jpg')">
+<div class="overlay dark-5"></div>
+<div class="container">
+<h1>Inmobiliaria</h1>
+<!-- breadcrumbs -->
+<ol class="breadcrumb">
+    <li><a href="{{constant('ROOT')}}">Inicio</a></li>
+    <li><a href="{{constant('ROOT')}}inmobiliaria.php" class="active">Iniciar sesión</a></li>
+</ol>
+<!-- /breadcrumbs -->
+</div>
+</section>
+<section style="padding-top:40px; padding-bottom: 0px; border: 0;">
+<div class="container">
+<div class="row">
+
+	<div class="panel panel-default">
+		<div class="panel-heading panel-heading-transparent">
+			<h2 class="panel-title bold">Registro de Usuario</h2>
+		</div>
+        <div class="validate-result"></div>
+		<div class="panel-body">
+			<form 
+                action="{{constant('URL_INMOBILIARIA')}}/?accion=registro" 
+                method="POST"
+                class="validate validate-plugin"
+            >
+                <div class="col-lg-3 col-sm-3">
+                    
+                        <label>Usuario</label>
+                        <div class="fancy-form">
+                            <i class="fa fa-user"></i>
+                            <input class="form-control required" name="nombre" type="text" minlength="4" maxlength="10" />
+                            <span class="fancy-tooltip top-left"> 
+                            <em>Escríba su nombre de usuario</em>
+                            </span>
+                        </div>
+                        <small class="text-muted">Entre 4 y 10 caracteres alfanuméricos</small>
+                </div>
+
+                <div class="col-lg-3 col-sm-3">
+                    <label>Contraseña</label>
+                    <div class="fancy-form">
+                        <i class="fa fa-lock"></i>
+                        <input type="contraseña" name="clave" class="form-control required" minlength="4" maxlength="6" />
+                        <span class="fancy-tooltip top-left"> 
+                        <em>Debe contener entre 4 y 10 caracteres alfanuméricos</em>
+                        </span>
+                    </div>
+                    <small class="text-muted">Entre 4 y 6 caracteres alfanuméricos</small>
+                </div>
+
+                <div class="col-lg-3 col-sm-3">
+                    <label>Nombre(s) y Apellido(s)</label>
+                    <div class="fancy-form">
+                        <i class="fa fa-user"></i>
+                        <input class="form-control required" name="nombre_completo" type="text" minlength="10" maxlength="60" />
+                        <span class="fancy-tooltip top-left"> 
+                        <em>Escríba sus nombres y apellidos</em>
+                        </span>
+                    </div>
+                </div>
+
+                <div class="col-lg-3 col-sm-3">
+                    <label>Correo electrónico</label>
+                    <div class="fancy-form">
+                        <i class="fa fa-envelope"></i>
+                        <input type="email" name="email" class="form-control email required">
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <hr/>
+                        <button type="submit" class="btn btn-3d btn-teal btn-block margin-top-10">
+                            REGISTRAR
+                        </button>
+                    </div>
+                </div>
+				
+
+			</form>
+		</div>
+	</div>
+</div>
+
+</div>
+
+</section>           
+{% endblock %}
+{% block javascript %}
+{{parent()}}
+<script type="text/javascript">
+/** Form Validate
+************************ **/
+
+
+
+if(jQuery('form.validate').length > 0) {
+
+    loadScript(plugin_path + 'form.validate/jquery.form.min.js', function() {
+        loadScript(plugin_path + 'form.validate/jquery.validation.min.js', function() {
+
+            jQuery.validator.addMethod("formAlphanumeric", function (value, element) {
+                var pattern = /^[\w]+$/i;
+                return this.optional(element) || pattern.test(value);
+            }, "El campo debe tener un valor alfanumérico (azAZ09)");
+
+            if(jQuery().validate) {
+
+                jQuery('form.validate').each(function() {
+
+                    const _t 		 = jQuery(this);
+                    const _Tposition = _t.attr('data-toastr-position') 	|| "top-right";
+                    
+                    
+                    _t.validate({
+                        rules: {
+                            nombre: {formAlphanumeric: true}
+                        },
+                        submitHandler: function(form) {
+
+                            // Show spin icon
+                            jQuery(form).find('.input-group-addon').find('.fa-envelope').removeClass('fa-envelope').addClass('fa-refresh fa-spin');
+
+                            jQuery(form).ajaxSubmit({
+
+                                target: jQuery(form).find('.validate-result').length > 0 ? jQuery(form).find('.validate-result') : '',
+                                
+                                error: function(data) {
+                                    console.error(data); 
+                                    _toastr( 
+                                        "Ha ocurrido un error interno al tratar de actualizar la configuración. Intente nuevamente más tarde",
+                                        _Tposition,
+                                        "error",
+                                        false
+                                    );
+                                },
+
+                                success: 	function(response) {
+                                    const { suceed, mensaje, exists } = JSON.parse(response);
+                                    console.log(JSON.parse(response));
+                                    const _Ttype = suceed ? "success" : "error";
+                                    
+                                    if(suceed) {
+                                        jQuery(form).find('.input-group-addon').find('.fa-refresh').removeClass('fa-refresh fa-spin').addClass('fa-envelope');
+                                        jQuery(form).find("input[name='nombre']").removeClass('error').addClass('valid');
+                                    } else {
+                                        if(exists) {
+                                            jQuery(form).find("input[name='nombre']").addClass('error').removeClass('valid');
+                                        }
+                                    }
+                                    // Toastr Message
+                                    _toastr(
+                                        mensaje,
+                                        _Tposition,
+                                        _Ttype,
+                                        false
+                                    );
+                                }
+                            });
+
+                        }
+                    });
+
+                });
+
+            }
+
+        });
+    });
+
+}
+</script>
+{% endblock %}

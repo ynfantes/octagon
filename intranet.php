@@ -1,7 +1,8 @@
 <?php
 include_once './includes/constants.php';
-
-echo $twig->render('intranet.html.twig', array(
-            "tabla"     => 'cartelera_publica',
-            "titulo"    => 'Cartelera Pública',
-            "inmuebles" => null));
+$context = [
+    'tabla'     => 'cartelera_publica',
+    'titulo'    => 'Cartelera Pública',
+    'inmuebles' => null
+];
+echo $twig->render('intranet.html.twig', $context);

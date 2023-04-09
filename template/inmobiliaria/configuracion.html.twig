@@ -1,0 +1,224 @@
+{% extends 'layout/base.html.twig'%}
+{% block titulo %}Inmobiliaria{% endblock %}
+{% block head %}
+{{ parent() }}
+<link href="{{constant('ROOT')}}assets/css/layout-inmobiliaria.css" rel="stylesheet" type="text/css" />
+{% endblock %}
+{% block contenido %}
+<section class="page-header parallax parallax-3" style="background-image:url('{{constant('ROOT')}}img/condominio.jpg')">
+<div class="overlay dark-5"></div>
+<div class="container">
+<h1>Inmobiliaria</h1>
+<!-- breadcrumbs -->
+<ol class="breadcrumb">
+    <li><a href="{{constant('ROOT')}}">Inicio</a></li>
+    <li><a href="#" class="active">Opciones de Configuración</a></li>
+</ol>
+<!-- /breadcrumbs -->
+</div>
+</section>
+<section style="padding-top:40px; padding-bottom: 0px; border: 0;">
+<div class="container">
+<div class="row">
+
+	<div class="panel panel-default">
+		<div class="panel-heading panel-heading-transparent">
+			<h2 class="panel-title bold">Opciones de configuración</h2>
+		</div>
+		<div class="panel-body">
+			<form 
+                action="{{constant('URL_INMOBILIARIA')}}/?accion=configuracion" 
+                method="POST"
+                class="validate validate-plugin"
+            >
+				<input type="hidden" name="id" value="{{config.id}}" />
+                <div class="col-lg-4 col-sm-4">
+                    <div class="heading-title">
+                    <h4>Téléfonos de Contacto</h4>
+                    </div>
+                    <div class="col-12">
+                        <label>Teléfono 1</label>
+                        <div class="fancy-form">
+                            <i class="fa fa-phone-square"></i>
+                            <input 
+                                class="form-control masked" 
+                                data-format="(0999) 999-9999" 
+                                data-placeholder="X" 
+                                name="telefono1"
+                                placeholder="Ingrese un número válido"
+                                type="text"
+                                value="{{config.telefono1}}" 
+                            >
+                            <span class="fancy-tooltip top-left"> 
+                            <em>Escríba su número de teléfono</em>
+                            </span>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="col-12">
+                        <label>Teléfono 2</label>
+                        <div class="fancy-form">
+                            <i class="fa fa-phone-square"></i>
+                            <input 
+                                class="form-control masked" 
+                                data-format="(0999) 999-9999" 
+                                data-placeholder="X" 
+                                name="telefono2"
+                                placeholder="Ingrese un número válido"
+                                type="text"
+                                value="{{config.telefono2}}" 
+                            >
+                            <span class="fancy-tooltip top-left"> 
+                            <em>Escríba su número de teléfono</em>
+                            </span>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="col-12">
+                        <label>Teléfono 3</label>
+                        <div class="fancy-form">
+                            <i class="fa fa-phone-square"></i>
+                            <input 
+                                class="form-control masked" 
+                                data-format="(0999) 999-9999" 
+                                data-placeholder="X" 
+                                name="telefono3"
+                                placeholder="Ingrese un número válido"
+                                type="text"
+                                value="{{config.telefono3}}" 
+                            >
+                            <span class="fancy-tooltip top-left"> 
+                            <em>Escríba su número de teléfono</em>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 col-sm-4">
+                    <div class="heading-title">
+                    <h4>Correos de Contacto</h4>
+                    </div>
+                    <label>Email 1</label>
+                    <input type="email" name="email1" value="{{config.email1}}" class="form-control email">
+                    <br>
+                    <label>Email 2</label>
+                    <input type="email" name="email2" value="{{config.email2}}" class="form-control email">
+                </div>
+
+                <div class="col-lg-4 col-sm-4">
+                    <div class="heading-title">
+                    <h4>Número WhatsApp</h4>
+                    </div>
+                    <label>Teléfono WS</label>
+                        <div class="fancy-form">
+                            <i class="fa fa-whatsapp"></i>
+                            <input 
+                                class="form-control masked" 
+                                data-format="(0999) 999-9999" 
+                                data-placeholder="X" 
+                                name="telefonows"
+                                placeholder="Ingrese un número válido"
+                                type="text"
+                                value="{{config.telefonows}}" 
+                            >
+                            <span class="fancy-tooltip top-left"> 
+                            <em>Escríba su número de teléfono</em>
+                            </span>
+                        </div>
+                </div>
+
+                <!--div class="row">
+                    <div class="form-group">
+                        
+                    </div>
+                </div-->
+                
+                <div class="row">
+                    <div class="col-md-12">
+                        <hr/>
+                        <button type="submit" class="btn btn-3d btn-teal btn-block margin-top-10">
+                            GUARDAR
+                        </button>
+                    </div>
+                </div>
+				
+
+			</form>
+		</div>
+	</div>
+</div>
+
+</div>
+
+</section>           
+{% endblock %}
+{% block javascript %}
+{{parent()}}
+<script type="text/javascript">
+/** Form Validate
+************************ **/
+if(jQuery('form.validate').length > 0) {
+
+    loadScript(plugin_path + 'form.validate/jquery.form.min.js', function() {
+        loadScript(plugin_path + 'form.validate/jquery.validation.min.js', function() {
+
+            if(jQuery().validate) {
+
+                jQuery('form.validate').each(function() {
+
+                    const _t 		 = jQuery(this);
+                    const _Tposition = _t.attr('data-toastr-position') 	|| "top-right";
+                    
+                    
+                    _t.validate({
+                        submitHandler: function(form) {
+
+                            // Show spin icon
+                            jQuery(form).find('.input-group-addon').find('.fa-envelope').removeClass('fa-envelope').addClass('fa-refresh fa-spin');
+
+                            jQuery(form).ajaxSubmit({
+
+                                target: jQuery(form).find('.validate-result').length > 0 ? jQuery(form).find('.validate-result') : '',
+
+                                error: function(data) {
+                                    console.error(data); 
+                                    _toastr( 
+                                        "Ha ocurrido un error interno al tratar de actualizar la configuración. Intente nuevamente más tarde",
+                                        _Tposition,
+                                        "error",
+                                        false
+                                    );
+                                },
+
+                                success: 	function(response) {
+                                    const { suceed, mensaje, insert_id, id } = JSON.parse(response);
+                                    console.log(JSON.parse(response));
+                                    const _Ttype = suceed ? "success" : "error";
+                                    
+                                    if(suceed) {
+                                        jQuery(form).find('.input-group-addon').find('.fa-refresh').removeClass('fa-refresh fa-spin').addClass('fa-envelope');
+                                        jQuery(form).find('input[name="id"]').val(insert_id || id);
+                                    }
+                                    // Toastr Message
+                                    _toastr(
+                                        mensaje,
+                                        _Tposition,
+                                        _Ttype,
+                                        false
+                                    );
+                                }
+                            });
+
+                        }
+                    });
+
+                });
+
+            }
+
+        });
+    });
+
+}
+</script>
+{% endblock %}

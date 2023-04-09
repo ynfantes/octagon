@@ -1,0 +1,124 @@
+{% extends 'layout/base.html.twig'%}
+{% block titulo %}Inmobiliaria{% endblock %}
+{% block head %}
+{{ parent() }}
+<link href="{{constant('ROOT')}}assets/css/layout-inmobiliaria.css" rel="stylesheet" type="text/css" />
+<link rel="stylesheet" href="{{constant('ROOT')}}assets/plugins/dropzone/css/dropzone.css?v=1423494334">
+{% endblock %}
+{% block contenido %}
+<section class="page-header parallax parallax-3" style="background-image:url('{{constant('ROOT')}}img/condominio.jpg')">
+<div class="overlay dark-5"></div>
+<div class="container">
+<h1>Inmobiliaria</h1>
+<!-- breadcrumbs -->
+<ol class="breadcrumb">
+    <li><a href="{{constant('ROOT')}}">Inicio</a></li>
+    <li><a href="#" class="active">Lista Propiedades</a></li>
+</ol>
+<!-- /breadcrumbs -->
+</div>
+</section>
+
+<section class="padding-xxs">
+<div class="container">
+<!--div class="heading-title heading-dotted text-center">
+<h4>Transparent Section <span>[extra small]</span></h4>
+</div-->
+<div class="panel panel-default">
+    <div class="panel-body">
+    <strong> {{"¡Bienvenido " ~ session.usuario.nombre_completo ~ "!"}}</strong>
+    Por favor, haga click en <a href="?accion=publicar">Registrar una propiedad</a> para una nueva publicación.
+    </div> 
+</div>
+<div class="table-responsive">
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Título</th>
+                <th>Propiedad</th>
+                <th>Estado</th>
+                <th>Ciudad</th>
+                <th>Localidad</th>
+                <th>Operación</th>
+                <th>M<sup>2</sub></th>
+                <th>Hab.</th>
+                <th>Baño</th>
+                <th>Estac.</th>
+                <th>Precio</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for propiedad in listado.data %}
+            <tr>
+                <td><a class="btn-link" href="?accion=publicar&id={{propiedad.id}}">{{propiedad.codigo_id}}</a></td>
+                <td>{{propiedad.titulo}}</td>
+                <td>{{propiedad.tipo}}</td>
+                <td>{{propiedad.estado}}</td>
+                <td>{{propiedad.ciudad}}</td>
+                <td>{{propiedad.zona}}</td>
+                <td>{{propiedad.operacion}}</td>
+                <td>{{propiedad.mts2}}</td>
+                <td>{{propiedad.habitaciones}}</td>
+                <td>{{propiedad.baños}}</td>
+                <td>{{propiedad.puestos_estacionamiento}}</td>
+                <td>{{propiedad.simbolo}}.{{propiedad.importe}}</td>
+                <!--td><span class="label label-success">Approved </span></td!-->
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+<div class="row">
+    <div class="col-md-5 col-sm-12">
+        <div class="dataTables_info" id="sample_editable_1_info" role="status" aria-live="polite">
+        {{"Pagina " ~ listado.page ~ " de " ~  listado.pages ~ " - Mostrando: Publicaciones " ~ listado.start ~ " al " ~ listado.end ~ " de " ~ listado.num_rows}}</div>
+    </div>
+    <div class="col-md-7 col-sm-12">
+        <div class="dataTables_paginate paging_simple_numbers" id="sample_editable_1_paginate">
+        
+            <ul class="pagination">
+                {% set prev_page = listado.page - 1 %}
+                {% set next_page = listado.page + 1 %}
+                {% if prev_page > 0 %}
+                    {% set prev = "?accion=publicaciones&page=" ~ prev_page %}
+                {% else %}
+                    {% set prev = "#" %}
+                {% endif %}
+                {% if next_page <= listado.pages %}
+                    {% set next = "?accion=publicaciones&page=" ~ next_page %}
+                {% else %}
+                    {% set next = "#" %}
+                {% endif %}
+
+                <li class="paginate_button previous{% if listado.page == 1 %} disabled{% endif %}" aria-controls="sample_editable_1" tabindex="0" id="sample_editable_1_previous">
+                    <a href="{{prev}}">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+                </li>
+                {% for i in 1.. listado.pages %}
+                {% set page_active = i == listado.page %}
+                <li class="paginate_button {% if page_active %} active{% endif %}" aria-controls="sample_editable_1" tabindex="0">
+                    <a href={% if page_active %}"#"{% else %}"?accion=publicaciones&page={{i}}"{% endif %}>{{i}}</a>
+                </li>
+                {% endfor %}
+                <li class="paginate_button next {% if listado.page == listado.pages %} disabled{% endif %}" aria-controls="sample_editable_1" tabindex="0" id="sample_editable_1_next">
+                    <a href="{{next}}">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+</div>
+</section>            
+{% endblock %}
+{% block javascript %}
+{{parent()}}
+<script type="text/javascript">
+jQuery("li.disabled, li.active > a").click( function(event) {
+    event.preventDefault();
+})
+</script>
+{% endblock %}

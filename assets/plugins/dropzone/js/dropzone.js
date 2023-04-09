@@ -7351,7 +7351,7 @@ var defaultOptions = {
    * Displayed if `maxFiles` is st and exceeded.
    * The string `{{maxFiles}}` will be replaced by the configuration value.
    */
-  dictMaxFilesExceeded: "You can not upload any more files.",
+  dictMaxFilesExceeded: "Ha alcanzado el máximo de imágenes que puede publicar",
 
   /**
    * Allows you to translate the different units. Starting with `tb` for terabytes and going down to

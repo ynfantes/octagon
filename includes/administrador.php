@@ -55,7 +55,7 @@ class administrador extends db implements crud {
                 $_SESSION['usuario'] = $result['data'];
                 $_SESSION['status'] = 'logueado';
                 
-                header("location:" . URL_ADMINISTRADOR);
+                header("location:".URL_INMOBILIARIA."/accion=publicaciones");
                 
             } else {
                 $result['error'] = "Nombre usuario y/o password incorrecto.";

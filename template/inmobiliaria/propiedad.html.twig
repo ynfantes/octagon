@@ -1,0 +1,215 @@
+{% extends 'layout/base.html.twig'%}
+{% block titulo %}Inmobiliaria
+{% endblock %}
+{% block head %}
+	{{ parent() }}
+	<link href="{{constant('ROOT')}}assets/css/layout-inmobiliaria.css" rel="stylesheet" type="text/css"/>
+{% endblock %}
+{% block contenido %}
+	<section class="page-header parallax parallax-3" style="background-image:url('{{constant('ROOT')}}{{propiedad.imagenes[0].imagen}}')">
+		<div class="overlay dark-5"></div>
+		<div class="container">
+			<h1>
+				<strong>{{propiedad.titulo}}</strong>
+			</h1>
+			<!-- breadcrumbs -->
+			<ol class="breadcrumb">
+				<li>
+					<a href="{{constant('ROOT')}}">Inicio</a>
+				</li>
+				<li>
+					<a href="{{constant('ROOT')}}inmobiliaria.html" class="active">Lista de propiedades</a>
+				</li>
+			</ol>
+			<!-- /breadcrumbs -->
+		</div>
+	</section>
+	<section style="padding-top:40px; padding-bottom: 20px; border: 0">
+		<div class="container">
+			<div class="row">
+
+				<div class="col-lg-9 col-md-9 col-sm-9">
+					<div
+						class="row">
+						<!-- IMAGE -->
+						<div class="col-lg-6 col-sm-6">
+							<div
+								class="thumbnail relative margin-bottom-3">
+								<!-- 
+								                    IMAGE ZOOM 
+								                    data-mode="mouseover|grab|click|toggle"
+								                    -->
+								<figure
+									id="zoom-primary" class="zoom" data-mode="mouseover" style="position: relative; overflow: hidden;">
+									<!-- 
+									                    zoom buttton
+									                    positions available:
+									                    .bottom-right
+									                    .bottom-left
+									                    .top-right
+									                    .top-left
+									                    -->
+									<a class="lightbox bottom-right" href="assets/images/demo/shop/products/1000x1500/p5.jpg" data-plugin-options="{&quot;type&quot;:&quot;image&quot;}">
+										<i class="glyphicon glyphicon-search"></i>
+									</a>
+									<!-- 
+									                    image 
+									                    Extra: add .image-bw class to force black and white!
+									                    -->
+									<img class="img-responsive" src="{{constant('ROOT')}}{{propiedad.imagen}}" alt="{{propiedad.title}}" width="1200" height="1500">
+									<img src="{{constant('ROOT')}}{{propiedad.imagen}}" class="zoomImg" style="position: absolute; top: -407.258px; left: -70.7945px; opacity: 0; width: 1000px; height: 1500px; border: medium none; max-width: none; max-height: none;"></figure>
+							</div>
+							{% set n = propiedad.imagenes|length - 1 %}
+							<!-- Thumbnails (required height:100px) -->
+
+							<div data-for="zoom-primary" class="zoom-more owl-carousel owl-padding-3 featured owl-theme owl-carousel-init" data-plugin-options="{&quot;singleItem&quot;: false, &quot;autoPlay&quot;: false, &quot;navigation&quot;: true, &quot;pagination&quot;: false}" style="opacity: 1; display: block;">
+								<div class="owl-item">
+									<a class="thumbnail active" href="{{constant('ROOT')}}{{propiedad.imagen}}">
+										<img src="{{constant('ROOT')}}{{propiedad.imagen}}" alt="" height="100"></a>
+								</div>
+								{% for i in 0..n %}
+									<div class="owl-item">
+										<a class="thumbnail" href="{{constant('ROOT')}}{{propiedad.imagenes[i].imagen}}">
+											<img src="{{constant('ROOT')}}{{propiedad.imagenes[i].imagen}}" alt="" height="100"></a>
+									</div>
+								{% endfor %}
+							</div>
+							<!-- /Thumbnails -->
+
+							<!-- /IMAGE -->
+							<hr>
+							<!-- Share -->
+							{{include('misc/propiedad.compartir.html.twig')}}
+							<!-- /Share -->
+							<!-- rating -->
+							<div class="rating rating-4 size-13 margin-top-10 width-100"><!-- rating-0 ... rating-5 --></div>
+						</div>
+						<!-- ITEM DESC -->
+						<div class="col-lg-6 col-sm-6">
+							<!-- buttons -->
+							<!-- /buttons -->
+							<!-- price -->
+								<div class="shop-item-price"> {{propiedad.tipo ~ " " ~ propiedad.simbolo ~ propiedad.importe|number_format(0,",",".")}}
+							</div>
+							<!-- /price -->
+							<hr>
+							<div class="clearfix margin-bottom-30">
+								<span class="pull-right text-success">
+									<i class="fa fa-check"></i>
+									{{propiedad.operacion}}
+								</span>
+								<!--
+								                                <span class="pull-right text-danger"><i class="glyphicon glyphicon-remove"></i> Out of Stock</span>
+								                                -->
+
+								<strong>Código:</strong>
+								{{" "  ~ propiedad.codigo_id}}
+							</div>
+							<!-- short description -->
+							{{propiedad.descripcion|raw }}
+							<!-- /short description -->
+							<!-- countdown -->
+							<hr>
+							{% include('misc/propiedad.detalle.html.twig') %}
+							<!-- /countdown -->
+						<hr>
+
+							<!-- /rating -->
+
+						</div>
+						<!-- /ITEM DESC -->
+
+					</div>
+				</div>
+				<div class="col-md-3 col-sm-3 col-lg-3">
+
+					{% include('misc/propiedad.contacto.html.twig') %}
+                    <!-- /button whasapp ->
+					<!--
+					            <h4><strong>Contactar</strong> con Asesor</h4>
+					            <form action="#" method="post" class="sky-form clearfix" id="contactoform">
+					
+					            <label class="input">
+					            <i class="ico-prepend fa fa-user"></i>
+					            <input name="nombre" placeholder="Nombres" type="text">
+					            </label>
+					
+					            <label class="input">
+					            <i class="ico-prepend fa fa-envelope"></i>
+					            <input name="email" placeholder="Email" type="text">
+					            </label>
+					
+					            <label class="textarea">
+					            <i class="ico-prepend fa fa-comment"></i>
+					            <textarea name="mensaje" rows="3" placeholder="Escriba aquí su mensaje"></textarea>
+					            </label>
+					            <button type="submit" class="btn btn-primary btn-sm pull-right">Enviar mensaje</button>
+					            </form>
+					            <div id="respuesta"></div>
+					            !-->
+				</div>
+			</div>
+		</div>
+	</section>
+{% endblock %}
+{% block javascript %}
+	{{parent()}}
+	<script src="{{constant('ROOT')}}assets/js/app/jquery-validate/jquery.validate.min.js"></script>
+	<script src="{{constant('ROOT')}}assets/js/app/jquery-validate/jquery.form.js"></script>
+	<script type="text/javascript">
+		$("#contactoform").validate({
+errorClass: "error text-red",
+rules: {
+email: {
+required: true,
+email: true
+},
+nombre: {
+required: true
+},
+mensaje: {
+required: true
+}
+},
+messages: {
+email: {
+required: 'Ingrese su correo electrónico',
+email: 'Ingrese un correo electrónico válido'
+},
+nombre: {
+required: 'Ingrese su nombre y apellido'
+},
+mensaje: {
+required: 'Escriba su mensaje'
+}
+},
+submitHandler: function (form) {
+$("#contactoform").ajaxSubmit({
+target: "#respuesta",
+method: "post",
+url:"{{ constant('ROOT') }}includes/enviar_email.php",
+resetForm: true,
+beforeSubmit: function () {
+$("#contactoform").hide();
+},
+success: function () {
+$("#respuesta").fadeIn();
+},
+error: function () {
+$("#respuesta").fadeIn();
+}
+});
+},
+errorPlacement: function (error, element) {
+error.insertBefore(element.parent());
+}
+});
+$(function () {
+$(document).on("click", "div.alert", function () {
+$(".alert").hide();
+$("#contactoform").resetForm();
+$("#contactoform").fadeIn();
+});
+});
+	</script>
+{% endblock %}

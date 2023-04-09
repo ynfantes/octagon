@@ -1,7 +1,14 @@
 <?php
 include_once '../includes/constants.php';
+include_once '../includes/usuario.php';
 
-$accion = isset($_GET['accion'])?$_GET['accion']:"";
+$accion     = isset($_GET['accion']) ? $_GET['accion']:"";
+// acciones donde no se debe validar si el usuario está registrado
+$haystack   = ["","ver-propiedad","registro"];
+if(!in_array($accion,$haystack)) {
+    usuario::esUsuarioLogueado('inmobiliaria');
+}
+
 $publicaciones = new publicaciones();
 
 function getContext() {
@@ -15,11 +22,12 @@ function getContext() {
     $tipo       = $db->dame_query("select * from inmobiliaria_tipo order by descripcion");
     
     return [
-        'ciudades'   => $ciudades['data'],
-        'estados'    => $estados['data'],
-        'monedas'    => $monedas['data'],
-        'operacion'  => $operacion['data'],
-        'tipo'       => $tipo['data'],
+        'ciudades'  => $ciudades['data'],
+        'estados'   => $estados['data'],
+        'monedas'   => $monedas['data'],
+        'operacion' => $operacion['data'],
+        'tipo'      => $tipo['data'],
+        'session'   => isset($_SESSION) ? $_SESSION: ''
     ];
 }
 
@@ -65,14 +73,40 @@ switch ($accion) {
         break;
      
     case "publicaciones":
-        $list    = $publicaciones->obtenerPublicaciones();
-        $name    = 'inmobiliaria/lista-publicaciones.html.twig';
-        $context = ["listado" => $list['data']];
+        $name                = 'inmobiliaria/lista-publicaciones.html.twig';
+        $list                = $publicaciones->obtenerPublicaciones();
+        $num_rows            = $list['stats']['affected_rows'];
+        $rows_per_page       =  defined('ROWS_PER_PAGE_LIST_PUB') ? ROWS_PER_PAGE_LIST_PUB : 2;
+        $total_page          = ceil($num_rows / $rows_per_page);
+        $current_page        = isset($_GET['page']) ? $_GET['page'] : 1;
+        $start               = $rows_per_page * ($current_page - 1);
+        $limit               = $rows_per_page;
+        $data                = [ 'start' => $start, 'limit' => $limit ];
+        $list                = $publicaciones->obtenerPublicaciones($data);
+        $listado['data']     = $list['suceed'] ? $list['data'] : [];
+        $listado['rows']     = $list['stats']['affected_rows'];
+        $listado['start']    = $start + 1;
+        $listado['end']      = $start + $listado['rows'];
+        $listado['page']     = $current_page;
+        $listado['num_rows'] = $num_rows;
+        $listado['pages']    = $total_page;
+
+        $context = [
+            "listado" => $listado,
+            "session" => $_SESSION,
+        ];
+
         echo $twig->render($name, $context);
         break; 
 
     case "publicar":
         $context = getContext();
+        if (isset($_GET['id'])) {
+            $propiedad = $publicaciones->ver($_GET['id']);
+            if ($propiedad['suceed'] && $propiedad['stats']['affected_rows']>0) {
+                $context['propiedad'] = $propiedad['row'];
+            }
+        }
         echo $twig->render('inmobiliaria/registrar-propiedad.html.twig', $context);
         break; 
 
@@ -95,10 +129,10 @@ switch ($accion) {
             unset($data['imagen']);
         }
         // editar
-        if (isset($data['editar']) && $data['editar'] == 'editar') {
+        if (isset($data['id']) && $data['id'] > 0) {
 
-            unset($data['editar']);
             $id = $data['id'];
+            unset($data['id']);
             $result = $publicaciones->actualizar($id, $data);
             if ($result['suceed']) {
                 $result['mensaje'] = 'Publicación actualizada con éxito!';
@@ -174,8 +208,104 @@ switch ($accion) {
         echo $twig->render('inmobiliaria/registrar-propiedad.html.twig', $opciones);
         break; 
 
+    case "salir":
+    
+        $user_logout = new usuario();
+        $user_logout->logout('inmobiliaria');
+        break;
+    case "configuracion":
+        $db     = new db();
+        $tabla  = "inmobiliaria_configuracion";
+
+        if ($_POST) {
+            $data = $_POST;
+            if (isset($data['id']) && $data['id']<>"") {
+                $id  = $data['id'];
+                unset($data['id']);
+                $res = $db->update($tabla,$data,['id' => $id]);
+                $res['id'] = $id;
+            } else {
+                $res = $db->insert($tabla,$data);
+            }
+            $res['mensaje'] = $res['suceed'] ? 'Configuación actualizada con éxito': 'No se ha podido actualizar la configuración. Intente nuevamente';
+            unset($res['query']);
+            echo json_encode($res);
+
+        } else {
+            $name = 'inmobiliaria/configuracion.html.twig';
+            $data = $db->select("*", $tabla);
+            $conf = $data['suceed'] ? $data['row']:[];
+            $context = [
+                'config'  => $conf,
+                'session' => $_SESSION,
+            ];
+            echo $twig->render($name, $context);
+        }
+        break;
+    case "ver-propiedad":
+        $db = new db();
+        $propiedad = $publicaciones->ver($_GET['id']);
+        
+        if ($propiedad['suceed'] && !empty($propiedad['row'])) {
+            
+            $imagenes = $publicaciones->obtenerImagenesPorPublicacion($propiedad['row']['id']);
+            $propiedad['row']['imagenes'] = $imagenes['data'];
+            $publicaciones->actualizar($_GET['id'], ["visto" => $propiedad['row']['visto'] + 1]);
+        }
+        $res = $db->select('*','inmobiliaria_configuracion');
+        $config = $res['suceed'] ? $res['row'] : [];
+        $context = [
+            'propiedad' => $propiedad['row'], 
+            'config'    => $config,
+        ];
+        
+        echo $twig->render('inmobiliaria/propiedad.html.twig', $context);
+        break; 
+
+    case "registro":
+        if ($_POST) {
+            $user = new usuario();
+            $nombre = $_POST['nombre'];
+            $result = $user->ver([ 'nombre' => "'".$nombre."'" ]);
+            
+            if ($result['suceed'] && $result['row']==[]) {
+                
+                $result = $user->insertar($_POST);
+                if ($result['suceed']) {
+                    $result['mensaje'] = 'Usuario registrado con éxito.<br>Ya puede inciciar sesión.';
+                } else {
+                    $result['mensaje'] = 'Ha ocurrido un error durante el proceso.<br>No se ha podido registrar el usuario. Inténtelo nuevamente.';
+                }
+                
+            } else {
+                $result['mensaje'] = "Ya existe un usuario registrado con el nombre <strong>$nombre</strong>";
+                $result['suceed']  = false;
+                $result['exists']  = true;
+            }
+            unset($result['query'], $result['row'], $result['data']);
+            
+            echo json_encode($result);
+        } else {
+
+            $context = [];
+            echo $twig->render('inmobiliaria/registro.html.twig', $context);
+        }
+        break;
     default :
-        echo $twig->render('inmobiliaria/index.html.twig');
+        $name    = 'inmobiliaria/index.html.twig';
+        $context = getContext();
+        $data    = $_GET;
+        foreach ($data as $key => $value) {
+            if ($value=="") unset($data[$key]);
+        }
+        
+        $list    = $publicaciones->obtenerPublicaciones($data);
+        
+        $listado = $list['suceed'] ? $list['data'] : [];
+        $context["publicaciones"] = $listado;
+        $context["filter"] = $data;
+        echo $twig->render($name, $context);
+
         break;
 }
         

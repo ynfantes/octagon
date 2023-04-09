@@ -4,7 +4,7 @@
 <!--[if gt IE 9]><!-->	<html> <!--<![endif]-->
 <head>
 <meta charset="utf-8" />
-<title>{% block titulo %}{% endblock %} | {{constant('TITULO')}}</title>
+<title>{% block titulo %}{% endblock %}{{" | " ~ constant('TITULO')}}</title>
 {% block seo %}
 <meta name="keywords" content="Administradora Octagon,  compra inmuebles, alquiler de inmuebles, administración de condominio, compra y venta inmuebles, Inmobiliaria Octagon" />
 <meta name="description" content="Administradora Octagon, dedicados al ramo inmobiliario. Talento y Experiencia como garantía de su inversión. " />
