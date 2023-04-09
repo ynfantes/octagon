@@ -27,9 +27,10 @@ class usuario extends db implements crud  {
         
     }   
     
-    public function login($usuario,$password) {
+    public function login($usuario,$password,$user='intrantet') {
         if ($usuario!="" && $password!="") {
-            $result = db::select("*",self::tabla,Array("nombre"=>"'".$usuario."'"));
+            $condicion = ["nombre"=>"'".$usuario."'"];
+            $result = db::select("*",self::tabla,$condicion);
             
             if ($result['suceed'] && count($result['data']) > 0) {
                 
@@ -38,7 +39,11 @@ class usuario extends db implements crud  {
                     session_start();
                     $_SESSION['usuario'] = $result['data'][0];
                     $_SESSION['status'] = 'logueado';
-                    header("location:".URL_INTRANET."/".$result['data'][0]['directorio']);
+                    if ($user == 'intrantet') {
+                        header("location:".URL_INTRANET."/".$result['data'][0]['directorio']);
+                    } else {
+                        header("location:".URL_INMOBILIARIA."/?accion=publicaciones");
+                    }
                     return $result;
                     
                 } else {
@@ -58,15 +63,15 @@ class usuario extends db implements crud  {
         }
     }
 
-    public static function esUsuarioLogueado() {
+    public static function esUsuarioLogueado($user='intranet') {
         session_start();
         if (!isset($_SESSION['status']) || $_SESSION['status'] != 'logueado' || !isset($_SESSION['usuario']))  {
-            header("location:".ROOT."intranet.php");
+            header("location:".ROOT.$user.".php");
             die();
         }
     }
     
-    public static  function logout() {
+    public static  function logout($user='intranet') {
         //session_start();
         if (isset($_SESSION['status'])) {
             unset($_SESSION['status']);
@@ -75,7 +80,7 @@ class usuario extends db implements crud  {
             session_destroy();
             if (isset($_COOKIE[session_name()]))
                 setcookie(session_name(), '', time() - 1000);
-            header("location:".ROOT."intranet.php");
+            header("location:".ROOT.$user.".php");
         }
     }
 }

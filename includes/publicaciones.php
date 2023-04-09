@@ -29,16 +29,18 @@ class publicaciones extends db implements crud {
     }
 
     public function ver($id) {
-        $sql = "select pu.*, c.ciudad, e.estado, t.descripcion as Tipo, o.descripcion as operacion, m.simbolo, m.descripcion as moneda  
-            from inmobiliaria_publicacion pu
-            join ciudades c on c.id_ciudad = pu.id_ciudad
-            join estados e on e.id_estado = pu.id_estado 
-            join inmobiliaria_tipo t on t.id = pu.id_inmobiliaria_tipo
-            join operaciones o on o.id = pu.id_operacion 
-            join monedas m on m.id = pu.id_moneda 
-            where pu.id = $id";
+        // $sql = "select pu.*, c.ciudad, e.estado, t.descripcion as tipo, o.descripcion as operacion, m.simbolo, m.descripcion as moneda  
+        //     from inmobiliaria_publicacion pu
+        //     join ciudades c on c.id_ciudad = pu.id_ciudad
+        //     join estados e on e.id_estado = pu.id_estado 
+        //     join inmobiliaria_tipo t on t.id = pu.id_inmobiliaria_tipo
+        //     join operaciones o on o.id = pu.id_operacion 
+        //     join monedas m on m.id = pu.id_moneda 
+        //     where pu.id = $id";
         
-         return db::query($sql);
+        //  return db::query($sql);
+        return $this->obtenerPublicaciones(['pu.id' => $id]);
+
     }
     public function totalPublicaciones() {
         $sql = "select count(*) as total from inmobiliaria_publicacion where inactivo = 0";
@@ -67,15 +69,14 @@ class publicaciones extends db implements crud {
         if (isset($data['id_ciudad'])) {
             $sql.= " and pu.id_ciudad =".$data['id_ciudad'];
         }
-        if (isset($data['id_operacion']) && $data['id_operacion']>1) {
+        if (isset($data['id_operacion'])) {
             $sql.= " and pu.id_operacion =".$data['id_operacion'];
         }
         if (isset($data['id_inmobiliaria_tipo']) && $data['id_inmobiliaria_tipo']>1) {
             $sql.= " and pu.id_inmobiliaria_tipo =".$data['id_inmobiliaria_tipo'];
         }
         if (isset($data['habitaciones']) && $data['habitaciones']>1) {
-            $hab = $data['habitaciones'] - 1;
-            $sql.= " and pu.habitaciones =".$hab;
+            $sql.= " and pu.habitaciones =".$data['habitaciones'];
         }
         if (isset($data['sort'])) {
             $sql .= " ORDER BY LCASE(" . $data['sort'] . ")";

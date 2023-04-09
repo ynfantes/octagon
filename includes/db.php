@@ -210,6 +210,7 @@ Class db {
                         $r['query'] = $query;
                     }
                     $r['suceed'] = true;
+                    $r['row'] = isset($a[0]) ? $a[0]:[];
                     $r['data'] = $a;
                     $r['stats']['affected_rows'] = $this->mysqli->affected_rows;
                 } else {

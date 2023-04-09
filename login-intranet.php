@@ -9,13 +9,16 @@ $user = 'intranet';
 if (isset($_POST['nombre']) && isset($_POST['password']) && isset($_POST['user'])) {
     
     $usuario = new usuario();
-    $user    = $_POST['user'];
+    $user    = $_POST['user'];  
     $result  = $usuario->login($_POST['nombre'],$_POST['password']);
     
     if ($result['suceed']=='true') {
         
         if ($_SESSION['status'] == 'logueado') {
-            header("location:".ROOT."$user/index.php");
+            
+            $url = ($user == 'intranet') ? URL_INTRANET : URL_INMOBILIARIA ."/";
+            if($user == 'inmobiliaria') $url.= '?accion=user';
+            header("location:".$url);
         }
         die();
     }
@@ -25,4 +28,4 @@ $options = [
     'usuario'  => $nombre,
     'password' => $password
 ];
-echo $twig->render('intranet.html.twig', $options);
+echo $twig->render($user.'.html.twig', $options);

@@ -1,0 +1,41 @@
+<div class="thumbnail text-center">
+	<img src="{{usuario.photo}}" alt="">
+	<h2 class="size-18 margin-top-10 margin-bottom-0">EMILIO, GIOIA</h2>
+	<h3 class="size-11 margin-top-0 margin-bottom-10 text-muted">ASESOR INMOBILIARIO</h3>
+</div>
+<ul class="list-unstyled nomargin">
+	{% if config.telefono1 %}
+		<li class="margin-bottom-10">
+			<i class="fa fa-phone width-20 hidden-xs hidden-sm"></i>
+			{{config.telefono1}}</li>
+	{% endif %}
+	{% if config.telefono2 %}
+		<li class="margin-bottom-10">
+			<i class="fa fa-phone width-20 hidden-xs hidden-sm"></i>
+			{{config.telefono1}}</li>
+	{% endif %}
+	{% if config.telefono3 %}
+		<li class="margin-bottom-10">
+			<i class="fa fa-phone width-20 hidden-xs hidden-sm"></i>
+			{{config.telefono3}}</li>
+	{% endif %}
+	{% if config.email1 %}
+		<li class="margin-bottom-10">
+			<i class="fa fa-envelope width-20 hidden-xs hidden-sm"></i>
+			{{config.email1}}</li>
+	{% endif %}
+	{% if config.email2 %}
+		<li class="margin-bottom-10">
+			<i class="fa fa-envelope width-20 hidden-xs hidden-sm"></i>
+			{{config.email2}}</li>
+	{% endif %}
+</ul>
+<hr>
+<!-- button whatsapp -->
+{% if config.telefonows %}
+    {% set href = "https://wa.me/58" ~ config.telefonows ~ "?text=hola! estoy interesado en la pubicación (*" ~ propiedad.codigo_id ~ "*) " ~ propiedad.titulo|raw %}
+	<a href="{{href}}" class="btn btn-3d btn-green btn-reveal btn-block" target="_blank">
+		<i class="fa fa-whatsapp"></i>
+		<span>Contactar WhatsApp</span>
+	</a>
+{% endif %}

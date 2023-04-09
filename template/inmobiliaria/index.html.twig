@@ -19,139 +19,106 @@
 </section>
 <section style="padding-top:40px; padding-bottom: 0px; border: 0;">
 <div class="container">
-    <div class="row">
-        <div class="col-md-8 col-sm-8 col-md-push-4 col-sm-push-4">
-            <div class="flexslider">
-            <div class="flex-viewport" style="overflow: hidden; position: relative;">
-            <ul class="slides" style="width: 1200%; transition-duration: 0s; transform: translate3d(-1140px, 0px, 0px);">
-            {% set i = 0 %}
-            {% for i in 0..4 %}
-                {%if propiedades_destacadas[i] is iterable %}
-                <li>
-                    <a href="{{constant("ROOT")}}inmobiliaria/ver-propiedad/{{propiedades_destacadas[i].id_property}}">
-                    <img src="{{propiedades_destacadas[i].galleries[0][0].url_big}}" alt="{{propiedades_destacadas[i].galleries[0][0].description}}">
-                    <div class="flex-caption">
-                        <strong>{{propiedades_destacadas[i].title}}</strong>
-                        <h5 class="text-warning">En {{propiedades_destacadas[i].city_label}}, {{propiedades_destacadas[i].region_label}}, 
-                            {% if propiedades_destacadas[i].area > 0 %}con área de {{propiedades_destacadas[i].area}} {{propiedades_destacadas[i].unit_area_label}},{% endif %} {{propiedades_destacadas[i].bathrooms}} Baño(s), 
-                            {{propiedades_destacadas[i].bedrooms}} Habitacion(es).</h5></div>
-                    </a>
-		</li>
-                {% endif %}
-            <!-- Slide 1 -->
-            {% set i = i + 1 %}
-            {% endfor %}
-            </ul>
-                    
-            </div>
-                
-                <ul class="flex-direction-nav"><li class="flex-nav-prev"><a class="flex-prev" href="#"><i class="fa fa-angle-left"></i></a></li><li class="flex-nav-next"><a class="flex-next" href="#"><i class="fa fa-angle-right"></i></a></li></ul>
-            </div>
-        </div>
-        <div class="col-md-4 col-sm-4 col-md-pull-8 col-sm-pull-8">
-            <div class="panel panel-default">
-            <div class="panel-heading panel-heading-transparent">
-            <h2 class="panel-title bold">Búsqueda avanzada</h2>
-            </div>
-            <div class="panel-body">
-            <form action="{{constant('ROOT')}}inmobiliaria/" method="GET">
-                <fieldset>
-                <!-- required [php action request] -->
-                <input type="hidden" name="accion" value="buscar">
-                <div class="row">
-                <div class="form-group">
-                <div class="col-md-6 col-sm-6">
-                <label>ESTADO</label>
-                <select name="id_region" class="form-control pointer required">
-                    <option value="">Todos</option>
-                    {% for ele in estados %}
-                        <option value="{{ele.id_estado}}">{{ele.estado}}</option>
-                    {% endfor %}
-                </select>
-                </div>
-                <div class="col-md-6 col-sm-6">
-                <label>CIUDAD</label>
-                <select name="id_city" class="form-control pointer required">
-                    <option value="">Todas</option>
-                    {% for ele in ciudades %}
-                        <option value="{{ele.id_ciudad}}">{{ele.ciudad}}</option>
-                    {% endfor %}
-                </select>
-                </div>
-                </div>
-                </div>
+<div class="row">
 
-                <div class="row">
-                <div class="form-group">
-                <div class="col-md-12 col-sm-12">
-                <label>TIPO INMUEBLE</label>
-                <select name="id_inmobiliaria_tipo" class="form-control pointer required">
-                    <option value="">Todos</option>
-                    {% for ele in tipo %}
-                        <option value="{{ele.id}}">{{ele.descripcion}}</option>
-                    {% endfor %}
-                </select>
-                </div>
-                </div>
-                </div>
-
-                <div class="row">
-                <div class="form-group">
-                <div class="col-md-12 col-sm-12">
-                <label>OPERACION</label>
-                <select name="id_operacion" class="form-control pointer required">
-                    <option value="">Todas</option>
-                    {% for ele in operacion %}
-                        <option value="{{ele.id}}">{{ele.descripcion}}</option>
-                    {% endfor %}
-                </select>
-                </div>
-                </div>
-                </div>
-
-                <!--div class="row">
-                <div class="form-group">
-                <div class="col-md-12 col-sm-12">
-                <label>ESTADO PROPIEDAD</label>
-                <select name="estado" class="form-control pointer required">
-                     <option value="0">Todos</option>
-                    <option value="Nuevo">Nuevo</option>
-                    <option value="Usado">Usado</option>
-                    <option value="Proyecto">Proyecto</option>
-                    <option value="En Construccion">En Construcción</option>
-                </select>
-                </div>
-                </div>
-                </div-->
-
-                <div class="row">
-                <div class="form-group">
-                <div class="col-md-6 col-sm-6">
-                <label>HABITACIONES</label>
-                <input name="habitaciones" value="" class="form-control required" type="text">
-                </div>
-                <div class="col-md-6 col-sm-6">
-                <label>BAÑOS</label>
-                <input name="baños" value="" class="form-control required" type="text">
-                </div>
-                </div>
-                </div>
-                
-                <div class="row">
-		<div class="col-md-12">
-			<button type="submit" class="btn btn-3d btn-teal btn-block margin-top-10">
-				BUSCAR
-			</button>
+	<div class="panel panel-default">
+		<div class="panel-heading panel-heading-transparent">
+			<h2 class="panel-title bold">Búsqueda avanzada</h2>
 		</div>
-                </div>
-                </fieldset>
+		<div class="panel-body">
+			<form action="{{constant('URL_INMOBILIARIA')}}/" method="GET">
+				<fieldset>
+					<!-- required [php action request] -->
+					<!--input type="hidden" name="accion" value="buscar"-->
+					<div class="row">
+						<div class="form-group">
+							<div class="col-md-2 col-sm-2">
+								<label>ESTADO</label>
+								<select name="id_estado" class="form-control pointer required">
+									<option value="">Todos</option>
+									{% for ele in estados %}
+										<option value="{{ele.id_estado}}" {% if ele.id_estado == filter.id_estado %} selected  {% endif %}>{{ele.estado}}</option>
+									{% endfor %}
+								</select>
+							</div>
+							<div class="col-md-2 col-sm-2">
+								<label>CIUDAD</label>
+								<select name="id_ciudad" class="form-control pointer required">
+									<option value="">Todas</option>
+									{% for ele in ciudades %}
+										<option value="{{ele.id_ciudad}}" {% if ele.id_ciudad == filter.id_ciudad %} selected  {% endif %}>{{ele.ciudad}}</option>
+									{% endfor %}
+								</select>
+							</div>
 
-            </form>
-            </div>
-            </div>
-        </div>
-    </div>
+                            <div class="col-md-2 col-sm-2">
+								<label>TIPO INMUEBLE</label>
+								<select name="id_inmobiliaria_tipo" class="form-control pointer required">
+									<option value="">Todos</option>
+									{% for ele in tipo %}
+										<option value="{{ele.id}}" {% if ele.id == filter.id_inmobiliaria_tipo %} selected  {% endif %}>{{ele.descripcion}}</option>
+									{% endfor %}
+								</select>
+							</div>
+
+                            <div class="col-md-2 col-sm-2">
+								<label>OPERACION</label>
+								<select name="id_operacion" class="form-control pointer required">
+									<option value="">Todas</option>
+									{% for ele in operacion %}
+										<option value="{{ele.id}}" {% if ele.id == filter.id_operacion %} selected  {% endif %}>{{ele.descripcion}}</option>
+									{% endfor %}
+								</select>
+							</div>
+
+                            <div class="col-md-2 col-sm-2">
+								<label>HABITACIONES</label>
+								<input name="habitaciones" class="form-control required" type="number" value="{{filter.habitaciones}}">
+							</div>
+							<div class="col-md-2 col-sm-2">
+								<label>BAÑOS</label>
+								<input name="baños" class="form-control required" type="number" value="{{filter.baños}}">
+							</div>
+						</div>
+					</div>
+
+					<!--div class="row">
+                    <div class="form-group">
+                    <div class="col-md-12 col-sm-12">
+                    <label>ESTADO PROPIEDAD</label>
+                    <select name="estado" class="form-control pointer required">
+                            <option value="0">Todos</option>
+                        <option value="Nuevo">Nuevo</option>
+                        <option value="Usado">Usado</option>
+                        <option value="Proyecto">Proyecto</option>
+                        <option value="En Construccion">En Construcción</option>
+                    </select>
+                    </div>
+                    </div>
+                    </div-->
+
+					<!--div class="row">
+						<div class="form-group">
+							
+						</div>
+					</div-->
+
+					<div class="row">
+						<div class="col-md-12">
+							<button type="submit" class="btn btn-3d btn-teal btn-block margin-top-10">
+								BUSCAR
+							</button>
+						</div>
+					</div>
+				</fieldset>
+
+			</form>
+		</div>
+	</div>
 </div>
+
+</div>
+
 </section>
 <section style="padding: 20px 0">
     <div class="container">
@@ -171,7 +138,7 @@
 
         <div class="thumbnail">
                 <!-- product image(s) -->
-                <a class="shop-item-image" href="{{constant("ROOT")}}inmobiliaria/ver-propiedad/{{propiedad.id}}">
+                <a class="shop-item-image" href="{{constant("ROOT")}}inmobiliaria/?accion=ver-propiedad&id={{propiedad.id}}">
                         <img class="img-responsive" src="{{ constant("ROOT")}}{{propiedad.imagen}}" alt="shop first image">
                         <!--img class="img-responsive" src="{{propiedad.galleries[0][1].url}}" alt="shop hover image"-->
                 </a>
@@ -244,7 +211,7 @@
 
             <!-- buttons -->
             <div class="shop-item-buttons text-center">
-                    <a class="btn btn-primary" href="{{constant("ROOT")}}inmobiliaria/ver-propiedad/{{propiedad.id}}">Detalles <i class="fa fa-angle-right"></i></a>
+                    <a class="btn btn-primary" href="{{constant("ROOT")}}inmobiliaria/?accion=ver-propiedad&id={{propiedad.id}}">Detalles <i class="fa fa-angle-right"></i></a>
             </div>
             <!-- /buttons -->
         </div>
