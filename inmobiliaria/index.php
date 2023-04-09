@@ -2,8 +2,13 @@
 include_once '../includes/constants.php';
 include_once '../includes/usuario.php';
 
-$accion = isset($_GET['accion']) ? $_GET['accion']:"";
-if ($accion <>"" && $accion<>'ver-propiedad') usuario::esUsuarioLogueado('inmobiliaria');
+$accion     = isset($_GET['accion']) ? $_GET['accion']:"";
+// acciones donde no se debe validar si el usuario está registrado
+$haystack   = ["","ver-propiedad","registro"];
+if(!in_array($accion,$haystack)) {
+    usuario::esUsuarioLogueado('inmobiliaria');
+}
+
 $publicaciones = new publicaciones();
 
 function getContext() {
@@ -257,6 +262,35 @@ switch ($accion) {
         echo $twig->render('inmobiliaria/propiedad.html.twig', $context);
         break; 
 
+    case "registro":
+        if ($_POST) {
+            $user = new usuario();
+            $nombre = $_POST['nombre'];
+            $result = $user->ver([ 'nombre' => "'".$nombre."'" ]);
+            
+            if ($result['suceed'] && $result['row']==[]) {
+                
+                $result = $user->insertar($_POST);
+                if ($result['suceed']) {
+                    $result['mensaje'] = 'Usuario registrado con éxito.<br>Ya puede inciciar sesión.';
+                } else {
+                    $result['mensaje'] = 'Ha ocurrido un error durante el proceso.<br>No se ha podido registrar el usuario. Inténtelo nuevamente.';
+                }
+                
+            } else {
+                $result['mensaje'] = "Ya existe un usuario registrado con el nombre <strong>$nombre</strong>";
+                $result['suceed']  = false;
+                $result['exists']  = true;
+            }
+            unset($result['query'], $result['row'], $result['data']);
+            
+            echo json_encode($result);
+        } else {
+
+            $context = [];
+            echo $twig->render('inmobiliaria/registro.html.twig', $context);
+        }
+        break;
     default :
         $name    = 'inmobiliaria/index.html.twig';
         $context = getContext();

@@ -16,15 +16,15 @@ class usuario extends db implements crud  {
     }
 
     public function insertar($data) {
-        
+        return db::insert(self::tabla ,$data);
     }
 
     public function listar() {
         
     }
 
-    public function ver($id) {
-        
+    public function ver($condicion) {
+        return db::select("*",self::tabla,$condicion);  
     }   
     
     public function login($usuario,$password,$user='intrantet') {
