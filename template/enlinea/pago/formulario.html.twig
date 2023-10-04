@@ -153,7 +153,7 @@ no tiene recibos pendiente por cancelar.
 <tbody>
 {%set deuda_usd = 0%}
 {%for factura in cuenta.cuentas%}
-{%set deuda_usd = deusa_usd + factura.facturado_usd%}
+{%set deuda_usd = deuda_usd + factura.facturado_usd%}
 <tr>
 <td style="text-align: center">
 <input type="checkbox" name="id[]" value="{{ counter }}" {{ factura.pagado > 0? "disabled=\'disabled\'":"" }}>

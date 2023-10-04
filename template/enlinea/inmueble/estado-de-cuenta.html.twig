@@ -92,6 +92,7 @@ Inmueble
                             {% set r = 0 %}
                             {% for detalle in cuenta.cuenta %}
                                 {% set total = total + detalle.deuda %}
+                                {% set total_usd = total_usd + detalle.deuda_usd %}
                                 {% set n = n + 1 %}
                                 {% set r = r + detalle.recibos %}
                                 <tr>
