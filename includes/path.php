@@ -108,26 +108,26 @@ class JPath
 	 * @return	string	Filesystem permissions
 	 * @since	1.5
 	 */
-	public static function getPermissions($path)
-	{
-		$path = JPath::clean($path);
-		$mode = @ decoct(@ fileperms($path) & 0777);
+	// public static function getPermissions($path)
+	// {
+	// 	$path = JPath::clean($path);
+	// 	$mode = @ decoct(@ fileperms($path) & 0777);
 
-		if (strlen($mode) < 3) {
-			return '---------';
-		}
+	// 	if (strlen($mode) < 3) {
+	// 		return '---------';
+	// 	}
 
-		$parsed_mode = '';
-		for ($i = 0; $i < 3; $i ++) {
-			// read
-			$parsed_mode .= ($mode { $i } & 04) ? "r" : "-";
-			// write
-			$parsed_mode .= ($mode { $i } & 02) ? "w" : "-";
-			// execute
-			$parsed_mode .= ($mode { $i } & 01) ? "x" : "-";
-		}
-		return $parsed_mode;
-	}
+	// 	$parsed_mode = '';
+	// 	for ($i = 0; $i < 3; $i ++) {
+	// 		// read
+	// 		$parsed_mode .= ($mode[$i] & 04) ? "r" : "-";
+	// 		// write
+	// 		$parsed_mode .= ($mode[$i] & 02) ? "w" : "-";
+	// 		// execute
+	// 		$parsed_mode .= ($mode[$i] & 01) ? "x" : "-";
+	// 	}
+	// 	return $parsed_mode;
+	// }
 
 	/**
 	 * Checks for snooping outside of the file system root
@@ -137,21 +137,21 @@ class JPath
 	 * @return	string	A cleaned version of the path
 	 * @since	1.5
 	 */
-	public static function check($path, $ds = DIRECTORY_SEPARATOR)
-	{
-		if (strpos($path, '..') !== false) {
-			JError::raiseError(20, 'JPath::check Use of relative paths not permitted'); // don't translate
-			jexit();
-		}
+	// public static function check($path, $ds = DIRECTORY_SEPARATOR)
+	// {
+	// 	if (strpos($path, '..') !== false) {
+	// 		JError::raiseError(20, 'JPath::check Use of relative paths not permitted'); // don't translate
+	// 		jexit();
+	// 	}
 
-		$path = JPath::clean($path);
-		if (strpos($path, JPath::clean(JPATH_ROOT)) !== 0) {
-			JError::raiseError(20, 'JPath::check Snooping out of bounds @ '.$path); // don't translate
-			jexit();
-		}
+	// 	$path = JPath::clean($path);
+	// 	if (strpos($path, JPath::clean(JPATH_ROOT)) !== 0) {
+	// 		JError::raiseError(20, 'JPath::check Snooping out of bounds @ '.$path); // don't translate
+	// 		jexit();
+	// 	}
 
-		return $path;
-	}
+	// 	return $path;
+	// }
 
 	/**
 	 * Function to strip additional / or \ in a path name
@@ -161,19 +161,19 @@ class JPath
 	 * @return	string	The cleaned path
 	 * @since	1.5
 	 */
-	public static function clean($path, $ds = DIRECTORY_SEPARATOR)
-	{
-		$path = trim($path);
+	// public static function clean($path, $ds = DIRECTORY_SEPARATOR)
+	// {
+	// 	$path = trim($path);
 
-		if (empty($path)) {
-			$path = JPATH_ROOT;
-		} else {
-			// Remove double slashes and backslahses and convert all slashes and backslashes to DS
-			$path = preg_replace('#[/\\\\]+#', $ds, $path);
-		}
+	// 	if (empty($path)) {
+	// 		$path = JPATH_ROOT;
+	// 	} else {
+	// 		// Remove double slashes and backslahses and convert all slashes and backslashes to DS
+	// 		$path = preg_replace('#[/\\\\]+#', $ds, $path);
+	// 	}
 
-		return $path;
-	}
+	// 	return $path;
+	// }
 
 	/**
 	 * Method to determine if script owns the path
@@ -182,38 +182,38 @@ class JPath
 	 * @return	boolean	True if the php script owns the path passed
 	 * @since	1.5
 	 */
-	public static function isOwner($path)
-	{
-		jimport('joomla.filesystem.file');
-		jimport('joomla.user.helper');
+	// public static function isOwner($path)
+	// {
+	// 	jimport('joomla.filesystem.file');
+	// 	jimport('joomla.user.helper');
 
-		$tmp = md5(JUserHelper::genRandomPassword(16));
-		$ssp = ini_get('session.save_path');
-		$jtp = JPATH_SITE.DS.'tmp';
+	// 	$tmp = md5(JUserHelper::genRandomPassword(16));
+	// 	$ssp = ini_get('session.save_path');
+	// 	$jtp = JPATH_SITE.DS.'tmp';
 
-		// Try to find a writable directory
-		$dir = is_writable('/tmp') ? '/tmp' : false;
-		$dir = (!$dir && is_writable($ssp)) ? $ssp : false;
-		$dir = (!$dir && is_writable($jtp)) ? $jtp : false;
+	// 	// Try to find a writable directory
+	// 	$dir = is_writable('/tmp') ? '/tmp' : false;
+	// 	$dir = (!$dir && is_writable($ssp)) ? $ssp : false;
+	// 	$dir = (!$dir && is_writable($jtp)) ? $jtp : false;
 
-		if ($dir) {
-			$test = $dir.DS.$tmp;
+	// 	if ($dir) {
+	// 		$test = $dir.DS.$tmp;
 
-			// Create the test file
-			$blank = '';
-			JFile::write($test, $blank, false);
+	// 		// Create the test file
+	// 		$blank = '';
+	// 		JFile::write($test, $blank, false);
 
-			// Test ownership
-			$return = (fileowner($test) == fileowner($path));
+	// 		// Test ownership
+	// 		$return = (fileowner($test) == fileowner($path));
 
-			// Delete the test file
-			JFile::delete($test);
+	// 		// Delete the test file
+	// 		JFile::delete($test);
 
-			return $return;
-		}
+	// 		return $return;
+	// 	}
 
-		return false;
-	}
+	// 	return false;
+	// }
 
 	/**
 	 * Searches the directory paths for a given file.
