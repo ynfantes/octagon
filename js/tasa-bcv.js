@@ -1,7 +1,6 @@
-fetch('http://bcv.pronet21.net/')
+fetch('https://exchangemonitor.net/ajax/widget-unique?country=ve&type=bcv')
 .then((response) => response.json())
 .then((data) => {
     const element = document.getElementById('tasa_del_dia');
-    element.innerHTML = data.usd;
-    console.log(data);
+    element.innerHTML = data.price;
 });
