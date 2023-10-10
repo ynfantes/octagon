@@ -64,8 +64,8 @@ class fondo extends db implements crud {
         return db::exec_query("delete from fondos_movimiento where id_fondo=$id");
     }
 
-    public function truncateTable($tabla = null) {
-        if ($tabla === null) $tabla = self::tabla;
-        return db::truncate($tabla);
-    }
+    // public function truncateTable($tabla = null) {
+    //     if ($tabla === null) $tabla = self::tabla;
+    //     return db::truncate($tabla);
+    // }
 }
