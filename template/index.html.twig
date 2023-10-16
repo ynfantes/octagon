@@ -30,8 +30,8 @@
 </head>
 <body data-spy=scroll data-target=.navigation>
 <a href="{{constant('ROOT')}}images/popup_actualizacion_datos.png" title="Estimado propietario, actualiza tus datos" data-gall="gall1" class="venobox vbox-item" id="firstlink"></a>
-<div id=banner class=bg-blur>
-<div id=header>
+<div id="banner" class="bg-blur">
+<div id="header">
 <nav class="navbar navbar-inverse navbar-fixed-top scroll-fixed-navbar" role=navigation>
 <div class=container>
 <div class=navbar-header>
@@ -136,6 +136,18 @@ le pedimos disculpas por los inconvenientes causados. Regrese pronto
 </div>
 </div>
 </div>
+<section id="subscribe" class="section bg-blue-pattern">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 text-center white-text">
+                <div class="headline">
+                    <h2>En esta empresa se venden y se alquilan inmuebles</h2>
+                </div>
+                <!--a href="{#{constant('ROOT')}#}inmobiliaria" class="btn btn-transparent btn-big">Haz click aquí</a-->
+            </div>
+        </div>
+    </div>
+</section>
 <!-- carteleta inmueble start -->
 {% if cartelera_publica %}
 {% set mes = "Ene,Feb,Mar,Abr,May,Jun,Jul,Ago,Sep,Oct,Nov,Dic"|split(",") %}
