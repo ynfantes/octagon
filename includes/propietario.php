@@ -232,7 +232,10 @@ class propietario extends db implements crud  {
                     $contenido = $contenido_original;
                     // hacemos la personalizacion del contenido
                     foreach ($propietario as $key => $value) {
-                        $contenido = str_replace("[".$key."]", $value, $contenido);
+                        if($value) {
+
+                            $contenido = str_replace("[".$key."]", $value, $contenido);
+                        }
                     }
                     
                     // aquí enviamos el email

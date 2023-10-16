@@ -636,7 +636,7 @@ Class Misc {
      * @param Boolean $output_entities indica si reemplaza los caracteres especiales por entidades html
      * @return <type>
      */
-    public static function trim_text($input, $length, $ellipses = true, $strip_html = true, $output_entities = false) {
+    public static function trim_text($input, $length = 0, $ellipses = true, $strip_html = true, $output_entities = false) {
         // Strip tags, if desired
         if ($strip_html) {
             $input = strip_tags($input);
