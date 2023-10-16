@@ -51,7 +51,7 @@ Class db {
             $this->mysqli->query("SET NAMES 'utf8'");
             
         } catch (Exception $exc) {
-            if ($this->mysqli->connect_error) {
+            if($this->mysqli->connect_errno && $this->mysqli->connect_error ) {
 
                 echo $this->mysqli->connect_errno . " " . $this->mysqli->connect_error;
             }
