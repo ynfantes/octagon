@@ -1,7 +1,7 @@
 <?php
 include_once '../includes/constants.php';
 include_once '../includes/usuario.php';
-usuario::esUsuarioLogueado();
+//usuario::esUsuarioLogueado();
 
 $accion = isset($_GET['accion']) ? $_GET['accion'] : "cartelera-general";
 
