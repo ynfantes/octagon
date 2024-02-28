@@ -26,6 +26,7 @@ class cartelera extends db implements crud {
             return $this->query($sql);
             
         } else {
+            $this->exec_query("update ".$this->tabla." set eliminar=1 where eliminar=0 and DATEDIFF(fecha_hasta,NOW())<0");
             return $this->select("*", $this->tabla,Array("eliminar"=>0),null,Array("fecha"=>"desc"));
         }
     }
