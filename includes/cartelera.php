@@ -56,5 +56,10 @@ class cartelera extends db implements crud {
             return false;
         }
     }
+
+    public function detenerPublicacionVencida() {
+        $query = "update ".$this->tabla." set eliminar=1 where eliminar=0 and datediff(curdate(),fecha_hasta) > 1";
+        return $this->exec_query($query);
+    }
             
 }

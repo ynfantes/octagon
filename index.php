@@ -31,6 +31,7 @@ if ($mantenimiento) {
 }
 $cartelera = new cartelera();
 $cartelera->tabla="cartelera_publica";
+$cartelera->detenerPublicacionVencida();
 $cartelera_publica = $cartelera->listar();
 
 $context = [

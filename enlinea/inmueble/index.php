@@ -211,6 +211,7 @@ switch ($accion) {
 
         ));
         $cartelera->tabla="cartelera_general";
+        $cartelera->detenerPublicacionVencida();
         $cartelera_general = $cartelera->listar();
         $propiedades = $propiedad->propiedadesPropietario($_SESSION['usuario']['cedula']);
         $inmueble = $inmuebles->ver($propiedades['data'][0]['id_inmueble']);
@@ -226,6 +227,7 @@ switch ($accion) {
 
             foreach ($propiedades['data'] as $propiedad) {
                 
+                $cartelera->detenerPublicacionVencida();
                 $resultado = $cartelera->listarCarteleraInmueble($propiedad['id_inmueble']);
                 array_push($cartelera_inmueble, $resultado['data']);
                 $inm = $propiedad['id_inmueble'];
