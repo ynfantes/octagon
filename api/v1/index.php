@@ -38,6 +38,28 @@ $app->get('/status', function (Request $request, Response $response) {
     
 });
 
+$app->post('/copyUpdateFile', function(Request $req, Response $res) {
+
+    try {
+        
+        $data = json_decode($req->getBody(),true);
+        //Decode pdf content
+        $file_decoded = base64_decode($data['base64']);
+        //Write data back to pdf file
+        $file = fopen('../../data/'.$data['filename'],'w');
+        $data['suceed'] = fwrite($file,$file_decoded);
+        $data['content'] = $file_decoded;
+        unset($data['base64']);
+        //close output file
+        fclose($file);
+        $newRes = $res->withJson($data);
+        return $newRes;
+
+    } catch (\Throwable $th) {
+        return anError($th, $res);
+    }
+    
+});
 require_once '../src/routes/routes.php';
 
 $app->run();
