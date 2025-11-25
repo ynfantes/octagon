@@ -77,16 +77,20 @@ class factura extends db implements crud {
     
     public function avisoExisteEnBaseDeDatos($aviso) {
         $aviso = str_replace(".pdf","",$aviso);
-        $query = "select numero_factura from facturas where numero_factura='".$aviso."'";
-        //echo $query."<br>";
-        $r=0;
+        $query = "
+            SELECT numero_factura 
+            FROM facturas 
+            WHERE numero_factura='{$aviso}'
+        ";
+        // En caso de que exista la tabla historico_avisos_cobro
+        // UNION 
+        // SELECT numero_factura 
+        // FROM historico_avisos_cobro 
+        // WHERE numero_factura='{$aviso}'
+        // Fin de la adición
         $result = $this->dame_query($query);
-        if ($result['suceed']==true) {
-            if (count($result['data'])>0) {
-                $r=1;
-            }
-        }
-        return $r;       
+        
+        return ($result['suceed'] && isset($result['data']) && count($result['data']) > 0) ? 1 : 0;
     }
     
     public static function numeroRecibosPendientesPropitario($cedula) {

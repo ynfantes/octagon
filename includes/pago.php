@@ -188,7 +188,8 @@ class pago extends db implements crud {
         return $resultado;
      }
 
-    public function procesarPago($id,$estatus) {
+    
+     public function procesarPago($id,$estatus) {
         
         $this->actualizar($id, array("estatus"=>$estatus));
         $r = $this->ver($id);
@@ -360,15 +361,18 @@ class pago extends db implements crud {
     
     public function cancelacionExisteEnBaseDeDatos($cancelacion) {
         $cancelacion = str_replace(".pdf","",$cancelacion);
-        $query = "select numero_factura from cancelacion_gastos where numero_factura='".$cancelacion."'";
-        $r=0;
+        $query = "SELECT 1 as existe
+                  FROM cancelacion_gastos 
+                  WHERE numero_factura='{$cancelacion}'
+                  UNION
+                  SELECT 1 as existe
+                  FROM movimiento_caja
+                  WHERE numero_recibo='{$cancelacion}'";
+        
         $result = $this->dame_query($query);
-        if ($result['suceed']==true) {
-            if (count($result['data'])>0) {
-                $r=1;
-            }
-        }
-        return $r;       
+
+        return ($result['suceed'] && isset($result['data']) && count($result['data'])>0);
+
     }
     
     public function listarPagosEmailRegisroNoEnviado() {
@@ -408,5 +412,20 @@ class pago extends db implements crud {
     }
     public function eliminarCancelacionDeGastos($id) {
         return db::delete('cancelacion_gastos',['id'=>$id]);
+    }
+
+    public function listarPagosProcesadosRangoFechas($desde = null, $hasta = null, $codigo_inmueble = null) {
+        $query = "select distinct p.* from pagos p join pago_detalle d on p.id = d.id_pago where estatus = 'a' ";
+        if (!$codigo_inmueble==null) {
+            $query.= " and d.id_inmueble ='".$codigo_inmueble."' ";
+        }
+        if (!$desde == null) {
+           $query .= "and p.fecha >='".$desde."' ";
+        }
+        if (!$hasta == null){
+            $query .= "and p.fecha <='".$hasta." 23:59:59'";
+        }
+        $query.="order by d.id_inmueble ASC, p.id";
+        return $this->dame_query($query);
     }
 }
