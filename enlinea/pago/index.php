@@ -391,6 +391,63 @@ switch ($accion) {
             }
             echo "Total Recibos: " . $n;
         }
-        break; 
+        break;
 
-    }
+    case "listarPagosProcesadosGeneral":
+        $pagos = new pago();
+        $desde = null;
+        $hasta = null;
+        $codigo_inmueble = null;
+        if (isset($_GET['desde'])) {
+            $desde = $_GET['desde'];
+        }
+        if (isset($_GET['hasta'])) {
+            $hasta = $_GET['hasta'];
+        }
+        if (isset($_GET['inmueble'])) {
+            $codigo_inmueble = $_GET['inmueble'];
+        }
+
+
+        $pagos_maestro = $pagos->listarPagosProcesadosRangoFechas($desde, $hasta, $codigo_inmueble);
+
+
+        if ($pagos_maestro['suceed'] && count($pagos_maestro['data']) > 0) {
+
+
+            foreach ($pagos_maestro['data'] as $pago) {
+
+                $pago_detalle = $pagos->detallePagoPendiente($pago['id']);
+
+
+                if ($pago_detalle['suceed'] && count($pago_detalle['data']) > 0) {
+                    $enviado = $pago["enviado"] == 0 ? "False" : "True";
+                    echo "|" . $pago['id'] . "|";
+                    echo Misc::date_format($pago['fecha']) . "|";
+                    echo strtoupper($pago['tipo_pago']) . "|";
+                    echo $pago["numero_documento"] . "|";
+                    echo Misc::date_format($pago["fecha_documento"]) . "|";
+                    echo Misc::number_format($pago["monto"]) . "|";
+                    echo $pago["banco_origen"] . "|";
+                    echo $pago["banco_destino"] . "|";
+                    echo $pago["numero_cuenta"] . "|";
+                    echo strtoupper($pago["estatus"]) . "|";
+                    echo $pago["email"] . "|";
+                    echo $enviado . "|";
+                    echo $pago["telefono"] . "|";
+                    // --
+                    foreach ($pago_detalle['data'] as $value) {
+                        echo $value['id_inmueble'] . "|";
+                        echo $value['id_apto'] . "|";
+                        echo Misc::number_format($value['monto']) . "|";
+                        echo $value['id_factura'] . "|";
+                        echo $value['periodo'] . "|";
+                    }
+                    echo "<br>";
+                }
+            }
+        } else {
+            echo "0";
+        }
+        break; 
+}

@@ -121,3 +121,18 @@ $app->delete('/facturas/reversoFacturacion/periodo/{periodo}/inmueble/{inmueble}
         return anError($th, $res);
     }
 });
+
+$app->get('/facturas/checkAccountStatemet', function(Request $req, Response $res) {
+    try {
+        $factura = new factura();
+        $result = [];
+        $result = $factura->listarDiferenciasRecibosPendientesPorPropietario();
+        unset($result['query'], $result['row']);
+        if(!$result['suceed']) unset($result['data']);
+        $newRes = $res->withJson($result);
+        return $newRes;
+
+    } catch (\Throwable $th) {
+        return anError($th, $res);
+    }
+});

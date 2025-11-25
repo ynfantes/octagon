@@ -201,7 +201,8 @@ switch ($accion) {
         $propiedad = new propiedades();
         $inmuebles = new inmueble();
 
-        $fecha_actualizacion = null;
+        $archivo = '../../'.ACTUALIZ . ARCHIVO_ACTUALIZACION;
+        $fecha_actualizacion = JFile::read($archivo);
         
         $bitacora->insertar(Array(
 
@@ -211,13 +212,14 @@ switch ($accion) {
 
         ));
         $cartelera->tabla="cartelera_general";
+        $cartelera->detenerPublicacionVencida();
         $cartelera_general = $cartelera->listar();
         $propiedades = $propiedad->propiedadesPropietario($_SESSION['usuario']['cedula']);
         $inmueble = $inmuebles->ver($propiedades['data'][0]['id_inmueble']);
 
-        if($inmueble['suceed'] && count($inmueble['data'])>0) {
-            $fecha_actualizacion = $inmueble['data'][0]['fecha_actualizacion'];
-        }
+        // if($inmueble['suceed'] && count($inmueble['data'])>0) {
+        //     $fecha_actualizacion = $inmueble['data'][0]['fecha_actualizacion'];
+        // }
 
         if ($propiedades['suceed'] == true && count($propiedades['data'])>0) {
             $cartelera_inmueble = Array();
@@ -226,6 +228,7 @@ switch ($accion) {
 
             foreach ($propiedades['data'] as $propiedad) {
                 
+                $cartelera->detenerPublicacionVencida();
                 $resultado = $cartelera->listarCarteleraInmueble($propiedad['id_inmueble']);
                 array_push($cartelera_inmueble, $resultado['data']);
                 $inm = $propiedad['id_inmueble'];

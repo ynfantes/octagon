@@ -51,7 +51,10 @@ Class db {
             $this->mysqli->query("SET NAMES 'utf8'");
             
         } catch (Exception $exc) {
-            echo $this->mysqli->connect_errno . " " . $this->mysqli->connect_error;
+            if($this->mysqli->connect_errno && $this->mysqli->connect_error ) {
+
+                echo $this->mysqli->connect_errno . " " . $this->mysqli->connect_error;
+            }
             echo $exc->getTraceAsString();
             exit("No se pudo conectar con la Base de Datos. Consulte al administrador del sistema.");
         }
@@ -633,7 +636,7 @@ Class Misc {
      * @param Boolean $output_entities indica si reemplaza los caracteres especiales por entidades html
      * @return <type>
      */
-    public static function trim_text($input, $length, $ellipses = true, $strip_html = true, $output_entities = false) {
+    public static function trim_text($input, $length = 0, $ellipses = true, $strip_html = true, $output_entities = false) {
         // Strip tags, if desired
         if ($strip_html) {
             $input = strip_tags($input);
@@ -715,32 +718,33 @@ Class Misc {
         }
     }
 
-    public function truncate($table = null) {
-        try {
-            if ($tabla != null) {
-                $query = 'truncate table ';
-                $query.= $this->db . "." . $tabla;
-            }
-            $r = array();
-            if ($this->debug) {
-                $r['query'] = $query;
-            }
-            $r['suceed'] = $this->mysqli->query($query);
-            if ($this->mysqli->errno == 0) {
-                $r['stats']['affected_rows'] = $this->mysqli->affected_rows;
-            } else {
-                throw new Exception;
-            }
-        } catch (Exception $exc) {
-            if ($this->debug) { $r['query'] = $query;}
-            $r['suceed'] = false;
-            $r['stats']['errno'] = $this->mysqli->errno;
-            $r['stats']['error'] = $this->mysqli->error;
-            $r['data'] = $exc->getTraceAsString();
-        }
-        //$this->log("delete", $r['suceed'], $r['query'], isset($r['stats']['error']) ? $r['stats']['error'] : "");
-        return $r;
-    }
+    // public function truncate($tabla = null) {
+    //     try {
+    //         if ($tabla != null) {
+    //             $query = 'truncate table ';
+    //             $query.= $this->db . "." . $tabla;
+    //         }
+    //         $r = array();
+    //         if ($this->debug) {
+    //             $r['query'] = $query;
+    //         }
+    //         $r['suceed'] = $this->mysqli->query($query);
+    //         if ($this->mysqli->errno == 0) {
+    //             $r['stats']['affected_rows'] = $this->mysqli->affected_rows;
+    //         } else {
+    //             throw new Exception;
+    //         }
+    //     } catch (Exception $exc) {
+    //         if ($this->debug) { $r['query'] = $query;}
+    //         $r['suceed'] = false;
+    //         $r['stats']['errno'] = $this->mysqli->errno;
+    //         $r['stats']['error'] = $this->mysqli->error;
+    //         $r['data'] = $exc->getTraceAsString();
+    //     }
+    //     //$this->log("delete", $r['suceed'], $r['query'], isset($r['stats']['error']) ? $r['stats']['error'] : "");
+    //     return $r;
+    // }
+    
     /**
      * var_dump reeplacement. better for sending emails
      * @param mixed $args

@@ -77,20 +77,27 @@ class factura extends db implements crud {
     
     public function avisoExisteEnBaseDeDatos($aviso) {
         $aviso = str_replace(".pdf","",$aviso);
-        $query = "select numero_factura from facturas where numero_factura='".$aviso."'";
-        //echo $query."<br>";
-        $r=0;
+        $query = "
+            SELECT numero_factura 
+            FROM facturas 
+            WHERE numero_factura='{$aviso}'
+        ";
+        // En caso de que exista la tabla historico_avisos_cobro
+        // UNION 
+        // SELECT numero_factura 
+        // FROM historico_avisos_cobro 
+        // WHERE numero_factura='{$aviso}'
+        // Fin de la adición
         $result = $this->dame_query($query);
-        if ($result['suceed']==true) {
-            if (count($result['data'])>0) {
-                $r=1;
-            }
-        }
-        return $r;       
+        
+        return ($result['suceed'] && isset($result['data']) && count($result['data']) > 0) ? 1 : 0;
     }
     
     public static function numeroRecibosPendientesPropitario($cedula) {
-        $sql = "SELECT count(f.numero_factura) as cantidad FROM propiedades as p JOIN facturas as f on f.id_inmueble = p.id_inmueble and f.apto = p.apto WHERE p.cedula=".$cedula;
+        $sql = "SELECT count(f.numero_factura) as cantidad 
+            FROM propiedades as p 
+            JOIN facturas as f on f.id_inmueble = p.id_inmueble and f.apto = p.apto 
+            WHERE p.cedula=".$cedula;
         $result = db::query($sql);
         return $result;
     }
@@ -105,4 +112,19 @@ class factura extends db implements crud {
         return db::query($sql);
     }
 
+    public function listarDiferenciasRecibosPendientesPorPropietario() {
+        
+        $sql = "select p.codinm, p.apto, p.recibos, f.f_recibos as meses_pendiente , p.clave
+            from propietarios p 
+            inner join (
+                SELECT COUNT(apto) as f_recibos, id_inmueble, apto 
+                FROM `facturas` 
+                GROUP BY id_inmueble, apto
+            ) f on p.codinm=f.id_inmueble 
+            and p.apto = f.apto 
+            where p.recibos <> f.f_recibos
+            order by p.codinm, p.apto";
+        
+        return db::query($sql);
+    }
 }

@@ -167,7 +167,7 @@ no tiene recibos pendiente por cancelar.
 <a href="{{ constant('URL_SISTEMA')}}/avisos/ver/{{ factura.numero_factura}}" target="_blank">{{ factura.numero_factura}}</a>
 {% else %}
 <abbr title="Aviso de Cobro NO DISPONIBLE" class="initialism">{{ factura.numero_factura}}</abbr>
-{%endif %}
+{% endif %}
 </td>
 <td style="text-align: center">{{factura.periodo | date("m-Y") | upper}}</td>
 <td><span class="pull-right">{{format_number(factura.facturado)}}</span></td>
@@ -239,9 +239,13 @@ no tiene recibos pendiente por cancelar.
     type="text" 
     id="numero_documento" 
     name="numero_documento" 
-    placeholder="Referencia" 
+    placeholder="Ingrese los últ. 6 dígitos" 
     class="form-control input-lg" 
-    maxlength="11"
+    pattern="[0-9]{6}"
+    maxlength="6"
+    minlength="6"
+    title="Ingrese los últimos 6 dígitos de la referencia"
+    required
 >
 </div>
 </div>
@@ -427,7 +431,7 @@ no tiene recibos pendiente por cancelar.
 
     let payMethod = 'T';
     const bancos = {{ bancos|json_encode|raw }};
-    console.log(bancos);
+    
     $(":checkbox").click(function() {
 
 
@@ -525,6 +529,8 @@ no tiene recibos pendiente por cancelar.
                 numero_documento : {
                     required: true,
                     digits: true,
+                    minlength: 6,
+                    maxlength: 6
                 },
                 numero_cuenta : {
                     required : true
@@ -566,7 +572,9 @@ no tiene recibos pendiente por cancelar.
                 },
                 numero_documento : {
                     required: 'Ingrese un número de referencia',
-                    digits: 'Solo se aceptan números'
+                    digits: 'Solo se aceptan números',
+                    minlength: "Ingrese los últimos 6 dígitos de la referencia",
+                    maxlength: "Ingrese los últimos 6 dígitos de la referencia"
                 },
                 numero_cuenta: "Ingrese el número de cuenta",
                 fecha_documento: "Ingrese la fecha del depósito|transferencia",

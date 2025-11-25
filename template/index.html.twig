@@ -30,8 +30,8 @@
 </head>
 <body data-spy=scroll data-target=.navigation>
 <a href="{{constant('ROOT')}}images/popup_actualizacion_datos.png" title="Estimado propietario, actualiza tus datos" data-gall="gall1" class="venobox vbox-item" id="firstlink"></a>
-<div id=banner class=bg-blur>
-<div id=header>
+<div id="banner" class="bg-blur">
+<div id="header">
 <nav class="navbar navbar-inverse navbar-fixed-top scroll-fixed-navbar" role=navigation>
 <div class=container>
 <div class=navbar-header>
@@ -136,6 +136,18 @@ le pedimos disculpas por los inconvenientes causados. Regrese pronto
 </div>
 </div>
 </div>
+<section id="subscribe" class="section bg-blue-pattern">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 text-center white-text">
+                <div class="headline">
+                    <h2>En esta empresa se venden y se alquilan inmuebles</h2>
+                </div>
+                <!--a href="{#{constant('ROOT')}#}inmobiliaria" class="btn btn-transparent btn-big">Haz click aquí</a-->
+            </div>
+        </div>
+    </div>
+</section>
 <!-- carteleta inmueble start -->
 {% if cartelera_publica %}
 {% set mes = "Ene,Feb,Mar,Abr,May,Jun,Jul,Ago,Sep,Oct,Nov,Dic"|split(",") %}
@@ -494,9 +506,9 @@ solvencia de condominio o hidrocapital</p>
     <p>Para solicitar una solvencia complete el formulario adjunto,
     la administradora procesará su solicitud oportunamente.</p>
     <p><strong>Tarifas:</strong><br>
-        1.- Solvencia de Condominio 5$ o su equivalente en Bs.<br/>
-        2.- Solvencia de Hidrocapital 10$ o su equivalente en Bs.<br>
-        2.- Constancia de Residencia Condominial 10$ o su equivalente en Bs.<br>
+        1.- Solvencia de Condominio 10$ o su equivalente en Bs.<br/>
+        2.- Solvencia de Hidrocapital 30$ o su equivalente en Bs.<br>
+        2.- Constancia de Residencia Condominial 15$ o su equivalente en Bs.<br>
         <small><i><strong>Tarifas sujetas a cambio sin previo aviso</strong></i></small></p>
     <p><strong>Depositar en Banco Mercantil:</strong><br>
         Cuenta Nº 0105 0016 89 1016236948 &FilledVerySmallSquare;
@@ -527,13 +539,13 @@ solvencia de condominio o hidrocapital</p>
     </select>
 </div>
 <div class=form-group>
-<input placeholder="Nombre(s) y Apellido(s) Solicitante*" id=nombre name=nombre class=form-control>
+<input placeholder="Nombre(s) y Apellido(s) Solicitante*" id="nombre" name="nombre" class="form-control">
 </div>
 <div class=form-group>
-<input placeholder="Nombre Condominio o Edificio*" id=edificio name=edificio class=form-control>
+<input placeholder="Nombre Condominio o Edificio*" id="edificio" name="edificio" class="form-control">
 </div>
 <div class=form-group>
-<input placeholder="Código o número de apartamento*" id=apartamento name=apartamento class=form-control>
+<input placeholder="Código o número de apartamento*" id="apartamento" name="apartamento" class="form-control">
 </div>
 <div class="col-lg-6" style="padding-left: 0">
 <div class="form-group">
@@ -601,7 +613,7 @@ solvencia de condominio o hidrocapital</p>
 <script src="{{constant('ROOT')}}js/custom.js"></script>
 <script>
     var formData = new FormData();
-    jQuery(document).ready(function(){Contact.initMap();});$(function(){$(document).on("click","div.alert",function(){$(".alert").hide();$("#contactoform").resetForm();$("#contactoform").fadeIn();});$("#login-form").validate({debug:true,rules:{apto:{required:true,minlength:2},password:{required:true,minlength:4,maxlength:20}},messages:{apto:{required:'Nº Apartamento es requerido',minlength:'Ingrese mímino 4 caracteres'},password:{required:'Ingrese su clave de acceso',minlength:'Deben ser mínimo 4 caracteres',maxlength:'No pueden ser más de 20 caracteres'}},submitHandler:function(form){form.submit();$("btn-submit").attr("disabled","disabled");},errorPlacement:function(error,element){error.insertBefore(element.parent());}});$("#contactoform").validate({errorClass:"invalid2",rules:{email:{required:true,email:true},nombre:{required:true},mensaje:{required:true}},messages:{email:{required:'Ingrese su correo electrónico',email:'Ingrese un correo electrónico válido'},nombre:{required:'Ingrese su nombre y apellido'},mensaje:{required:'Escriba su mensaje'}},submitHandler:function(form){$("#contactoform").ajaxSubmit({target:"#respuesta",method:"post",url:"includes/enviar_email.php",resetForm:true,beforeSubmit:function(){$("#contactoform").hide();},success:function(){$("#respuesta").fadeIn();},error:function(){$("#respuesta").fadeIn();}});},errorPlacement:function(error,element){error.insertBefore(element.parent());}});/*$(".venobox").venobox(); $("#firstlink").venobox().trigger('click');*/});
+    jQuery(document).ready(function(){Contact.initMap();});$(function(){$(document).on("click","div.alert",function(){$(".alert").hide();$("#contactoform").resetForm();$("#contactoform").fadeIn();});$("#login-form").validate({debug:true,rules:{apto:{required:true,minlength:1},password:{required:true,minlength:4,maxlength:20}},messages:{apto:{required:'Nº Apartamento es requerido',minlength:'Ingrese mímino 4 caracteres'},password:{required:'Ingrese su clave de acceso',minlength:'Deben ser mínimo 4 caracteres',maxlength:'No pueden ser más de 20 caracteres'}},submitHandler:function(form){form.submit();$("btn-submit").attr("disabled","disabled");},errorPlacement:function(error,element){error.insertBefore(element.parent());}});$("#contactoform").validate({errorClass:"invalid2",rules:{email:{required:true,email:true},nombre:{required:true},mensaje:{required:true}},messages:{email:{required:'Ingrese su correo electrónico',email:'Ingrese un correo electrónico válido'},nombre:{required:'Ingrese su nombre y apellido'},mensaje:{required:'Escriba su mensaje'}},submitHandler:function(form){$("#contactoform").ajaxSubmit({target:"#respuesta",method:"post",url:"includes/enviar_email.php",resetForm:true,beforeSubmit:function(){$("#contactoform").hide();},success:function(){$("#respuesta").fadeIn();},error:function(){$("#respuesta").fadeIn();}});},errorPlacement:function(error,element){error.insertBefore(element.parent());}});/*$(".venobox").venobox(); $("#firstlink").venobox().trigger('click');*/});
     $("#recuperar-form").validate({
         debug:true,
         rules:{

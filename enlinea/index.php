@@ -13,12 +13,14 @@ $p = new pago();
 $cuenta = $f->numeroRecibosPendientesPropitario($session['usuario']['cedula']);
 $recibos = 0;
 $cancela = 0;
+
 if ($cuenta['suceed']) {
     if (count($cuenta['data']) > 0) {
         $recibos = $cuenta['data'][0]['cantidad'];
     }
 }
 $pagos = $p->numeroRecibosCanceladosPorPropitario($session['usuario']['cedula']);
+
 if ($pagos['suceed']) {
     if (count($pagos['data']) > 0) {
         $cancela = $pagos['data'][0]['cantidad'];
