@@ -56,8 +56,10 @@
 									                    image 
 									                    Extra: add .image-bw class to force black and white!
 									                    -->
+									{% if propiedad.imagen is defined and propiedad.imagen is not empty and propiedad.imagen is not null %}
 									<img class="img-responsive" src="{{constant('ROOT')}}{{propiedad.imagen}}" alt="{{propiedad.title}}" width="1200" height="1500">
 									<img src="{{constant('ROOT')}}{{propiedad.imagen}}" class="zoomImg" style="position: absolute; top: -407.258px; left: -70.7945px; opacity: 0; width: 1000px; height: 1500px; border: medium none; max-width: none; max-height: none;"></figure>
+									{% endif %}
 							</div>
 							{% set n = propiedad.imagenes|length - 1 %}
 							<!-- Thumbnails (required height:100px) -->

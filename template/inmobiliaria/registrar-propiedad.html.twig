@@ -31,7 +31,9 @@
 Por favor, haga click en <a href="?accion=publicaciones">Ver lista de propiedades</a> para administrar las publicaciones.
 </div>
 </div>
-
+{% if resultado %}
+{% include 'misc/resultado.html.twig' %}
+{% endif %}
 
 <form 
     action="?accion=guardar" 
@@ -262,6 +264,22 @@ Por favor, haga click en <a href="?accion=publicaciones">Ver lista de propiedade
 {% block javascript %}
 {{parent()}}
 <script src="{{constant('ROOT')}}assets/plugins/dropzone/js/dropzone.js"></script>
+<style>
+    #previews .dz-preview {
+        display: none !important;
+    }
+
+    #previews.dz-started .dz-preview {
+        display: block !important;
+    }
+
+    #previews .dz-message,
+    #previews.dz-started .dz-message {
+        display: block !important;
+        opacity: 1 !important;
+        visibility: visible !important;
+    }
+</style>
 <script type="text/javascript">
 Dropzone.autoDiscover = false;
 
@@ -270,37 +288,64 @@ previewNode.id = "";
 var previewTemplate = previewNode.parentNode.innerHTML;
 previewNode.parentNode.removeChild(previewNode);
 
-var myDropzone = new Dropzone(document.body, {
+var myDropzone = new Dropzone("#previews", {
     url: "{{constant('ROOT')}}images/inmobiliaria/index.php",
     previewsContainer: "#previews",
-    maxFilesize: 1,
+    maxFilesize: 50,
     maxFiles:"{{constant('MAX_FILES_DROPZONE')}}",
     acceptedFiles:"image/*",
     paramName:"file",
-    addRemoveLinks: true ,
+    addRemoveLinks: true,
     dictRemoveFile: "Eliminar",
-    renameFile: function (file) {
-        const newName = new Date().getTime() + '_' + file.name.replaceAll(' ','');
-        return newName;
-    },
+    dictFileTooBig: "La imagen es demasiado grande ({{filesize}} MB). El máximo permitido es {{maxFilesize}} MB.",
+
     init:function() {
-        this.on("addedfile", function(file) {
-            const filename = file.upload.filename;
-            const inputDesc = Dropzone.createElement(`<input name="imagen[]" type="hidden" value="${filename}">`);
-            file.previewElement.appendChild(inputDesc);
-            file.previewElement.addEventListener("click", function() {
-                    myDropzone.removeFile(filename);
-            });
+        this.on("success", function(file, response) {
+            try {
+                const data = typeof response === 'string' ? JSON.parse(response) : response;
+                if (data && data.success && data.file) {
+                    file.upload.filename = data.file;
+                    file.name = data.file;
+                    const hiddenInput = Dropzone.createElement(`<input name="imagen[]" type="hidden" value="${data.file}">`);
+                    file.previewElement.appendChild(hiddenInput);
+                    return;
+                }
+
+                if (data && data.success === false) {
+                    myDropzone.removeFile(file);
+                    _toastr(data.error || 'No se pudo subir la imagen.', 'top-right', 'error', false);
+                }
+            } catch (e) {
+                console.error('Error al actualizar nombre del archivo', e);
+                myDropzone.removeFile(file);
+                _toastr('No se pudo subir la imagen.', 'top-right', 'error', false);
+            }
+        });
+        this.on("error", function(file, message) {
+            myDropzone.removeFile(file);
+            const msg = typeof message === 'string' ? message : 'No se pudo subir la imagen.';
+            _toastr(msg, 'top-right', 'error', false);
         });
         this.on('removedfile', function(image) {
-            console.log(image);
+            if (this.files.length === 0) {
+                jQuery('#previews').removeClass('dz-started');
+                jQuery('#previews .dz-preview').remove();
+            }
+
             const filename = image.upload && image.upload.filename || image.name;
-            console.log(filename);
-            jQuery.getJSON(`{{constant('ROOT')}}images/inmobiliaria/deleteimage.php?name=${filename}`, function(resp) {
-                console.log(resp.message, resp.image);
-            });
+            if (filename) {
+                jQuery.getJSON(`{{constant('ROOT')}}images/inmobiliaria/deleteimage.php?name=${filename}`, function(resp) {
+                    console.log(resp.message, resp.image);
+                });
+            }
         });
         jQuery.getJSON('{{constant('ROOT')}}images/inmobiliaria/index.php?id={{propiedad.id}}', function(data) {
+            if (!data || data.length === 0) {
+                jQuery('#previews').removeClass('dz-started');
+                jQuery('#previews .dz-preview').remove();
+                return;
+            }
+
             jQuery.each(data, function(index, val) {
               var mockFile = { name: val.name, size: val.size };
               myDropzone.options.addedfile.call(myDropzone, mockFile);

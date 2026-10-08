@@ -31,6 +31,91 @@ function getContext() {
     ];
 }
 
+function redimensionarImagenWeb($source, $destination, $maxWidth = 1600, $maxHeight = 1200, $quality = 80, $fixedHeight = null, $fixedWidth = null) {
+    if (!file_exists($source)) {
+        return false;
+    }
+
+    $info = getimagesize($source);
+    if ($info === false) {
+        return false;
+    }
+
+    list($width, $height, $type) = $info;
+    $ratio = min($maxWidth / $width, $maxHeight / $height, 1);
+    $newWidth = max(1, (int) round($width * $ratio));
+    $newHeight = max(1, (int) round($height * $ratio));
+
+    if ($fixedHeight !== null && $fixedWidth !== null) {
+        $newWidth = $fixedWidth;
+        $newHeight = $fixedHeight;
+    }
+
+    switch ($type) {
+        case IMAGETYPE_JPEG:
+            $image = imagecreatefromjpeg($source);
+            break;
+        case IMAGETYPE_PNG:
+            $image = imagecreatefrompng($source);
+            break;
+        case IMAGETYPE_WEBP:
+            $image = imagecreatefromwebp($source);
+            break;
+        default:
+            return false;
+    }
+
+    if ($image === false) {
+        return false;
+    }
+
+    $thumb = imagecreatetruecolor($newWidth, $newHeight);
+
+    if ($type === IMAGETYPE_PNG || $type === IMAGETYPE_WEBP) {
+        imagealphablending($thumb, false);
+        imagesavealpha($thumb, true);
+        $transparent = imagecolorallocatealpha($thumb, 255, 255, 255, 127);
+        imagefilledrectangle($thumb, 0, 0, $newWidth, $newHeight, $transparent);
+    }
+
+    if ($fixedHeight !== null && $fixedWidth !== null) {
+        $cropWidth = $width;
+        $cropHeight = $height;
+        $cropX = 0;
+        $cropY = 0;
+
+        if ($width / $height > $fixedWidth / $fixedHeight) {
+            $cropWidth = (int) round($height * ($fixedWidth / $fixedHeight));
+            $cropX = (int) round(($width - $cropWidth) / 2);
+        } else {
+            $cropHeight = (int) round($width * ($fixedHeight / $fixedWidth));
+            $cropY = (int) round(($height - $cropHeight) / 2);
+        }
+
+        imagecopyresampled($thumb, $image, 0, 0, $cropX, $cropY, $newWidth, $newHeight, $cropWidth, $cropHeight);
+    } else {
+        imagecopyresampled($thumb, $image, 0, 0, 0, 0, $newWidth, $newHeight, $width, $height);
+    }
+
+    $extension = strtolower(pathinfo($destination, PATHINFO_EXTENSION));
+
+    if ($extension === 'jpg' || $extension === 'jpeg') {
+        imagejpeg($thumb, $destination, $quality);
+    } elseif ($extension === 'png') {
+        imagepng($thumb, $destination, 9);
+    } elseif ($extension === 'webp') {
+        imagewebp($thumb, $destination, $quality);
+    } else {
+        imagedestroy($image);
+        imagedestroy($thumb);
+        return false;
+    }
+
+    imagedestroy($image);
+    imagedestroy($thumb);
+    return true;
+}
+
 switch ($accion) {
     
     case "lista-ciudades-por-estado":
@@ -117,16 +202,18 @@ switch ($accion) {
         $propiedad = [];
         $data   = $_POST;
         
-        if(!empty($_FILES)){
-            echo 'vienen files';
-            $route = $dir . basename($FILES['file']['name']);
-            die($route);
-            move_uploaded_file($_FILES['file']['tmp'],$route);
-        }
-        
         if (isset($data['imagen'])) {
-            $imagenes = $data['imagen'];
+            $imagenes = array_values(array_filter(array_map('trim', (array) $data['imagen'])));
             unset($data['imagen']);
+
+            foreach ($imagenes as $imagen) {
+                $rutaArchivo = SERVER_ROOT . '/' . ltrim($dir, '/') . basename($imagen);
+                if (file_exists($rutaArchivo)) {
+                    redimensionarImagenWeb($rutaArchivo, $rutaArchivo, 1200, 900, 80, 800, 1200);
+                }
+            }
+        } else {
+            $data['imagen'] = '';
         }
         // editar
         if (isset($data['id']) && $data['id'] > 0) {
@@ -180,7 +267,9 @@ switch ($accion) {
         $context = getContext();
         $context['resultado'] = $result;
         $context['propiedad'] = $propiedad;
+        die(json_encode($context));
         echo json_encode($context);
+        //echo $twig->render('inmobiliaria/registrar-propiedad.html.twig', $context);
         break; 
     
     case "editar":
@@ -308,6 +397,3 @@ switch ($accion) {
 
         break;
 }
-        
-
-

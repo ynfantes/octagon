@@ -138,10 +138,12 @@
 
         <div class="thumbnail">
                 <!-- product image(s) -->
+                {% if propiedad.imagen is defined and propiedad.imagen is not empty and propiedad.imagen is not null %}                
                 <a class="shop-item-image" href="{{constant("ROOT")}}inmobiliaria/?accion=ver-propiedad&id={{propiedad.id}}">
-                        <img class="img-responsive" src="{{ constant("ROOT")}}{{propiedad.imagen}}" alt="shop first image">
+                        <img class="img-responsive" src="{{ constant("ROOT")}}{{propiedad.imagen}}" alt="{{propiedad.titulo}}">
                         <!--img class="img-responsive" src="{{propiedad.galleries[0][1].url}}" alt="shop hover image"-->
                 </a>
+                {% endif %}
                 <!-- /product image(s) -->
 
                 <div class="shop-item-counter">
