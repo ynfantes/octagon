@@ -166,9 +166,19 @@ if (!empty($_FILES)) {
         include '../../includes/constants.php';
         $publicaciones = new publicaciones();
         $publicacion = $publicaciones->ver($_GET['id']);
-
-        $files[] = basename($publicacion['row']['imagen']);
-
+        
+        if ($publicacion['suceed'] === false || count($publicacion['data']) === 0) {
+            http_response_code(404);
+            echo json_encode([
+                'success' => false,
+                'error' => 'Publicación no encontrada.'
+            ]);
+            exit;
+        }
+        if ($publicacion['row']['imagen']!== "" && $publicacion['row']['imagen']!== null) {
+            $files[] = basename($publicacion['row']['imagen']);
+        }
+        
         $imagenes = $publicaciones->obtenerImagenesPorPublicacion($_GET['id']);
 
         if ($imagenes['suceed']) {

@@ -340,6 +340,7 @@ var myDropzone = new Dropzone("#previews", {
             }
         });
         jQuery.getJSON('{{constant('ROOT')}}images/inmobiliaria/index.php?id={{propiedad.id}}', function(data) {
+            console.log(data);
             if (!data || data.length === 0) {
                 jQuery('#previews').removeClass('dz-started');
                 jQuery('#previews .dz-preview').remove();
