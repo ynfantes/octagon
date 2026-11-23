@@ -249,6 +249,10 @@ class pago extends db implements crud {
     }
     
     public function enviarEmailPagoProcesado($id,$estatus,$data) {
+
+        if ($estatus !== 'A') {
+            return "OK";
+        }
         $ini = parse_ini_file('emails.ini');
         $mail = new mailto();
         
